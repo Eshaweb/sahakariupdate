@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Login
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="back-image" padding id="page6">
+  <div class="spacer" style="width:300px;height:199px;" id="enterOTP-spacer11"></div>
+  <!-- <form [formGroup]="formGroup" id="login-form1" #loginForm="ngForm" (ngSubmit)="OnLogin(Password.value)"> -->
+    <form [formGroup]="formGroup" id="login-form1" #loginForm="ngForm" (ngSubmit)="OnLogin()">
+    <ion-list id="login-list5">
+      <ion-item id="login-input2">
+        <ion-label floating>
+          Password
+        </ion-label>
+        <!-- <ion-input formControlName="pword" type="password" #Password ngModel name="Password" placeholder=""></ion-input> -->
+        <ion-input formControlName="password" type="password" placeholder=""></ion-input>
+      </ion-item>
+      <a style="color:darkorange;" (click)="OnForgot()">Forgot password?</a>
+      <!-- <p style="color:red;" *ngIf="password.hasError('required') && password.touched"> *Please Enter Password</p> -->
+      <p style="color:darkorange;">{{passwordMessage}}</p>
+    </ion-list>
+    <div class="spacer" style="height:40px;" id="login-spacer1"></div>
+    <button [disabled]="loginForm.invalid" id="login-button1" ion-button color="assertive" block on-click="goToHome()">
+      Log in
+    </button>
+    <!-- <button id="login-button2" ion-button clear color="assertive" block href-inappbrowser="/signup">
+      Reset Password
+    </button> -->
+  </form>
+ 
+</ion-content>
