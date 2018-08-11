@@ -1,0 +1,34 @@
+<ion-header>
+    <ion-navbar color="primary">
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>
+        Balance-Enquiry  {{ActiveBankName}}
+      </ion-title>
+    </ion-navbar>
+  </ion-header>
+  <ion-content padding id="page3">
+      <span style="color: blue" *ngIf="HideMsg">Click on Account of your wish</span>  
+    <div  *ngIf="ShowHide">   
+      <div *ngFor="let order of SelfCareAcsBasedOnTenantID" (click)="OnGetAccountBalance(order.AcHeadId,order.AcSubId)" style="background-color:#ddd;border: 1px solid lightgrey; padding: 15px; margin: 5px 0;">
+        <span>Name: {{order.HeadName}}</span> 
+        <br/>
+        <span>Account No: {{order.AcNo}}</span> 
+    </div> 
+      </div>
+    <div *ngIf="balance">
+        <span>Balance Amount : {{ balance.Balance|currency:'INR' }}</span>
+    </div>
+  </ion-content>
+
+  <ion-footer color="primary">
+    <ion-toolbar>
+      <ion-title>{{ActiveBankName}}</ion-title>
+    </ion-toolbar>
+  </ion-footer>
+  <ion-footer>
+    <ion-toolbar color="primary">
+      <ion-title>{{ActiveBankName}} All Rights Rserved</ion-title>
+    </ion-toolbar>
+  </ion-footer>

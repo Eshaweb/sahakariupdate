@@ -1,0 +1,7 @@
+{
+  "name": "sahakari",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

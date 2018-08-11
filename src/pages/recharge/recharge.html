@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Recharge 
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding id="page7">
+  
+
+  <ion-list id="recharge-list6">
+    <ion-item color="assertive" id="recharge-list-item21" *ngFor="let row of NewCategories"  (click)="OnOperatorSelection(row.Id)">
+      
+        {{row.Operator}}
+      
+      <span style="color: blue" *ngIf="showMsg">Coming Soon</span>  
+    </ion-item>
+    <ion-item color="assertive" id="recharge-list-item21" (click)="OnReports()">
+       
+        Reports
+         </ion-item>
+  </ion-list>
+
+    
+</ion-content>
+<ion-footer>
+  <ion-toolbar color="primary">
+    <ion-title>{{ActiveBankName}} All Rights Reserved</ion-title>
+  </ion-toolbar>
+</ion-footer>

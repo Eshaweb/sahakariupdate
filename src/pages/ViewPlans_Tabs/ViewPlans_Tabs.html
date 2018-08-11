@@ -1,0 +1,147 @@
+<ion-header>
+
+  <!-- <ion-navbar hideBackButton="true" color="primary"> -->
+  <!-- <ion-navbar color="primary">
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>
+        {{ActiveBankName}}  Mobile App
+      </ion-title>
+    </ion-navbar> -->
+  <!-- <ion-navbar #navbar color="primary" >
+      <ion-title>Whatever</ion-title>
+      <ion-buttons right>
+        <button icon-only ion-button>
+          <ion-icon name='pause'></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-navbar> -->
+
+  <ion-toolbar no-border-top>
+    <!-- <ion-segment [(ngModel)]="active_Segmant" color="dark" (ionChange)="onSegmentChange($event)"> -->
+    <ion-segment [(ngModel)]="active_Segmant" color="dark">
+      <ion-segment-button value="0" (ionSelect)="onSegmentChange(0)">
+        FullTalkTime
+      </ion-segment-button>
+      <ion-segment-button value="1" (ionSelect)="onSegmentChange(1)">
+        LSC
+      </ion-segment-button>
+      <ion-segment-button value="2" (ionSelect)="onSegmentChange(2)">
+        TopUp
+      </ion-segment-button>
+      <ion-segment-button value="3" (ionSelect)="onSegmentChange(3)">
+        SMS
+      </ion-segment-button>
+      <ion-segment-button value="4" (ionSelect)="onSegmentChange(4)">
+        Other
+      </ion-segment-button>
+      <ion-segment-button value="5" (ionSelect)="onSegmentChange(5)">
+        Roaming
+      </ion-segment-button>
+      <!-- <ion-segment-button value="0">
+          FullTalkTime
+        </ion-segment-button>
+        <ion-segment-button value="1">
+          LSC
+        </ion-segment-button>
+        <ion-segment-button value="2">
+          TopUp
+        </ion-segment-button>
+        <ion-segment-button value="3">
+          SMS
+        </ion-segment-button>
+        <ion-segment-button value="4">
+          Other
+        </ion-segment-button>
+        <ion-segment-button value="5">
+          Roaming
+        </ion-segment-button> -->
+    </ion-segment>
+  </ion-toolbar>
+
+ 
+</ion-header>
+
+<ion-content padding id="page5">
+  <ion-slides #slider (ionSlideDidChange)="slideChanged()">
+    <ion-slide>
+      <p> Select the plans you want</p>
+      <ion-list *ngFor="let order of planResponse" (click)="OnAmount(order.amount)">
+        <ion-item style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;background-color: bisque">
+          <h3>Talktime:{{ order.talktime }}</h3>
+          <button ion-button outline icon-start item-end round medium>
+            {{ order.amount |currency:'INR' }}
+          </button>
+          <a style="color:red">{{ order.detail }}</a>
+          <h2>Validity:{{ order.validity }}</h2>
+        </ion-item>
+      </ion-list>
+    </ion-slide>
+    <ion-slide>
+      Select the plans you want
+      <ion-list *ngFor="let order of planResponse" (click)="OnAmount(order.amount)">
+        <ion-item style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;background-color: bisque">
+          <h3>Talktime:{{ order.talktime }}</h3>
+          <button ion-button outline icon-start item-end round medium>
+            {{ order.amount | currency:'INR'}}
+          </button>
+          <a style="color:red">{{ order.detail }}</a>
+          <h2>Validity:{{ order.validity }}</h2>
+        </ion-item>
+      </ion-list>
+    </ion-slide>
+    <ion-slide>
+      Select the plans you want
+      <ion-list *ngFor="let order of planResponse" (click)="OnAmount(order.amount)">
+        <ion-item style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;background-color: bisque">
+          <h3>Talktime:{{ order.talktime }}</h3>
+          <button ion-button outline icon-start item-end round medium>
+            {{ order.amount | currency:'INR'}}
+          </button>
+          <a style="color:red">{{ order.detail }}</a>
+          <h2>Validity:{{ order.validity }}</h2>
+        </ion-item>
+      </ion-list>
+    </ion-slide>
+    <ion-slide>
+      Select the plans you want
+      <ion-list *ngFor="let order of planResponse" (click)="OnAmount(order.amount)">
+        <ion-item style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;background-color: bisque">
+          <h3>Talktime:{{ order.talktime }}</h3>
+          <button ion-button outline icon-start item-end round medium>
+           {{ order.amount | currency:'INR'}}
+          </button>
+          <a style="color:red">{{ order.detail }}</a>
+          <h2>Validity:{{ order.validity }}</h2>
+        </ion-item>
+      </ion-list>
+    </ion-slide>
+    <ion-slide>
+      Select the plans you want
+      <ion-list *ngFor="let order of planResponse" (click)="OnAmount(order.amount)">
+        <ion-item style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;background-color: bisque">
+          <h3>Talktime:{{ order.talktime }}</h3>
+          <button ion-button outline icon-start item-end round medium>
+          {{ order.amount | currency:'INR'}}
+          </button>
+          <a style="color:red">{{ order.detail }}</a>
+          <h2>Validity:{{ order.validity }}</h2>
+        </ion-item>
+      </ion-list>
+    </ion-slide>
+    <ion-slide>
+      Select the plans you want
+      <ion-list *ngFor="let order of planResponse" (click)="OnAmount(order.amount)">
+        <ion-item style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;background-color: bisque">
+          <h3>Talktime:{{ order.talktime }}</h3>
+          <button ion-button outline icon-start item-end round medium>
+         {{ order.amount | currency:'INR'}}
+          </button>
+          <a style="color:red">{{ order.detail }}</a>
+          <h2>Validity:{{ order.validity }}</h2>
+        </ion-item>
+      </ion-list>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
