@@ -41,7 +41,7 @@ export class MobileRechargePage implements OnInit {
       circleId: [''],
       amount: ['', [Validators.required]],
       nickname: ['', [Validators.required, Validators.minLength(2)]]
-    });
+    });//builds the formgroup with the same formcontrolname.
 
     const subscriptionIdControl = this.formGroup.get('subscriptionId');
     subscriptionIdControl.valueChanges.map(()=>{}).subscribe(value => this.setErrorMessage(subscriptionIdControl));
@@ -49,6 +49,7 @@ export class MobileRechargePage implements OnInit {
     amountControl.valueChanges.subscribe(value => this.setErrorMessage(amountControl));
     const nicknameControl = this.formGroup.get('nickname');
     nicknameControl.valueChanges.subscribe(value => this.setErrorMessage(nicknameControl));
+  //call the particular method if value changes in the control.
   }
   ionViewDidLoad() {
     this.navCtrl.remove(2, 1);
@@ -59,7 +60,7 @@ export class MobileRechargePage implements OnInit {
     let subscriptionId = this.formGroup.controls['subscriptionId'];
     let amount = this.formGroup.controls['amount'];
     let nickname = this.formGroup.controls['nickname'];
-    this.subscriptionIdMessage = '';
+    this.subscriptionIdMessage = '';//To not display the error message, if there is no error.
     this.nicknameMessage = '';
     this.amountMessage = '';
     let control = this.uiService.getControlName(c);
@@ -69,6 +70,7 @@ export class MobileRechargePage implements OnInit {
         if (c.errors.minlength) {
           if (c.errors.minlength.requiredLength == 9) {
             this.subscriptionIdMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key + '_9']).join(' ');
+            //maps the error message from validationMessages array. 
             this.subscriptionIdInfo = '';
           }
           else if (c.errors.minlength.requiredLength == 9) {
@@ -147,7 +149,7 @@ export class MobileRechargePage implements OnInit {
       // }
     }
   }
-  private validationMessages = {
+  private validationMessages = {  //used in above method.
     subscriptionId_required: '*Enter the Field',
     subscriptionId_minlength_9: 'Field cannot be less than 9 character',
     subscriptionId_minlength_10: 'Field cannot be less than 10 character',
@@ -200,7 +202,7 @@ export class MobileRechargePage implements OnInit {
     this.amountforRecharge = this.navParams.get('Amount');
     this.osid = this.navParams.get('OperatorId');
     this.isButtonEnabled = this.navParams.get('ButtonEnabled');
-    if (this.isButtonEnabled == null) {
+    if (this.isButtonEnabled == null) {  
       this.isButtonEnabled = false;
     } else {
       this.isButtonEnabled = true;
