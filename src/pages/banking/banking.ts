@@ -13,7 +13,7 @@ import { PagePage } from '../page/page';
 })
 export class BankingPage implements OnInit {
   ActiveBankName: string;
-  // constructor(public constant:ConstantService,private autoLogoutService: AutoLogoutService,public navCtrl: NavController) {
+  // constructor(private autoLogoutService: AutoLogoutService,public navCtrl: NavController) {
   constructor(private storageService:StorageService, public navCtrl: NavController) {
 
     //StorageService.SetItem('lastAction', Date.now().toString());
@@ -23,17 +23,17 @@ export class BankingPage implements OnInit {
   ngOnInit() {
     this.ActiveBankName = this.storageService.GetActiveBankName();
   }
-  OnFundTransfer() {
+  OnFundTransfer() {  //Fires, when clicking on Fund Transfer.
     this.navCtrl.push(FundTransferPage);
   }
   OnBack(){
     this.navCtrl.setRoot(PagePage);
   }
-  OnBalanceEnquiry() {
+  OnBalanceEnquiry() {  //Fires, when clicking on Balance Enquiry.
     this.navCtrl.push(BalanceEnquiryPage);
   }
 
-  OnMiniStatement() {
+  OnMiniStatement() {   //Fires, when clicking on Mini Statement.
     this.navCtrl.push(MiniStatementPage);
   }
 }

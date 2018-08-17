@@ -41,25 +41,17 @@ export class MyApp {
       translate.setDefaultLang('ka');
 
       //localStorage.clear();
-      //localStorage.removeItem('userToken');
       this.event.subscribe('REFRESH_DIGIPARTYNAME', () => {  
         this.ActiveBankName = this.storageService.GetActiveBankName();
           this.digipartyname = this.storageService.GetDigipartyBasedOnActiveTenantId().Name;
           this.showMenuOptions=true;
-        });
-      if (this.storageService.GetUser() == null) {
+        });  //Above is for refreshing digipartyname
+      if (this.storageService.GetUser() == null) {  //Checks whether the User table in localstorage is null or not
         this.rootPage = RegisterPage;
       }
-      // else if (this.storageService.GetUser() != null&&localStorage.getItem('userToken') != null){
-      //   this.rootPage = PagePage;
-      //   this.ActiveBankName = this.storageService.GetActiveBankName();
-      //     this.digipartyname = this.storageService.GetDigipartyBasedOnActiveTenantId().Name;
-      //     this.showProfileAndChangeBank=true;
-      //   }
         else{
           this.rootPage=LoginPage;
-          this.showMenuOptions=false;
-
+          this.showMenuOptions=false;   //For loginPage, we need to hide Menu options using this property.
         }
     });
   }

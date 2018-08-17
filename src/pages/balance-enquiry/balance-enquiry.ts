@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, LoadingController, AlertController } from 'ionic-angular';
 import { StorageService } from '../services/Storage_Service';
-import { StatementRequest } from '../View Models/StatementRequest';
 import { RegisterService } from '../services/app-data.service';
 import { SelfCareAc } from '../LocalStorageTables/SelfCareAc';
 import { ToastrService } from 'ngx-toastr';
@@ -19,17 +18,17 @@ export class BalanceEnquiryPage implements OnInit {
     ShowHide: boolean;
     SelfCareAcsBasedOnTenantID: SelfCareAc;
     ngOnInit() {
-        this.HideMsg = true;
-        this.ShowHide = true;
+        this.HideMsg = true;   //used to show click messages.
+        this.ShowHide = true;  //used to show Accounts of the bank
         this.ActiveBankName = this.storageService.GetActiveBankName();
-        this.SelfCareAcsBasedOnTenantID = this.storageService.GetSelfCareAcsBasedOnTenantID();
+        this.SelfCareAcsBasedOnTenantID = this.storageService.GetSelfCareAcsBasedOnTenantID();  //used to show Bank Accounts based on TenantID
     }
     balance: string;
-    OnGetAccountBalance(AcHeadId, AcSubId) {
+    OnGetAccountBalance(AcHeadId, AcSubId) {   //Fires when user clicks on Accounts
         let loading = this.loadingController.create({
             content: 'Loading the Account Balance..'
         });
-        loading.present();
+        loading.present();           //To show loading panel
         var statementRequest = {
             AcMastId: AcHeadId,
             AcSubId: AcSubId,
@@ -46,8 +45,8 @@ export class BalanceEnquiryPage implements OnInit {
                 subTitle: error.message,
                 buttons: ['OK']
               });
-              alert.present();
-              loading.dismiss();
+              alert.present();      //To show alert message
+              loading.dismiss();    //To close loading panel
           });
         this.ShowHide = false;
         this.HideMsg = false;

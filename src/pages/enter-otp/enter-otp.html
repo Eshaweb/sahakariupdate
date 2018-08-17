@@ -24,9 +24,6 @@
           OTP
         </ion-label>
         <ion-input formControlName="otp" type="number" placeholder=""></ion-input>
-        <!-- <ion-input formControlName="otp" type="number" #OTPNo ngModel name="OTPNo" placeholder=""></ion-input> -->
-        <!-- <ion-input type="number" placeholder="" name="OTPNo" #OTPNo="ngModel" [(ngModel)]="order.Id"></ion-input> -->
-     
       </ion-item>
       <!-- <p style="color:darkorange;" *ngIf="otp.hasError('required') && otp.touched"> *OTP is required</p> -->
       <p style="color:darkorange;">{{userMessage}}</p>
@@ -42,14 +39,11 @@
   <button style="color: darkorange" [disabled]="counter !== 0" ion-button clear item-centre (click)="OnResendOTP()">Click here to Resend OTP</button>       
   </div>
   <div *ngIf="ShowIf">
-  <!-- <form id="enterOTP-form2" [formGroup]="SavePasswordForm"  #NewPasswordEntryForm="ngForm" (ngSubmit)="OnSavePassword(CPassword.value)"> -->
     <form id="enterOTP-form2" [formGroup]="SavePasswordForm"  #NewPasswordEntryForm="ngForm" (ngSubmit)="OnSavePassword()">
       <ion-item id="enterOTP-input3">
       <ion-label floating>
         New Password
       </ion-label>
-      <!-- <ion-input type="text" placeholder="" name="NPassword" #NPassword="ngModel" [(ngModel)]="npef.NPassword"></ion-input> -->
-      <!-- <ion-input formControlName="password" type="password" required #NPassword ngModel name="NPassword" placeholder=""></ion-input>       -->
       <ion-input formControlName="password" type="password" placeholder=""></ion-input>      
     </ion-item>
     <!-- <p style="color:red;" *ngIf="password.hasError('required') && password.touched"> *Password is required</p> -->
@@ -59,8 +53,6 @@
       <ion-label floating>
         Confirm Password
       </ion-label>
-      <!-- <ion-input type="text" placeholder="" name="CPassword" #CPassword="ngModel" [(ngModel)]="npef.CPassword"></ion-input> -->
-      <!-- <ion-input formControlName="confirmpwd" type="password" required Equalvalidate="password" #CPassword ngModel name="CPassword" placeholder=""></ion-input> -->
       <ion-input formControlName="confirmpwd" type="password" Equalvalidate="password" placeholder=""></ion-input>
       <!-- <div [hidden]="CPassword.valid || CPassword.pristine" class="alert alert-danger">
         Password mismatch
@@ -76,7 +68,7 @@
 </div>
 
 
-<div *ngIf="ShowUserNameAndOldPassword">
+<div *ngIf="ShowOldPassword">
     <form id="enterOTP-form2" [formGroup]="ChangePasswordForm"  #ChangePasswordEntryForm="ngForm" (ngSubmit)="OnChangePassword()">
       <ion-item id="enterOTP-input3">
         <ion-label floating>

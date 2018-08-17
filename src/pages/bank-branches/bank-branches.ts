@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { StorageService } from '../services/Storage_Service';
 import { RegisterService } from '../services/app-data.service';
 import { ToastrService } from 'ngx-toastr';
@@ -16,30 +16,30 @@ import { BankBranch } from '../View Models/BankBranch';
   selector: 'page-bank-branches',
   templateUrl: 'bank-branches.html',
 })
-export class BankBranchesPage implements OnInit{
+export class BankBranchesPage implements OnInit {
   bankBranch: BankBranch;
-  constructor(private storageService:StorageService, private alertCtrl: AlertController,private toastr: ToastrService, public loadingController: LoadingController,private registerService: RegisterService,public navCtrl: NavController, public navParams: NavParams) {
-  
+  constructor(private storageService: StorageService, private alertCtrl: AlertController, private toastr: ToastrService, public loadingController: LoadingController, private registerService: RegisterService, public navCtrl: NavController, public navParams: NavParams) {
+
   }
   ngOnInit() {
     let loading = this.loadingController.create({
       content: 'Loading the Account Balance..'
-  });
-  loading.present();
-    var ActiveTenantId=this.storageService.GetUser().ActiveTenantId;
-    this.registerService.GetLocations(ActiveTenantId).subscribe((data: any) => {
+    });
+    loading.present();
+    var ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
+    this.registerService.GetLocations(ActiveTenantId).subscribe((data: any) => {  //To show the branches of the bank in which Account holder has his account
       this.bankBranch = data;
       //alert(data.Balance);
       loading.dismiss();
-  }, (error) => {
+    }, (error) => {
       this.toastr.error(error.message, 'Error!');
       var alert = this.alertCtrl.create({
-          title: "Error Message",
-          subTitle: error.message,
-          buttons: ['OK']
-        });
-        alert.present();
-        loading.dismiss();
+        title: "Error Message",
+        subTitle: error.message,
+        buttons: ['OK']
+      });               
+      alert.present();
+      loading.dismiss();
     });
   }
 
