@@ -1,11 +1,15 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClient,HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
 import { ToastrModule } from 'ngx-toastr';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { Toast } from '@ionic-native/toast';
+import {TranslateService} from '@ngx-translate/core';
 import { ServiceWorkerModule } from '@angular/service-worker';
 //import { environment } from '../environments/environment';
-
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -20,8 +24,6 @@ import { MiniStatementPage } from '../pages/mini-statement/mini-statement';
 import { MobileRechargePage } from '../pages/mobile-recharge/mobile-recharge';
 import { RegisterPage } from '../pages/register/register';
 import { EnterOTPPage, FormatTimePipe } from '../pages/enter-otp/enter-otp';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { HttpModule } from '@angular/http';
 import { AuthGuard } from '../pages/auth/auth.guard';
 import { AutoCompleteModule } from 'ionic2-auto-complete';
 
@@ -47,6 +49,8 @@ import { MyProfilePage } from '../pages/my-profile/my-profile';
 import { BankBranchesPage } from '../pages/bank-branches/bank-branches';
 import { FundTransferConfirmPage } from '../pages/fund-transfer-confirm/fund-transfer-confirm';
 import { ModalPage } from '../pages/modal/modal';
+
+
 
 @NgModule({
   declarations: [
@@ -82,7 +86,16 @@ import { ModalPage } from '../pages/modal/modal';
       positionClass: 'toast-bottom-center',
       // positionClass: 'toast-top-center',
       preventDuplicates: true,
-    }),  //describes toastr settings
+    }),
+    TranslateModule.forRoot({
+      // loader: {
+      //     provide: TranslateLoader,
+      //     useFactory: (HttpLoaderFactory),
+      //     deps: [HttpClient]
+      // }
+  }),
+
+  //TranslateModule.forRoot(),
     IonicModule.forRoot(MyApp),
     RouterModule.forRoot(appRoutes),
     //environment.production ? ServiceWorkerModule.register('ngsw-worker.js') : []
@@ -128,3 +141,8 @@ import { ModalPage } from '../pages/modal/modal';
   ]
 })
 export class AppModule {}
+
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
