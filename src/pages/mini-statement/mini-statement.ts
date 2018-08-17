@@ -7,6 +7,7 @@ import { MiniStatement } from '../View Models/MiniStatement';
 import { StatementItem } from '../View Models/StatementItem';
 import { SelfCareAc } from '../LocalStorageTables/SelfCareAc';
 import { ToastrService } from 'ngx-toastr';
+import { findReadVarNames } from '../../../node_modules/@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'page-mini-statement',
@@ -25,8 +26,8 @@ export class MiniStatementPage implements OnInit {
   HideMsg: boolean;
   SelfCareAcsBasedOnTenantID: SelfCareAc;
   ngOnInit() {
-    this.ShowHide = true;
-    this.HideMsg=true;
+    this.ShowHide = true; //used to show click messages.
+    this.HideMsg=true;  //used to show Accounts of the bank
     this.ActiveBankName =this.storageService.GetActiveBankName();
     this.SelfCareAcsBasedOnTenantID =this.storageService.GetSelfCareAcsBasedOnTenantID();
   }
@@ -34,7 +35,7 @@ export class MiniStatementPage implements OnInit {
   statementItem: StatementItem;
   miniStatement: MiniStatement;
   balance: string;
-  OnGetMiniStatement(AcHeadId, AcSubId) {
+  OnGetMiniStatement(AcHeadId, AcSubId) { //Fires, when user clicks on Accounts
     let loading = this.loadingController.create({
       content: 'Loading the Mini Statement..'
     });

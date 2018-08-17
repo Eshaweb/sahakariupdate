@@ -27,7 +27,7 @@ export class EnterOTPPage implements OnInit {
   mobilenoMessage: string;
   oldPasswordMessage: string;
   isForgotten: boolean;
-  constructor(private storageService:StorageService, private alertCtrl: AlertController, private uiService: UISercice, private toastrService: ToastrService, public navParams: NavParams, public loadingController: LoadingController, private fb: FormBuilder, public navCtrl: NavController, private registerService: RegisterService) {
+  constructor(private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, private toastrService: ToastrService, public navParams: NavParams, public loadingController: LoadingController, private fb: FormBuilder, public navCtrl: NavController, private registerService: RegisterService) {
     this.formgroup = this.fb.group({
       otp: ['', [Validators.required, Validators.minLength(4)]]
     });  //builds the formgroup with same formcontrolname.
@@ -161,7 +161,7 @@ export class EnterOTPPage implements OnInit {
   ShowIf: boolean;
   HideIf = true;
   postOPT: PostOPT;
-  OnSubmit() {  //
+  OnSubmit() {  //Fires, while clicking Enter OTP submit button.
     let OTPRefNo = this.navParams.get('OTPRefNo');
     let loading = this.loadingController.create({
       content: 'Please wait till the screen loads'
@@ -177,7 +177,7 @@ export class EnterOTPPage implements OnInit {
     this.registerService.ValidateOTP(postOPT).subscribe((data: any) => {
       this.storeboolean = data;
       if (this.storeboolean == true) {
-        this.ShowIf = true;
+        this.ShowIf = true;  //To show SavePasswordForm based on value
         this.HideIf = false;
         this.ShowOldPassword = false;
       } else {
@@ -194,12 +194,12 @@ export class EnterOTPPage implements OnInit {
         subTitle: error.message,
         buttons: ['OK']
       });
-      alert.present();    
+      alert.present();
       loading.dismiss();
     });
   }
 
-  OnResendOTP() {
+  OnResendOTP() {  //Fires, if we click on Resend OTP button.
     let loading = this.loadingController.create({
       content: 'Please wait till the screen loads'
     });
@@ -209,7 +209,6 @@ export class EnterOTPPage implements OnInit {
       MobileNo: this.navParams.get('MobileNo').value
     }
     this.registerService.RequestOTP(oTPRequest).subscribe((data: any) => {
-
       //ADDED toastr.css in the path "node_modules/ngx-toastr/toastr.css" from https://github.com/scttcper/ngx-toastr/blob/master/src/lib/toastr.css
       this.toastrService.success('OTP Sent to ' + data.MobileNo + ' with Reference No. ' + data.OTPRefNo, 'Success!');
       loading.dismiss();
@@ -222,12 +221,11 @@ export class EnterOTPPage implements OnInit {
       });
       alert.present();
       loading.dismiss();
-        });
+    });
   }
 
-  OnSavePassword() {
+  OnSavePassword() {  //Fires, if we click on SavePasswordForm Submit button.
     var DigiPartyId = this.navParams.get('DigiPartyId');
-
     var userPost = {
       DigiPartyId: DigiPartyId,
       TenantId: this.registerService.TenantId,  //ActiveTenantId
@@ -244,7 +242,6 @@ export class EnterOTPPage implements OnInit {
     loading.present();
 
     this.registerService.SaveMPin(userPost).subscribe((data: any) => {
-
       const user = {
         ActiveTenantId: this.registerService.TenantId,
         UserId: data.UserId,
@@ -252,6 +249,7 @@ export class EnterOTPPage implements OnInit {
         UniqueKey: data.UniqueKey
       }
       this.storageService.SetUser(JSON.stringify(user));
+      //Saves the User table in localstorage.
       this.navCtrl.push(LoginPage);
       loading.dismiss();
 
@@ -269,7 +267,7 @@ export class EnterOTPPage implements OnInit {
   }
 
 
-  OnChangePassword() {
+  OnChangePassword() {  //Fires, if we click on ChangePasswordForm Submit button.
     var changePassword = {
       UserName: this.storageService.GetUser().UserName,
       Old: this.ChangePasswordForm.get('oldPassword').value,
@@ -291,7 +289,7 @@ export class EnterOTPPage implements OnInit {
           subTitle: "Please login with the New Password",
           buttons: ['OK']
         });
-        alert.present();        
+        alert.present();
         this.navCtrl.push(LoginPage);
       }
       loading.dismiss();
@@ -307,7 +305,7 @@ export class EnterOTPPage implements OnInit {
     });
 
   }
-  OnForgot() {
+  OnForgot() {  //Fires, if we click on Forgot password.
     this.isForgotten = true;
     this.navCtrl.push(RegisterPage, { 'isForgotPassword': this.isForgotten });
   }

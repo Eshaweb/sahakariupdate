@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { StorageService } from '../services/Storage_Service';
-import { ConstantService } from '../services/Constants';
 import { RechargeModel } from '../View Models/RechargeModel';
-import { SelfCareAc } from '../LocalStorageTables/SelfCareAc';
-import { DigiParty } from '../LocalStorageTables/DigiParty';
 import { RegisterService } from '../services/app-data.service';
 import { ToastrService } from 'ngx-toastr';
 import { TranResponse } from '../View Models/TranResponse';
@@ -32,7 +29,7 @@ export class PrepaidConfirmPage implements OnInit {
   showRefund: boolean;
   showBlocked: boolean;
   showInit: boolean;
-  constructor(private storageService:StorageService, private alertCtrl: AlertController, private toastr: ToastrService, private registerService: RegisterService, public constantService: ConstantService, public loadingController: LoadingController, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private storageService:StorageService, private alertCtrl: AlertController, private toastr: ToastrService, private registerService: RegisterService, public loadingController: LoadingController, public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ngOnInit() {
@@ -55,17 +52,6 @@ export class PrepaidConfirmPage implements OnInit {
     }
   }
   
-  GetDigiPartyandPartyMastID(ActiveTenantId) {
-    var DigiParties = this.storageService.GetDigiParty();
-    var digiparty = DigiParties.find(function (obj) { return obj.TenantId === ActiveTenantId; });
-    return digiparty;
-  }
-  
-  GetSelfCareAcByTenantID(ActiveTenantId) {
-    var SelfCareACs = this.storageService.GetSelfCareAc();
-    var selfCareAC = SelfCareACs.find(function (obj) { return obj.TenantId === ActiveTenantId && obj.AcActId == "#SB"; });
-    return selfCareAC;
-  }
   OnConfirm() {
     let loading = this.loadingController.create({
       content: 'Recharging...'
@@ -174,6 +160,16 @@ export class PrepaidConfirmPage implements OnInit {
       loading.dismiss();
     });
   }
-
+  GetDigiPartyandPartyMastID(ActiveTenantId) { //Fires from above method
+    var DigiParties = this.storageService.GetDigiParty();
+    var digiparty = DigiParties.find(function (obj) { return obj.TenantId === ActiveTenantId; });
+    return digiparty;
+  }
+  
+  GetSelfCareAcByTenantID(ActiveTenantId) {  //Fires from above method
+    var SelfCareACs = this.storageService.GetSelfCareAc();
+    var selfCareAC = SelfCareACs.find(function (obj) { return obj.TenantId === ActiveTenantId && obj.AcActId == "#SB"; });
+    return selfCareAC;
+  }
 
 }

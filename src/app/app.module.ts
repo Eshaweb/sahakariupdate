@@ -18,7 +18,6 @@ import { RechargePage } from '../pages/recharge/recharge';
 import { FavouritesPage } from '../pages/favourites/favourites';
 import { MiniStatementPage } from '../pages/mini-statement/mini-statement';
 import { MobileRechargePage } from '../pages/mobile-recharge/mobile-recharge';
-import { RechargeSuccessfulPage } from '../pages/recharge-successful/recharge-successful';
 import { RegisterPage } from '../pages/register/register';
 import { EnterOTPPage, FormatTimePipe } from '../pages/enter-otp/enter-otp';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -37,7 +36,6 @@ import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
 import { StorageService } from '../pages/services/Storage_Service';
 //import { IonicPageModule } from 'ionic-angular';
-import { ConstantService } from '../pages/services/Constants';
 import { AutoLogoutService } from '../pages/services/AutoLogOutService';
 import { FundTransferPage } from '../pages/fund-transfer/fund-transfer';
 import { BalanceEnquiryPage } from '../pages/balance-enquiry/balance-enquiry';
@@ -63,7 +61,6 @@ import { ModalPage } from '../pages/modal/modal';
     FavouritesPage,
     MiniStatementPage,
     MobileRechargePage,
-    RechargeSuccessfulPage,
     RegisterPage,
     EnterOTPPage,
     FundTransferPage,
@@ -103,7 +100,6 @@ import { ModalPage } from '../pages/modal/modal';
     FavouritesPage,
     MiniStatementPage,
     MobileRechargePage,
-    RechargeSuccessfulPage,
     RegisterPage,
     EnterOTPPage,
     FundTransferPage,
@@ -124,7 +120,6 @@ import { ModalPage } from '../pages/modal/modal';
     RegisterService,
     UIHelperService,
     StorageService,
-    ConstantService,
     AutoLogoutService,
     UISercice,
     StatusBar,

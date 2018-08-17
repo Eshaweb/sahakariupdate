@@ -11,7 +11,6 @@ import { RegisterPage } from '../pages/register/register';
 import { StorageService } from '../pages/services/Storage_Service';
 import { RegisterService } from '../pages/services/app-data.service';
 import { PagePage } from '../pages/page/page';
-import { ConstantService } from '../pages/services/Constants';
 import { MyProfilePage } from '../pages/my-profile/my-profile';
 import { BankBranchesPage } from '../pages/bank-branches/bank-branches';
 
@@ -26,7 +25,7 @@ export class MyApp {
   @ViewChild(Nav) navCtrl: Nav;
   rootPage: any;
   showMenuOptions: boolean;
-  constructor(private storageService:StorageService, private event: Events, public constant: ConstantService, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private regService: RegisterService) {
+  constructor(private storageService:StorageService, private event: Events, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private regService: RegisterService) {
     this.event.subscribe('UNAUTHORIZED', () => {
       this.navCtrl.push(LoginPage);
     });

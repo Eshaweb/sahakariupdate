@@ -7,7 +7,6 @@ import { DigiCustWithOTPRefNo } from '../View Models/DigiCustWithOTPRefNo';
 import { PostOPT } from '../View Models/PostOPT';
 import { UserPost } from '../View Models/UserPost';
 import { UserResult } from '../View Models/UserResult';
-import { StorageService } from './Storage_Service';
 import { TokenParams } from '../View Models/TokenParams';
 import { OS } from '../View Models/OS';
 import { SCRequest } from '../View Models/SCRequest';

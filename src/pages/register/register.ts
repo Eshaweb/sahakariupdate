@@ -5,11 +5,8 @@ import { HomePage } from '../home/home';
 import { MobileRechargePage } from '../mobile-recharge/mobile-recharge';
 import { BankingPage } from '../banking/banking';
 import { RegisterService } from '../services/app-data.service';
-import { OTPRequest } from '../View Models/OTPrequest.vm';
 import { ToastrService } from 'ngx-toastr';
-import { DigiCustWithOTPRefNo } from '../View Models/DigiCustWithOTPRefNo';
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
-import { TenantList } from '../View Models/TenantList';
 import { Tenant } from '../LocalStorageTables/Tenant';
 import { UISercice } from '../services/UIService';
 import { StorageService } from '../services/Storage_Service';
@@ -24,12 +21,12 @@ export class RegisterPage implements OnInit {
   formgroup2: FormGroup;
   isForgotPassword: boolean;
   formgroup1: FormGroup;
-  constructor(private storageService:StorageService,private alertCtrl: AlertController, private uiService: UISercice, public navParams: NavParams, public loadingController: LoadingController, public formbuilder: FormBuilder, private toastrService: ToastrService, private regService: RegisterService, public navCtrl: NavController) {
+  constructor(private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, public navParams: NavParams, public loadingController: LoadingController, public formbuilder: FormBuilder, private toastrService: ToastrService, private regService: RegisterService, public navCtrl: NavController) {
     this.formgroup1 = formbuilder.group({
       mobilenum: ['', [Validators.required, Validators.minLength(10)]]
-    });
+    });  //builds the formgroup with the same formcontrolname.
     this.formgroup1.controls['mobilenum']
-    .valueChanges
+      .valueChanges
       .debounceTime(500)
       .distinctUntilChanged()
       .subscribe(val => {
@@ -47,29 +44,30 @@ export class RegisterPage implements OnInit {
 
     const mobilenumControl = this.formgroup1.get('mobilenum');
     mobilenumControl.valueChanges.subscribe(value => this.setErrorMessage(mobilenumControl));
-  
+    //call the particular method if value changes in the control.
     this.formgroup2 = formbuilder.group({
       mobilenumforOTP: ['', [Validators.required, Validators.minLength(10)]]
     });
-   const mobilenumforOTPControl = this.formgroup2.get('mobilenumforOTP');
+    const mobilenumforOTPControl = this.formgroup2.get('mobilenumforOTP');
     mobilenumforOTPControl.valueChanges.subscribe(value => this.setErrorMessage(mobilenumforOTPControl));
   }
   hidethisform: boolean;
   setErrorMessage(c: AbstractControl): void {
- this.mobilenum_Message='';
-this.mobilenumforOTP_Message='';
+    this.mobilenum_Message = '';//To not display the error message, if there is no error.
+    this.mobilenumforOTP_Message = '';
 
-    let control = this.uiService.getControlName(c);
+    let control = this.uiService.getControlName(c);//gives the control name property from particular service.
     if ((c.touched || c.dirty) && c.errors) {
       if (control === 'mobilenum') {
         this.mobilenum_Message = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
+        //maps the error message from validationMessages array. 
       }
       else if (control === 'mobilenumforOTP') {
         this.mobilenumforOTP_Message = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
       }
     }
   }
-  private validationMessages = {
+  private validationMessages = {  //used in above method.
     mobilenum_required: '*Enter mobile number',
     mobilenum_minlength: 'invalid mobile number',
 
@@ -80,24 +78,23 @@ this.mobilenumforOTP_Message='';
   ngOnInit() {
     this.hidethisform = true;
     this.isForgotPassword = this.navParams.get('isForgotPassword');
-if(this.isForgotPassword==true){
-  this.hidethisform = false;
-}
+    if (this.isForgotPassword == true) {
+      this.hidethisform = false;  //Used to show page of Forgot password, otp request.
+    }
   }
 
   tenant: Tenant;
 
-    OnGetTenants() {
+  OnGetTenants() {  //Fires, when we click on search bank
     let loading = this.loadingController.create({
       content: 'Please wait till we get banks for you'
     });
     loading.present();
-    
     this.tenant = null;
-      this.regService.GetTenantsByMobile(this.formgroup1.get('mobilenum').value).subscribe((data: any) => {
+    this.regService.GetTenantsByMobile(this.formgroup1.get('mobilenum').value).subscribe((data: any) => {
       this.tenant = data;
       var TenantList = data;
-      if (TenantList.length == 0) {
+      if (TenantList.length == 0) { //If there is no tenantList, show error.
         this.toastrService.error("Non-Registered/InCorrect Mobile Number", 'Error!');
         this.tenant = null;
       }
@@ -120,8 +117,8 @@ if(this.isForgotPassword==true){
   //TenantIdActive: string;
   //digiCustWithOTPRefNo: DigiCustWithOTPRefNo;
 
-  OnRequestOTP(Id) {
-    var mobilenum=this.formgroup1.get('mobilenum')
+  OnRequestOTP(Id) { //Fires, when we request for OTP.
+    var mobilenum = this.formgroup1.get('mobilenum')
     let loading = this.loadingController.create({
       content: 'Please wait till the screen loads'
     });
@@ -136,9 +133,9 @@ if(this.isForgotPassword==true){
       //this.digiCustWithOTPRefNo.OTPRef = data.OTPRef;
 
       //ADDED toastr.css in the path "node_modules/ngx-toastr/toastr.css" from https://github.com/scttcper/ngx-toastr/blob/master/src/lib/toastr.css
-      this.toastrService.success('OTP Sent to ' + mobilenum.value + ' with Reference No. ' +data.OTPRef, 'Success!');
+      this.toastrService.success('OTP Sent to ' + mobilenum.value + ' with Reference No. ' + data.OTPRef, 'Success!');
       loading.dismiss();
-       this.navCtrl.push(EnterOTPPage, { 'OTPRefNo': data.OTPRef, 'TenantId': Id, 'MobileNo': mobilenum.value, 'DigiPartyId': data.DigiPartyId});
+      this.navCtrl.push(EnterOTPPage, { 'OTPRefNo': data.OTPRef, 'TenantId': Id, 'MobileNo': mobilenum.value, 'DigiPartyId': data.DigiPartyId });
     }, (error) => {
       this.toastrService.error(error.error.ExceptionMessage, 'Error!');
       var alert = this.alertCtrl.create({
@@ -151,24 +148,24 @@ if(this.isForgotPassword==true){
     });
   }
 
-  OnMobNo(){
-    var mobilenumforOTP=this.formgroup2.get('mobilenumforOTP')
-    var ActiveTenantId:string = this.storageService.GetUser().ActiveTenantId;
+  OnMobNo() { //Fires, when we click on formgroup2 submit button
+    var mobilenumforOTP = this.formgroup2.get('mobilenumforOTP')
+    var ActiveTenantId: string = this.storageService.GetUser().ActiveTenantId;
     localStorage.clear();
     let loading = this.loadingController.create({
       content: 'Please wait till the screen loads'
     });
     loading.present();
-    var oTPRequest= {
+    var oTPRequest = {
       TenantId: ActiveTenantId,
       MobileNo: mobilenumforOTP.value
     }
     this.regService.RequestOTP(oTPRequest).subscribe((data: any) => {
       // this.digiCustWithOTPRefNo = data;
-       //this.digiCustWithOTPRefNo.OTPRef = data.OTPRef;
+      //this.digiCustWithOTPRefNo.OTPRef = data.OTPRef;
 
       this.toastrService.success('OTP Sent to ' + mobilenumforOTP.value + ' with Reference No. ' + data.OTPRef, 'Success!');
-      this.navCtrl.push(EnterOTPPage, { 'OTPRefNo': data.OTPRef, 'TenantId': ActiveTenantId, 'MobileNo': mobilenumforOTP.value, 'DigiPartyId':data.DigiPartyId});
+      this.navCtrl.push(EnterOTPPage, { 'OTPRefNo': data.OTPRef, 'TenantId': ActiveTenantId, 'MobileNo': mobilenumforOTP.value, 'DigiPartyId': data.DigiPartyId });
       loading.dismiss();
 
     }, (error) => {

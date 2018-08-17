@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, DateTime } from 'ionic-angular';
+import { NavParams, ViewController, DateTime } from 'ionic-angular';
 
 /**
  * Generated class for the ModalPage page.
@@ -29,7 +29,6 @@ export class ModalPage {
     this.VendorExtCode=params.get('myParam').VendorExtCode;
     this.Date=params.get('myParam').Date;
     this.Remarks=params.get('myParam').Remarks;
-
   }
 
   dismiss() {

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { ToastrService } from 'ngx-toastr';
 import { RegisterService } from '../services/app-data.service';
 import { StorageService } from '../services/Storage_Service';
 import { SelfCareAc } from '../LocalStorageTables/SelfCareAc';
 import { FundTransferDone } from '../View Models/FundTransferDone';
+import { findReadVarNames } from '../../../node_modules/@angular/compiler/src/output/output_ast';
 
 /**
  * Generated class for the FundTransferConfirmPage page.
@@ -41,15 +42,15 @@ export class FundTransferConfirmPage implements OnInit {
     this.showConfirm = true;   
   }
 
-  GetSelfCareAcByTenantID(ActiveTenantId) {
-    var AcSubId = this.navParams.get('AcSubId');
-    var SelfCareACs = this.storageService.GetSelfCareAc();
-    // this.selfCareAC=this.SelfCareACs.find(function (obj) { return obj.TenantId === ActiveTenantId&&obj.AcActId=="#SB"&&obj.AcSubId===this.AcSubId; });
-    this.selfCareAC = SelfCareACs.find(function (obj) { return obj.TenantId === ActiveTenantId && obj.AcSubId === AcSubId; });
-    return this.selfCareAC;
+  // GetSelfCareAcByTenantID(ActiveTenantId) {
+  //   var AcSubId = this.navParams.get('AcSubId');
+  //   var SelfCareACs = this.storageService.GetSelfCareAc();
+  //   // this.selfCareAC=this.SelfCareACs.find(function (obj) { return obj.TenantId === ActiveTenantId&&obj.AcActId=="#SB"&&obj.AcSubId===this.AcSubId; });
+  //   this.selfCareAC = SelfCareACs.find(function (obj) { return obj.TenantId === ActiveTenantId && obj.AcSubId === AcSubId; });
+  //   return this.selfCareAC;
 
-  }
-  OnConfirm() {
+  // }
+  OnConfirm() {  //Fires, when clicking on Confirm button
     let ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
     let loading = this.loadingController.create({
       content: 'Transferring the Fund..'
@@ -65,8 +66,7 @@ export class FundTransferConfirmPage implements OnInit {
       ToAcSubId: this.navParams.get('doFundTransfer').ToAcSubId,
       ToLocId: this.navParams.get('doFundTransfer').ToLocId,
       Amount: this.navParams.get('doFundTransfer').Amount,
-      ToAcNo:this.navParams.get('doFundTransfer').ToAcNo
-      
+      ToAcNo:this.navParams.get('doFundTransfer').ToAcNo  
     }
     
     this.registerService.FundTransfer(doFundTransfer).subscribe((data: any) => {
@@ -90,7 +90,7 @@ export class FundTransferConfirmPage implements OnInit {
           subTitle: data.AISError,
           buttons: ['OK']
         });
-        alert.present(); 
+        alert.present(); //Shows alert message of Error from server.
         this.showFailure=true;
         this.showConfirm = false;
       }
