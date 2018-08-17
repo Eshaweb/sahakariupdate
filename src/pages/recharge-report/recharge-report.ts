@@ -23,23 +23,22 @@ import { ModalPage } from '../modal/modal';
 export class RechargeReportPage implements OnInit {
   ActiveBankName: string;
   ActiveTenantId: string;
-  // categories: OS[] = [];
   categories: OS;
   showFailureButton: boolean;
   checkVoucherResult: CheckVoucherResult;
   showReport: boolean;
   showReversal: boolean;
-  constructor(private storageService:StorageService, public modalCtrl: ModalController,private alertCtrl: AlertController, public loadingController: LoadingController, private toastr: ToastrService, private registerService: RegisterService, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private storageService: StorageService, public modalCtrl: ModalController, private alertCtrl: AlertController, public loadingController: LoadingController, private toastr: ToastrService, private registerService: RegisterService, public navCtrl: NavController, public navParams: NavParams) {
 
   }
   ngOnInit() {
     this.categories = this.storageService.GetOS();
     this.ActiveBankName = this.storageService.GetActiveBankName();
-    this.showReport=true;
+    this.showReport = true;
   }
   rRResponse: RRResponse;
 
-  ObjChanged(event) {
+  ObjChanged(event) {  //Fires, when we click on selectbox options
     var ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
     var digiPartyId = this.storageService.GetDigipartyBasedOnActiveTenantId().DigiPartyId;
     let loading = this.loadingController.create({
@@ -66,7 +65,7 @@ export class RechargeReportPage implements OnInit {
       loading.dismiss();
     });
   }
-  OnShowReverse(Id){
+  OnShowReverse(Id) {  //Fires, when we click on Show Reversal
     //this.showReport=false;
     var ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
     let loading = this.loadingController.create({
@@ -75,13 +74,12 @@ export class RechargeReportPage implements OnInit {
     loading.present();
     const checkVoucher = {
       TenantId: ActiveTenantId,
-      DigiTranLogId:Id
+      DigiTranLogId: Id
     }
     this.registerService.GetReversedVoucher(checkVoucher).subscribe((data: any) => {
       this.checkVoucherResult = data;
-//this.showReversal=true;
-
-this.openModalWithParams();
+      //this.showReversal=true;
+      this.openModalWithParams();
       loading.dismiss();
     }, (error) => {
       this.toastr.error(error.message, 'Error!');
@@ -94,8 +92,8 @@ this.openModalWithParams();
       loading.dismiss();
     });
   }
-  openModalWithParams() {
+  openModalWithParams() { //Fires, from above method
     let myModal = this.modalCtrl.create(ModalPage, { 'myParam': this.checkVoucherResult });
-    myModal.present();
+    myModal.present(); //Fires a popup Modal
   }
 }

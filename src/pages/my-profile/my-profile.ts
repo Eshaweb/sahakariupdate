@@ -7,6 +7,7 @@ import { RegisterService } from '../services/app-data.service';
 import { LoginPage } from '../login/login';
 import { ToastrService } from '../../../node_modules/ngx-toastr';
 import { PagePage } from '../page/page';
+import { findReadVarNames } from '../../../node_modules/@angular/compiler/src/output/output_ast';
 
 /**
  * Generated class for the MyProfilePage page.
@@ -35,9 +36,9 @@ export class MyProfilePage implements OnInit {
     this.digipartyname = this.storageService.GetDigipartyBasedOnActiveTenantId().Name;
     this.mobileno = this.storageService.GetUser().UserName;
     this.registerService.GetTenantsByMobile(this.mobileno).subscribe((data: any) => {
-      this.tenantList = data;
-      this.storageService.SetTenant(JSON.stringify(this.tenantList));
-      this.tenants = this.storageService.GetTenant();
+      this.tenantList = data;  
+      this.storageService.SetTenant(JSON.stringify(this.tenantList));//To update the Tenant table of localstorage
+      this.tenants = this.storageService.GetTenant(); //To show bank branchs
       loading.dismiss();
     }, (error) => {
       var alert = this.alertCtrl.create({
@@ -50,22 +51,22 @@ export class MyProfilePage implements OnInit {
     });
   }
 
-  OnChange() {
+  OnChange() {//Fires, if we click on Change bank
     var ischangePassword: boolean = true;
     this.navCtrl.push(EnterOTPPage, { 'ischangePassword': ischangePassword });
   }
-  OnLogOut() {
+  OnLogOut() {  //Fires, if we click on LogOut
     this.storageService.RemoveRecordsForLogout();
     this.navCtrl.push(LoginPage);
   }
-  OnSync() {
+  OnSync() {  //Fires, if we click on Sync Accounts
     this.storageService.RemoveRecordsForLogout();
     let loading = this.loadingController.create({
       content: 'Syncing Operators and Services'
     });
     loading.present();
-    this.registerService.GetServices().subscribe((data: any) => {
-      var oS = JSON.stringify(data);
+    this.registerService.GetServices().subscribe((data: any) => {//To update the OS Table
+      var oS = JSON.stringify(data); 
       this.storageService.SetOS(oS);
       loading.dismiss();
     }, (error) => {
@@ -84,7 +85,7 @@ export class MyProfilePage implements OnInit {
       content: 'Syncing Accounts'
     });
     loadingnew.present();
-    this.callservices();
+    this.callservices(); //To update the Tenant, Digiparty and SelfcareAccounts
     loadingnew.dismiss();
   }
   callservices() {

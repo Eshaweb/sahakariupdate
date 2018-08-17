@@ -150,7 +150,7 @@ export class ChangeBankPage implements OnInit {
       this.navCtrl.push(FundTransferPage)
         .then(() => {  
           const startIndex = this.navCtrl.getActive().index - 1;
-          this.navCtrl.remove(startIndex, 1);  //remove the history of this page.
+          this.navCtrl.remove(startIndex, 1);  //removes the history of this page.
         });
     }
     else {  

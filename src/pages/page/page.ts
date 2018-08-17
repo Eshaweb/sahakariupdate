@@ -16,19 +16,19 @@ export class PagePage implements OnInit {
   }
 ngOnInit(){
      this.ActiveBankName=this.storageService.GetActiveBankName();
-     this.events.publish('REFRESH_DIGIPARTYNAME');
+     this.events.publish('REFRESH_DIGIPARTYNAME');  //events written in appcomponent fires
      this.viewCtrl.didEnter.subscribe(() => {
       console.log('Component active');
    });   
     }
     
-  OnBanking(){
+  OnBanking(){ //Fires, when clicking on Banking
     this.navCtrl.push(BankingPage);
   }
-  OnRecharge(){
+  OnRecharge(){ //Fires, when clicking on Recharge
     this.navCtrl.push(RechargePage);
   }
-  OnReports(){
+  OnReports(){ //Fires, when clicking on Reports
     this.navCtrl.push(RechargeReportPage);
   }
 }

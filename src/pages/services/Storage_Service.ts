@@ -5,16 +5,14 @@ import { DigiParty } from '../LocalStorageTables/DigiParty';
 import { SelfCareAc } from '../LocalStorageTables/SelfCareAc';
 import { User } from '../LocalStorageTables/User';
 import { OS } from '../View Models/OS';
-import { ConstantService } from './Constants';
 import { OSResponse } from '../View Models/OSResponse';
-import { FavouriteItem } from '../LocalStorageTables/FavouriteItem';
 import { Favourites } from '../LocalStorageTables/Favourites';
 //import { OS } from '../LocalStorageTables/OS';
 
 
 @Injectable()
 export class StorageService {
-    constructor(public constant: ConstantService) {
+    constructor() {
 
     }
     // static SelfCareAcsBasedOnTenantID: SelfCareAc;

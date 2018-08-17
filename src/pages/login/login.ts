@@ -7,11 +7,6 @@ import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from
 import { RegisterService } from '../services/app-data.service';
 import { PagePage } from '../page/page';
 import { StorageService } from '../services/Storage_Service';
-import { AddBankResponse } from '../View Models/AddBankResponse';
-import { AddBankRequest } from '../View Models/AddBankRequest';
-import { SelfCareAc } from '../LocalStorageTables/SelfCareAc';
-import { DigiParty } from '../LocalStorageTables/DigiParty';
-import { Tenant } from '../LocalStorageTables/Tenant';
 import { ToastrService } from 'ngx-toastr';
 import { UISercice } from '../services/UIService';
 import { RegisterPage } from '../register/register';
@@ -26,20 +21,22 @@ export class LoginPage implements OnInit {
   constructor(private storageService:StorageService, private alertCtrl: AlertController, private uiService: UISercice, public navParams: NavParams, private toastrService: ToastrService, public loadingController: LoadingController, public formbuilder: FormBuilder, private registerService: RegisterService, public navCtrl: NavController) {
     this.formGroup = formbuilder.group({
       password: ['', [Validators.required, Validators.minLength(4)]]
-    });
+    }); //builds the formgroup with the same formcontrolname.
     const passwordControl = this.formGroup.get('password');
     passwordControl.valueChanges.subscribe(value => this.setErrorMessage(passwordControl));
+    //call the particular method if value changes in the control.
   }
   setErrorMessage(c: AbstractControl): void {
-    this.passwordMessage = '';
+    this.passwordMessage = ''; //To not display the error message, if there is no error.
     let control = this.uiService.getControlName(c);
     if ((c.touched || c.dirty) && c.errors) {
       if (control === 'password') {
         this.passwordMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
+        //maps the error message from validationMessages array. 
       }
     }
   }
-  private validationMessages = {
+  private validationMessages = { //used in above method.
     password_required: '*Enter Password',
     password_minlength: 'Password cannot be less than 4 character'
   };
@@ -53,7 +50,7 @@ export class LoginPage implements OnInit {
 
   userName = this.storageService.GetUser().UserName;
   uniqueKey = this.storageService.GetUser().UniqueKey;
-  OnLogin() {
+  OnLogin() {  //Fires, if we click on Login button
     let loading = this.loadingController.create({
       content: 'Wait for a second..'
     });
@@ -62,7 +59,7 @@ export class LoginPage implements OnInit {
     this.registerService.loginbyHttpClient(this.userName, this.formGroup.get('password').value, this.uniqueKey).subscribe((data: any) => {
       this.registerService.userToken = data.access_token;
       //StorageService.SetItem('userToken', data.access_token);
-      this.sendToken(data.access_token);
+      this.sendToken(data.access_token); //stores the token in service property.
       if (OS == null) {
         let loading = this.loadingController.create({
           content: 'Syncing Operators and Services'
@@ -70,7 +67,7 @@ export class LoginPage implements OnInit {
         loading.present();
         this.registerService.GetServices().subscribe((data: any) => {
           var oS = JSON.stringify(data);
-          this.storageService.SetOS(oS);
+          this.storageService.SetOS(oS);  //To store the OS table in localstorage.
           loading.dismiss();
         }, (error) => {
           this.toastrService.error(error.message, 'Error!');
@@ -81,20 +78,18 @@ export class LoginPage implements OnInit {
             buttons: ['OK']
           });
           alert.present();
-
         });
-
       }
 
       let tenants = this.storageService.GetTenant();
       let DigiParties = this.storageService.GetDigiParty();
       let SelfCareAcs = this.storageService.GetSelfCareAc();
-      if (tenants == null || DigiParties == null || SelfCareAcs == null) {
+      if (tenants == null || DigiParties == null || SelfCareAcs == null) { //checks whether the localstorage contains these tables/records
         let loadingnew = this.loadingController.create({
           content: 'Syncing Accounts'
         });
         loadingnew.present();
-        this.callservices();
+        this.callservices();  //To add tables to localstorage, for the first time login.
         loadingnew.dismiss();
       }
       else {
@@ -133,7 +128,7 @@ sendToken(token:string){
         IconHtml: data.Tenant.IconHtml
       }
       this.storageService.SetTenant(JSON.stringify([tenant]));
-
+      //Stores the Tenant table in localstorage
       var digiParty = {
         Id: data.DigiPartyId,
         DigiPartyId: data.DigiPartyId,
@@ -143,9 +138,9 @@ sendToken(token:string){
         Name: data.Name
       }
       this.storageService.SetDigiParty(JSON.stringify([digiParty]));
-
+      //Stores the DigiParty table in localstorage
       this.storageService.SetSelfCareAc(JSON.stringify(data.SelfCareAcs));
-
+      //Stores the SelfCareAc table in localstorage
       this.navCtrl.setRoot(PagePage, { 'ActiveBankName': this.ActiveBankName });
 
     }, (error) => {
@@ -160,7 +155,7 @@ sendToken(token:string){
 
   }
   isForgotten: boolean = false;
-  OnForgot() {
+  OnForgot() { //Fires, if we click on Forgot password button
     this.isForgotten = true;
     this.navCtrl.push(RegisterPage, { 'isForgotPassword': this.isForgotten });
   }

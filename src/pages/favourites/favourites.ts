@@ -3,7 +3,6 @@ import { NavController, NavParams, LoadingController, Navbar } from 'ionic-angul
 import { MobileRechargePage } from '../mobile-recharge/mobile-recharge';
 import { StorageService } from '../services/Storage_Service';
 import { Favourites } from '../LocalStorageTables/Favourites';
-import { ConstantService } from '../services/Constants';
 import { RechargePage } from '../recharge/recharge';
 
 @Component({
@@ -14,14 +13,14 @@ export class FavouritesPage implements OnInit {
   title: string;
   @ViewChild(Navbar) navBar: Navbar;
 
-  constructor(private storageService:StorageService, public loadingController: LoadingController, public constant: ConstantService, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private storageService:StorageService, public loadingController: LoadingController, public navCtrl: NavController, public navParams: NavParams) {
 
   }
   ionViewDidLoad() {
-    this.setBackButtonAction()
+    this.setBackButtonAction();
   }
 
-  setBackButtonAction() {
+  setBackButtonAction() {  //Fires for Backbutton click
     this.navBar.backButtonClick = () => {
       this.navCtrl.push(RechargePage);
     }
@@ -34,7 +33,7 @@ export class FavouritesPage implements OnInit {
     this.ParentId = this.navParams.get('ParentId');
     this.ActiveBankName = this.storageService.GetActiveBankName();
     var ParentId=this.ParentId;
-    switch (this.ParentId) {
+    switch (this.ParentId) { 
       case "S1":
         this.title = "Recharge";
         break;
@@ -55,21 +54,19 @@ export class FavouritesPage implements OnInit {
     }
     var favourites: Favourites = this.storageService.GetFavourite();
     if(favourites!=null){
-      this.favourites = favourites.filter(function (obj) {return obj.ParentId===ParentId;})
+      this.favourites = favourites.filter(function (obj) {return obj.ParentId===ParentId;});
+      //To filter the localstorage Favourite table record, based on ParentId 
     }
-    // if (StorageService.GetItem("Favourite") != null) {
-    //   this.nkname = JSON.parse(StorageService.GetItem("Favourite")).NickName;
-    // }
   }
-  OnNewRecharge() {
+  OnNewRecharge() {  //Fires, if we click on New Recharge
     this.navCtrl.push(MobileRechargePage, { 'ParentId': this.ParentId });
   }
 
-  OnNickName(order) {
+  OnNickName(order) {  //Fires, if we click on NickName
       this.navCtrl.push(MobileRechargePage, { 'OperatorId': order.OperatorId, 'ParentId': order.ParentId, 'Id': order.Id, 'nname': order.NickName, 'SubscriptionId': order.SubscriptionId, 'CircleId': order.CircleId });
   }
 
-  OnDelete(order) {
+  OnDelete(order) {  //Fires, if we click on Delete
     var favourites: Favourites = this.storageService.GetFavourite();
     var PId = order.Id;
     favourites = favourites.filter(function (obj) {
@@ -77,7 +74,8 @@ export class FavouritesPage implements OnInit {
     });
     this.favourites = this.favourites.filter(function (obj) {
       return obj.Id !== PId;
-    });
+    }); //Delete the particular record with that Id
     this.storageService.SetFavourite(JSON.stringify(favourites));
+    //Saves the new Favourites table in localstorage.
   }
 }

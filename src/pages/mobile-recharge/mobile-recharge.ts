@@ -2,19 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavController, NavParams, LoadingController, Navbar, ViewController, AlertController } from 'ionic-angular';
 import { RegisterService } from '../services/app-data.service';
 import { StorageService } from '../services/Storage_Service';
-import { OSRequest } from '../View Models/OSRequest';
 import { OSResponse } from '../View Models/OSResponse';
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl, NgForm } from '@angular/forms';
 import { FavouriteItem } from '../LocalStorageTables/FavouriteItem';
-import { ConstantService } from '../services/Constants';
-import { RechargeModel } from '../View Models/RechargeModel';
 import { Favourites } from '../LocalStorageTables/Favourites';
 import { Recharge } from '../LocalStorageTables/Recharge';
-import { DigiParty } from '../LocalStorageTables/DigiParty';
-import { SelfCareAc } from '../LocalStorageTables/SelfCareAc';
 import { ToastrService } from 'ngx-toastr';
-import { TranResponse } from '../View Models/TranResponse';
-import { OperaterCircleQuery } from '../View Models/OperaterCircleQuery';
 import { OperaterCircle } from '../View Models/OperaterCircle';
 import { SingleState } from '../View Models/SingleState';
 import { BasicPage } from '../ViewPlans_Tabs/ViewPlans_Tabs';
@@ -22,8 +15,6 @@ import { FavouritesPage } from '../favourites/favourites';
 import { PrepaidConfirmPage } from '../prepaid-confirm/prepaid-confirm';
 import { PagePage } from '../page/page';
 import { UISercice } from '../services/UIService';
-import { delay } from 'rxjs/operator/delay';
-import { OSBasedOnParentId } from '../LocalStorageTables/OSBasedOnParentId';
 @Component({
   selector: 'page-mobile-recharge',
   templateUrl: 'mobile-recharge.html'
@@ -41,7 +32,7 @@ export class MobileRechargePage implements OnInit {
   subscriptionIdInfo: string;
 
 
-  constructor(private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, public viewCtrl: ViewController, private toastr: ToastrService, public constant: ConstantService, private registerService: RegisterService, public loadingController: LoadingController, public navParams: NavParams, public navCtrl: NavController, public formbuilder: FormBuilder) {
+  constructor(private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, public viewCtrl: ViewController, private toastr: ToastrService, private registerService: RegisterService, public loadingController: LoadingController, public navParams: NavParams, public navCtrl: NavController, public formbuilder: FormBuilder) {
     this.formGroup = formbuilder.group({
       subscriptionId: ['', [Validators.required, Validators.minLength(10)]],
       // operatorId: ['', [Validators.required]],
