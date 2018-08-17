@@ -18,12 +18,10 @@ import { RechargePage } from '../pages/recharge/recharge';
 import { FavouritesPage } from '../pages/favourites/favourites';
 import { MiniStatementPage } from '../pages/mini-statement/mini-statement';
 import { MobileRechargePage } from '../pages/mobile-recharge/mobile-recharge';
-import { ConfirmPagePage } from '../pages/confirm-page/confirm-page';
 import { RechargeSuccessfulPage } from '../pages/recharge-successful/recharge-successful';
 import { RegisterPage } from '../pages/register/register';
-import { BankListPage } from '../pages/bank-list/bank-list';
 import { EnterOTPPage, FormatTimePipe } from '../pages/enter-otp/enter-otp';
-import { HttpClient,HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { AuthGuard } from '../pages/auth/auth.guard';
 import { AutoCompleteModule } from 'ionic2-auto-complete';
@@ -65,10 +63,8 @@ import { ModalPage } from '../pages/modal/modal';
     FavouritesPage,
     MiniStatementPage,
     MobileRechargePage,
-    ConfirmPagePage,
     RechargeSuccessfulPage,
     RegisterPage,
-    BankListPage,
     EnterOTPPage,
     FundTransferPage,
     BalanceEnquiryPage,
@@ -89,7 +85,7 @@ import { ModalPage } from '../pages/modal/modal';
       positionClass: 'toast-bottom-center',
       // positionClass: 'toast-top-center',
       preventDuplicates: true,
-    }),
+    }),  //describes toastr settings
     IonicModule.forRoot(MyApp),
     RouterModule.forRoot(appRoutes),
     //environment.production ? ServiceWorkerModule.register('ngsw-worker.js') : []
@@ -107,10 +103,8 @@ import { ModalPage } from '../pages/modal/modal';
     FavouritesPage,
     MiniStatementPage,
     MobileRechargePage,
-    ConfirmPagePage,
     RechargeSuccessfulPage,
     RegisterPage,
-    BankListPage,
     EnterOTPPage,
     FundTransferPage,
     BalanceEnquiryPage,

@@ -26,7 +26,6 @@ export class MyApp {
   @ViewChild(Nav) navCtrl: Nav;
   rootPage: any;
   showMenuOptions: boolean;
-  // constructor(platform: Platform, statusBar: StatusBar, private reg:RegisterPage, log:LoginPage, splashScreen: SplashScreen) {
   constructor(private storageService:StorageService, private event: Events, public constant: ConstantService, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private regService: RegisterService) {
     this.event.subscribe('UNAUTHORIZED', () => {
       this.navCtrl.push(LoginPage);
@@ -39,25 +38,17 @@ export class MyApp {
       splashScreen.hide();
 
       //localStorage.clear();
-      //localStorage.removeItem('userToken');
       this.event.subscribe('REFRESH_DIGIPARTYNAME', () => {  
         this.ActiveBankName = this.storageService.GetActiveBankName();
           this.digipartyname = this.storageService.GetDigipartyBasedOnActiveTenantId().Name;
           this.showMenuOptions=true;
-        });
-      if (this.storageService.GetUser() == null) {
+        });  //Above is for refreshing digipartyname
+      if (this.storageService.GetUser() == null) {  //Checks whether the User table in localstorage is null or not
         this.rootPage = RegisterPage;
       }
-      // else if (this.storageService.GetUser() != null&&localStorage.getItem('userToken') != null){
-      //   this.rootPage = PagePage;
-      //   this.ActiveBankName = this.storageService.GetActiveBankName();
-      //     this.digipartyname = this.storageService.GetDigipartyBasedOnActiveTenantId().Name;
-      //     this.showProfileAndChangeBank=true;
-      //   }
         else{
           this.rootPage=LoginPage;
-          this.showMenuOptions=false;
-
+          this.showMenuOptions=false;   //For loginPage, we need to hide Menu options using this property.
         }
     });
   }

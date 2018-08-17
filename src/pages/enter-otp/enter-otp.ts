@@ -6,15 +6,9 @@ import { BankingPage } from '../banking/banking';
 import { RegisterService } from '../services/app-data.service';
 import { PostOPT } from '../View Models/PostOPT';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { UserPost } from '../View Models/UserPost';
-import { UserResult } from '../View Models/UserResult';
 import { LoginPage } from '../login/login';
 import { StorageService } from '../services/Storage_Service';
-import { User } from '../LocalStorageTables/User';
 import { ToastrService } from 'ngx-toastr';
-import { OTPRequest } from '../View Models/OTPrequest.vm';
-import { DigiCustWithOTPRefNo } from '../View Models/DigiCustWithOTPRefNo';
-import { Observable } from 'rxjs/Observable';
 import { UISercice } from '../services/UIService';
 import { RegisterPage } from '../register/register';
 @Component({
@@ -28,7 +22,7 @@ export class EnterOTPPage implements OnInit {
   SavePasswordForm: FormGroup;
   formgroup: FormGroup;
   userMessage: string;
-  ShowUserNameAndOldPassword: boolean;
+  ShowOldPassword: boolean;
   ChangePasswordForm: FormGroup;
   mobilenoMessage: string;
   oldPasswordMessage: string;
@@ -36,25 +30,25 @@ export class EnterOTPPage implements OnInit {
   constructor(private storageService:StorageService, private alertCtrl: AlertController, private uiService: UISercice, private toastrService: ToastrService, public navParams: NavParams, public loadingController: LoadingController, private fb: FormBuilder, public navCtrl: NavController, private registerService: RegisterService) {
     this.formgroup = this.fb.group({
       otp: ['', [Validators.required, Validators.minLength(4)]]
-    });
+    });  //builds the formgroup with same formcontrolname.
     const otpControl = this.formgroup.get('otp');
-    otpControl.valueChanges.subscribe(value => this.setErrorMessageForOTPField(otpControl));
+    otpControl.valueChanges.subscribe(value => this.setErrorMessageForOTPField(otpControl));  //call the particular method if value changes in the control.
 
     this.SavePasswordForm = this.fb.group({
       password: ['', [Validators.required, Validators.minLength(4)]],
       confirmpwd: ['', [Validators.required, Validators.minLength(4)]]
-    }, { validator: this.matchingPasswords });
+    }, { validator: this.matchingPasswords });//builds the formgroup with same formcontrolname.
     const passwordControl = this.SavePasswordForm.get('password');
-    passwordControl.valueChanges.subscribe(value => this.setErrorMessageForPasswordField(passwordControl));
+    passwordControl.valueChanges.subscribe(value => this.setErrorMessageForPasswordField(passwordControl));//call the particular method if value changes in the control.
 
     const confirmpasswordControl = this.SavePasswordForm.get('confirmpwd');
-    confirmpasswordControl.valueChanges.subscribe(value => this.setErrorMessageForPasswordField(confirmpasswordControl));
+    confirmpasswordControl.valueChanges.subscribe(value => this.setErrorMessageForPasswordField(confirmpasswordControl));//call the particular method if value changes in the control.
 
     this.ChangePasswordForm = this.fb.group({
       oldPassword: ['', [Validators.required]],
       newPassword: ['', [Validators.required, Validators.minLength(4)]],
       confirmNewpwd: ['', [Validators.required, Validators.minLength(4)]]
-    }, { validator: this.matchingPasswordsForCP });
+    }, { validator: this.matchingPasswordsForCP });//builds the formgroup with same formcontrolname.
 
     const oldPasswordControl = this.ChangePasswordForm.get('oldPassword');
     oldPasswordControl.valueChanges.subscribe(value => this.setErrorMessageForChangePasswordForm(oldPasswordControl));
@@ -67,23 +61,26 @@ export class EnterOTPPage implements OnInit {
   }
   setErrorMessageForOTPField(c: AbstractControl): void {
     this.userMessage = '';
-    let control = this.uiService.getControlName(c);
-    if ((c.touched || c.dirty) && c.errors) {
+    let control = this.uiService.getControlName(c);  //gives the control name property from particular service.
+    if ((c.touched || c.dirty) && c.errors) {  //checks for error in particular control.
       if (control === 'otp') {
         this.userMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
+        //maps the error message from validationMessages array. 
       }
     }
   }
   setErrorMessageForPasswordField(c: AbstractControl): void {
-    this.passwordMessage = '';
-    this.confirmpasswordMessage = '';
-    let control = this.uiService.getControlName(c);
+    this.passwordMessage = '';  //To not display the error message, if there is no error.
+    this.confirmpasswordMessage = ''; //To not display the error message, if there is no error.
+    let control = this.uiService.getControlName(c);  //gives the control name property from particular service.
     if ((c.touched || c.dirty) && c.errors) {
       if (control === 'password') {
         this.passwordMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
+        //maps the error message from validationMessages array. 
       }
       else if (control === 'confirmpwd') {
         this.confirmpasswordMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
+        //maps the error message from validationMessages array. 
       }
     }
   }
@@ -104,7 +101,7 @@ export class EnterOTPPage implements OnInit {
       }
     }
   }
-  private validationMessages = {
+  private validationMessages = { //used in above method.
     otp_required: '*Enter OTP Number',
     otp_minlength: 'Enter 4 digits',
 
@@ -128,16 +125,18 @@ export class EnterOTPPage implements OnInit {
     //   .take(this.counter)
     //   .map(() => --this.counter);
     this.ShowIf = this.navParams.get('ischangePassword');
+    //used to show a Change Password form, based on above property value.
     if (this.ShowIf == null) {
       this.ShowIf == false;
-      this.ShowUserNameAndOldPassword = false;
+      this.ShowOldPassword = false;
     }
     else if (this.ShowIf == true) {
       this.HideIf = false;
-      this.ShowUserNameAndOldPassword = true;
+      this.ShowOldPassword = true;//To show oldPassword field for Change Password form.
       this.ShowIf = false;
     }
     this.countDown = this.registerService.getCounter().do(() => --this.counter);
+    //To count down the time.
   }
   // stopTimer() {
   //   this.countDown = null;
@@ -162,7 +161,7 @@ export class EnterOTPPage implements OnInit {
   ShowIf: boolean;
   HideIf = true;
   postOPT: PostOPT;
-  OnSubmit() {
+  OnSubmit() {  //
     let OTPRefNo = this.navParams.get('OTPRefNo');
     let loading = this.loadingController.create({
       content: 'Please wait till the screen loads'
@@ -180,7 +179,7 @@ export class EnterOTPPage implements OnInit {
       if (this.storeboolean == true) {
         this.ShowIf = true;
         this.HideIf = false;
-        this.ShowUserNameAndOldPassword = false;
+        this.ShowOldPassword = false;
       } else {
         this.ShowIf = false;
         this.HideIf = true;
