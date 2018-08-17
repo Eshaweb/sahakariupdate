@@ -1,6 +1,367 @@
 webpackJsonp([0],{
 
-/***/ 14:
+/***/ 100:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EnterOTPPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return FormatTimePipe; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_home__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mobile_recharge_mobile_recharge__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__banking_banking__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_app_data_service__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_forms__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__login_login__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__services_Storage_Service__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_UIService__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__register_register__ = __webpack_require__(75);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+
+
+
+var EnterOTPPage = /** @class */ (function () {
+    function EnterOTPPage(storageService, alertCtrl, uiService, toastrService, navParams, loadingController, fb, navCtrl, registerService) {
+        var _this = this;
+        this.storageService = storageService;
+        this.alertCtrl = alertCtrl;
+        this.uiService = uiService;
+        this.toastrService = toastrService;
+        this.navParams = navParams;
+        this.loadingController = loadingController;
+        this.fb = fb;
+        this.navCtrl = navCtrl;
+        this.registerService = registerService;
+        this.validationMessages = {
+            otp_required: '*Enter OTP Number',
+            otp_minlength: 'Enter 4 digits',
+            oldPassword_required: '*Please Enter Old Password',
+            oldPassword_minlength: 'Mobile Number cannot be less than 4 characters',
+            password_required: 'Please enter password',
+            password_minlength: 'Enter minimum 4 digits',
+            confirmpwd_required: 'Please Re-Enter password',
+            confirmpwd_minlength: 'This field should match with Password',
+            confirmpwd_invalid: 'Password doesnot match'
+        };
+        this.counter = 40;
+        this.tick = 1000;
+        this.HideIf = true;
+        this.formgroup = this.fb.group({
+            otp: ['', [__WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].minLength(4)]]
+        });
+        var otpControl = this.formgroup.get('otp');
+        otpControl.valueChanges.subscribe(function (value) { return _this.setErrorMessageForOTPField(otpControl); });
+        this.SavePasswordForm = this.fb.group({
+            password: ['', [__WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].minLength(4)]],
+            confirmpwd: ['', [__WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].minLength(4)]]
+        }, { validator: this.matchingPasswords });
+        var passwordControl = this.SavePasswordForm.get('password');
+        passwordControl.valueChanges.subscribe(function (value) { return _this.setErrorMessageForPasswordField(passwordControl); });
+        var confirmpasswordControl = this.SavePasswordForm.get('confirmpwd');
+        confirmpasswordControl.valueChanges.subscribe(function (value) { return _this.setErrorMessageForPasswordField(confirmpasswordControl); });
+        this.ChangePasswordForm = this.fb.group({
+            oldPassword: ['', [__WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].required]],
+            newPassword: ['', [__WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].minLength(4)]],
+            confirmNewpwd: ['', [__WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].minLength(4)]]
+        }, { validator: this.matchingPasswordsForCP });
+        var oldPasswordControl = this.ChangePasswordForm.get('oldPassword');
+        oldPasswordControl.valueChanges.subscribe(function (value) { return _this.setErrorMessageForChangePasswordForm(oldPasswordControl); });
+        var passwordControl_CP = this.ChangePasswordForm.get('newPassword');
+        passwordControl_CP.valueChanges.subscribe(function (value) { return _this.setErrorMessageForChangePasswordForm(passwordControl_CP); });
+        var confirmpasswordControl_CP = this.ChangePasswordForm.get('confirmNewpwd');
+        confirmpasswordControl_CP.valueChanges.subscribe(function (value) { return _this.setErrorMessageForChangePasswordForm(confirmpasswordControl_CP); });
+    }
+    EnterOTPPage.prototype.setErrorMessageForOTPField = function (c) {
+        var _this = this;
+        this.userMessage = '';
+        var control = this.uiService.getControlName(c);
+        if ((c.touched || c.dirty) && c.errors) {
+            if (control === 'otp') {
+                this.userMessage = Object.keys(c.errors).map(function (key) { return _this.validationMessages[control + '_' + key]; }).join(' ');
+            }
+        }
+    };
+    EnterOTPPage.prototype.setErrorMessageForPasswordField = function (c) {
+        var _this = this;
+        this.passwordMessage = '';
+        this.confirmpasswordMessage = '';
+        var control = this.uiService.getControlName(c);
+        if ((c.touched || c.dirty) && c.errors) {
+            if (control === 'password') {
+                this.passwordMessage = Object.keys(c.errors).map(function (key) { return _this.validationMessages[control + '_' + key]; }).join(' ');
+            }
+            else if (control === 'confirmpwd') {
+                this.confirmpasswordMessage = Object.keys(c.errors).map(function (key) { return _this.validationMessages[control + '_' + key]; }).join(' ');
+            }
+        }
+    };
+    EnterOTPPage.prototype.setErrorMessageForChangePasswordForm = function (c) {
+        var _this = this;
+        this.oldPasswordMessage = '';
+        this.passwordMessage = '';
+        this.confirmpasswordMessage = '';
+        var control = this.uiService.getControlName(c);
+        if ((c.touched || c.dirty) && c.errors) {
+            if (control === 'oldPassword') {
+                this.oldPasswordMessage = Object.keys(c.errors).map(function (key) { return _this.validationMessages[control + '_' + key]; }).join(' ');
+            }
+            else if (control === 'newPassword') {
+                this.passwordMessage = Object.keys(c.errors).map(function (key) { return _this.validationMessages[control + '_' + key]; }).join(' ');
+            }
+            else if (control === 'confirmNewpwd') {
+                this.confirmpasswordMessage = Object.keys(c.errors).map(function (key) { return _this.validationMessages[control + '_' + key]; }).join(' ');
+            }
+        }
+    };
+    EnterOTPPage.prototype.ngOnInit = function () {
+        var _this = this;
+        // this.countDown = Observable.timer(0, this.tick)
+        //   .take(this.counter)
+        //   .map(() => --this.counter);
+        this.ShowIf = this.navParams.get('ischangePassword');
+        if (this.ShowIf == null) {
+            this.ShowIf == false;
+            this.ShowUserNameAndOldPassword = false;
+        }
+        else if (this.ShowIf == true) {
+            this.HideIf = false;
+            this.ShowUserNameAndOldPassword = true;
+            this.ShowIf = false;
+        }
+        this.countDown = this.registerService.getCounter().do(function () { return --_this.counter; });
+    };
+    // stopTimer() {
+    //   this.countDown = null;
+    // }
+    EnterOTPPage.prototype.matchingPasswords = function (group) {
+        var password = group.controls.password.value;
+        var confirmpwd = group.controls.confirmpwd.value;
+        if (!password || !confirmpwd) {
+            return null;
+        }
+        return password === confirmpwd ? null : { notSame: true };
+    };
+    EnterOTPPage.prototype.matchingPasswordsForCP = function (group) {
+        var password = group.controls.newPassword.value;
+        var confirmpwd = group.controls.confirmNewpwd.value;
+        if (!password || !confirmpwd) {
+            return null;
+        }
+        return password === confirmpwd ? null : { notSame: true };
+    };
+    EnterOTPPage.prototype.OnSubmit = function () {
+        var _this = this;
+        var OTPRefNo = this.navParams.get('OTPRefNo');
+        var loading = this.loadingController.create({
+            content: 'Please wait till the screen loads'
+        });
+        loading.present();
+        var postOPT = {
+            TenantId: this.registerService.TenantId,
+            MobileNo: this.registerService.MobileNo,
+            OTPRef: OTPRefNo,
+            OTP: this.formgroup.get('otp').value
+        };
+        this.registerService.ValidateOTP(postOPT).subscribe(function (data) {
+            _this.storeboolean = data;
+            if (_this.storeboolean == true) {
+                _this.ShowIf = true;
+                _this.HideIf = false;
+                _this.ShowUserNameAndOldPassword = false;
+            }
+            else {
+                _this.ShowIf = false;
+                _this.HideIf = true;
+                _this.toastrService.error("OTP is Invalid", 'Error!');
+                _this.formgroup.get('otp').reset();
+            }
+            loading.dismiss();
+        }, function (error) {
+            _this.toastrService.error(error.message, 'Error!');
+            var alert = _this.alertCtrl.create({
+                title: "Error Message",
+                subTitle: error.message,
+                buttons: ['OK']
+            });
+            alert.present();
+            loading.dismiss();
+        });
+    };
+    EnterOTPPage.prototype.OnResendOTP = function () {
+        var _this = this;
+        var loading = this.loadingController.create({
+            content: 'Please wait till the screen loads'
+        });
+        loading.present();
+        var oTPRequest = {
+            TenantId: this.navParams.get('TenantId').value,
+            MobileNo: this.navParams.get('MobileNo').value
+        };
+        this.registerService.RequestOTP(oTPRequest).subscribe(function (data) {
+            //ADDED toastr.css in the path "node_modules/ngx-toastr/toastr.css" from https://github.com/scttcper/ngx-toastr/blob/master/src/lib/toastr.css
+            _this.toastrService.success('OTP Sent to ' + data.MobileNo + ' with Reference No. ' + data.OTPRefNo, 'Success!');
+            loading.dismiss();
+        }, function (error) {
+            _this.toastrService.error(error.error.ExceptionMessage, 'Error!');
+            var alert = _this.alertCtrl.create({
+                title: "Error Message",
+                subTitle: error.error.ExceptionMessage,
+                buttons: ['OK']
+            });
+            alert.present();
+            loading.dismiss();
+        });
+    };
+    EnterOTPPage.prototype.OnSavePassword = function () {
+        var _this = this;
+        var DigiPartyId = this.navParams.get('DigiPartyId');
+        var userPost = {
+            DigiPartyId: DigiPartyId,
+            TenantId: this.registerService.TenantId,
+            PIN: this.SavePasswordForm.controls['confirmpwd'].value,
+            UniqueId: this.guid(),
+            OTPRef: this.navParams.get('OTPRefNo'),
+            OTP: this.formgroup.get('otp').value,
+            MobileNo: this.registerService.MobileNo
+        };
+        var loading = this.loadingController.create({
+            content: 'Please wait while registering the Password......'
+        });
+        loading.present();
+        this.registerService.SaveMPin(userPost).subscribe(function (data) {
+            var user = {
+                ActiveTenantId: _this.registerService.TenantId,
+                UserId: data.UserId,
+                UserName: data.UserName,
+                UniqueKey: data.UniqueKey
+            };
+            _this.storageService.SetUser(JSON.stringify(user));
+            _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_7__login_login__["a" /* LoginPage */]);
+            loading.dismiss();
+        }, function (error) {
+            _this.toastrService.error(error.error.ExceptionMessage, 'Error!');
+            var alert = _this.alertCtrl.create({
+                title: "Error Message",
+                subTitle: error.error.ExceptionMessage,
+                buttons: ['OK']
+            });
+            alert.present();
+            loading.dismiss();
+        });
+    };
+    EnterOTPPage.prototype.OnChangePassword = function () {
+        var _this = this;
+        var changePassword = {
+            UserName: this.storageService.GetUser().UserName,
+            Old: this.ChangePasswordForm.get('oldPassword').value,
+            New: this.ChangePasswordForm.get('confirmNewpwd').value
+        };
+        var loading = this.loadingController.create({
+            content: 'Please wait while we Change Password....'
+        });
+        loading.present();
+        this.registerService.ChangePassword(changePassword).subscribe(function (data) {
+            if (data.IsValid == false) {
+                _this.toastrService.error(data.Message, 'Error!');
+            }
+            else {
+                _this.toastrService.success('Please login with the New Password', 'Success!');
+                var alert = _this.alertCtrl.create({
+                    title: "Message",
+                    subTitle: "Please login with the New Password",
+                    buttons: ['OK']
+                });
+                alert.present();
+                _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_7__login_login__["a" /* LoginPage */]);
+            }
+            loading.dismiss();
+        }, function (error) {
+            _this.toastrService.error(error.error.ExceptionMessage, 'Error!');
+            var alert = _this.alertCtrl.create({
+                title: "Error Message",
+                subTitle: error.error.ExceptionMessage,
+                buttons: ['OK']
+            });
+            alert.present();
+            loading.dismiss();
+        });
+    };
+    EnterOTPPage.prototype.OnForgot = function () {
+        this.isForgotten = true;
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_11__register_register__["a" /* RegisterPage */], { 'isForgotPassword': this.isForgotten });
+    };
+    //below code is from here https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript/105074#105074
+    EnterOTPPage.prototype.guid = function () {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    };
+    EnterOTPPage.prototype.goToHome = function (params) {
+        if (!params)
+            params = {};
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__home_home__["a" /* HomePage */]);
+    };
+    EnterOTPPage.prototype.goToMobileRecharge = function (params) {
+        if (!params)
+            params = {};
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__mobile_recharge_mobile_recharge__["a" /* MobileRechargePage */]);
+    };
+    EnterOTPPage.prototype.goToBanking = function (params) {
+        if (!params)
+            params = {};
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__banking_banking__["a" /* BankingPage */]);
+    };
+    EnterOTPPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'page-enter-otp',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\enter-otp\enter-otp.html"*/'<ion-header>\n\n  <ion-navbar  color="primary">\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title *ngIf="HideIf">\n\n      Enter OTP\n\n    </ion-title>\n\n    <ion-title *ngIf="ShowIf">\n\n      Password Entry\n\n    </ion-title>\n\n    <ion-title *ngIf="ShowUserNameAndOldPassword">\n\n      Change Password \n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content padding class="back-image" id="page15">\n\n    <!-- <div class="spacer" style="width:300px;height:199px;" id="enterOTP-spacer11"></div> -->\n\n    <div *ngIf="HideIf">\n\n  <form [formGroup]="formgroup" id="enterOTP-form4" #enterOTPForm="ngForm" (ngSubmit)="OnSubmit()">\n\n    <ion-list id="enterOTP-list18">\n\n      <ion-item id="enterOTP-input12">\n\n        <ion-label floating>\n\n          OTP\n\n        </ion-label>\n\n        <ion-input formControlName="otp" type="number" placeholder=""></ion-input>\n\n        <!-- <ion-input formControlName="otp" type="number" #OTPNo ngModel name="OTPNo" placeholder=""></ion-input> -->\n\n        <!-- <ion-input type="number" placeholder="" name="OTPNo" #OTPNo="ngModel" [(ngModel)]="order.Id"></ion-input> -->\n\n     \n\n      </ion-item>\n\n      <!-- <p style="color:darkorange;" *ngIf="otp.hasError(\'required\') && otp.touched"> *OTP is required</p> -->\n\n      <p style="color:darkorange;">{{userMessage}}</p>\n\n    </ion-list>\n\n    <div class="spacer" style="height:40px;" id="enterOTP-spacer8"></div>\n\n    <button [disabled]="enterOTPForm.invalid" id="enterOTP-button8" ion-button color="positive" block>\n\n      Submit\n\n    </button>\n\n  </form>\n\n  <h2>{{countDown | async | formatTime}}</h2>\n\n  <!-- <button (click)="stopTimer()">Stop</button> -->\n\n\n\n  <button style="color: darkorange" [disabled]="counter !== 0" ion-button clear item-centre (click)="OnResendOTP()">Click here to Resend OTP</button>       \n\n  </div>\n\n  <div *ngIf="ShowIf">\n\n  <!-- <form id="enterOTP-form2" [formGroup]="SavePasswordForm"  #NewPasswordEntryForm="ngForm" (ngSubmit)="OnSavePassword(CPassword.value)"> -->\n\n    <form id="enterOTP-form2" [formGroup]="SavePasswordForm"  #NewPasswordEntryForm="ngForm" (ngSubmit)="OnSavePassword()">\n\n      <ion-item id="enterOTP-input3">\n\n      <ion-label floating>\n\n        New Password\n\n      </ion-label>\n\n      <!-- <ion-input type="text" placeholder="" name="NPassword" #NPassword="ngModel" [(ngModel)]="npef.NPassword"></ion-input> -->\n\n      <!-- <ion-input formControlName="password" type="password" required #NPassword ngModel name="NPassword" placeholder=""></ion-input>       -->\n\n      <ion-input formControlName="password" type="password" placeholder=""></ion-input>      \n\n    </ion-item>\n\n    <!-- <p style="color:red;" *ngIf="password.hasError(\'required\') && password.touched"> *Password is required</p> -->\n\n    <p style="color:darkorange;">{{passwordMessage}}</p>\n\n\n\n    <ion-item id="enterOTP-input5">\n\n      <ion-label floating>\n\n        Confirm Password\n\n      </ion-label>\n\n      <!-- <ion-input type="text" placeholder="" name="CPassword" #CPassword="ngModel" [(ngModel)]="npef.CPassword"></ion-input> -->\n\n      <!-- <ion-input formControlName="confirmpwd" type="password" required Equalvalidate="password" #CPassword ngModel name="CPassword" placeholder=""></ion-input> -->\n\n      <ion-input formControlName="confirmpwd" type="password" Equalvalidate="password" placeholder=""></ion-input>\n\n      <!-- <div [hidden]="CPassword.valid || CPassword.pristine" class="alert alert-danger">\n\n        Password mismatch\n\n    </div> -->\n\n    </ion-item>\n\n    <!-- <p style="color:red;" *ngIf="confirmpwd.hasError(\'required\') && confirmpwd.touched"> *Confirmation is required</p> -->\n\n    <p style="color:darkorange;">{{confirmpasswordMessage}}</p>\n\n    <button [disabled]="NewPasswordEntryForm.invalid" id="enterOTP-button9" ion-button color="positive" block>\n\n      Save Password\n\n    </button>\n\n  </form>\n\n  <div style="color:red;" *ngIf="NewPasswordEntryForm.errors?.notSame"><span>Passwords do not match</span></div>\n\n</div>\n\n\n\n\n\n<div *ngIf="ShowUserNameAndOldPassword">\n\n    <form id="enterOTP-form2" [formGroup]="ChangePasswordForm"  #ChangePasswordEntryForm="ngForm" (ngSubmit)="OnChangePassword()">\n\n      <ion-item id="enterOTP-input3">\n\n        <ion-label floating>\n\n          Old Password\n\n        </ion-label>\n\n        <ion-input formControlName="oldPassword" type="password" placeholder=""></ion-input>      \n\n      </ion-item>\n\n      <p style="color:darkorange;">{{oldPasswordMessage}}</p>\n\n      <ion-item id="enterOTP-input3">\n\n      <ion-label floating>\n\n        New Password\n\n      </ion-label>\n\n      <ion-input formControlName="newPassword" type="password" placeholder=""></ion-input>      \n\n    </ion-item>\n\n    <p style="color:darkorange;">{{passwordMessage}}</p>\n\n    <ion-item id="enterOTP-input5">\n\n      <ion-label floating>\n\n        Confirm Password\n\n      </ion-label>\n\n      <ion-input formControlName="confirmNewpwd" type="password" Equalvalidate="password" placeholder=""></ion-input>\n\n    </ion-item>\n\n    <p style="color:darkorange;">{{confirmpasswordMessage}}</p>\n\n    <a style="color:darkorange;" (click)="OnForgot()">Forgot password?</a>\n\n    <button [disabled]="ChangePasswordEntryForm.invalid" id="enterOTP-button9" ion-button color="positive" block>\n\n      Change Password\n\n    </button>\n\n  </form>\n\n  <div style="color:red;" *ngIf="ChangePasswordEntryForm.errors?.notSame"><span>Passwords do not match</span></div>\n\n</div>\n\n</ion-content>'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\enter-otp\enter-otp.html"*/
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_8__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_10__services_UIService__["a" /* UISercice */], __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_6__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_5__services_app_data_service__["a" /* RegisterService */]])
+    ], EnterOTPPage);
+    return EnterOTPPage;
+}());
+
+var FormatTimePipe = /** @class */ (function () {
+    function FormatTimePipe() {
+    }
+    FormatTimePipe.prototype.transform = function (value) {
+        var minutes = Math.floor(value / 60);
+        return ('00' + minutes).slice(-2) + ':' + ('00' + Math.floor(value - minutes * 60)).slice(-2);
+    };
+    FormatTimePipe = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["U" /* Pipe */])({
+            name: 'formatTime'
+        })
+    ], FormatTimePipe);
+    return FormatTimePipe;
+}());
+
+//# sourceMappingURL=enter-otp.js.map
+
+/***/ }),
+
+/***/ 13:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -138,7 +499,7 @@ var StorageService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 157:
+/***/ 174:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -146,9 +507,9 @@ var StorageService = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mobile_recharge_mobile_recharge__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_Storage_Service__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_Storage_Service__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_Constants__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__recharge_recharge__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__recharge_recharge__ = __webpack_require__(175);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -246,17 +607,17 @@ var FavouritesPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 158:
+/***/ 175:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RechargePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__favourites_favourites__ = __webpack_require__(157);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_Storage_Service__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__favourites_favourites__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_Storage_Service__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_Constants__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__recharge_report_recharge_report__ = __webpack_require__(159);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__recharge_report_recharge_report__ = __webpack_require__(176);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__page_page__ = __webpack_require__(47);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -319,17 +680,17 @@ var RechargePage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 159:
+/***/ 176:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RechargeReportPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_app_data_service__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_toastr__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modal_modal__ = __webpack_require__(275);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modal_modal__ = __webpack_require__(374);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -440,21 +801,21 @@ var RechargeReportPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 160:
+/***/ 177:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FundTransferPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_app_data_service__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ngx_toastr__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_UIService__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__change_bank_change_bank__ = __webpack_require__(161);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_UIService__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__change_bank_change_bank__ = __webpack_require__(178);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__banking_banking__ = __webpack_require__(38);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__fund_transfer_confirm_fund_transfer_confirm__ = __webpack_require__(277);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__fund_transfer_confirm_fund_transfer_confirm__ = __webpack_require__(376);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -622,20 +983,20 @@ var FundTransferPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 161:
+/***/ 178:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChangeBankPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_app_data_service__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_idlejs_dist__ = __webpack_require__(434);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_idlejs_dist__ = __webpack_require__(709);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__login_login__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__page_page__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_ngx_toastr__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__fund_transfer_fund_transfer__ = __webpack_require__(160);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__fund_transfer_fund_transfer__ = __webpack_require__(177);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -815,8 +1176,8 @@ var ChangeBankPage = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RegisterService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__(152);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__UIHelperClasses_UIHelperService__ = __webpack_require__(273);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__UIHelperClasses_UIHelperService__ = __webpack_require__(372);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -939,7 +1300,7 @@ var RegisterService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 185:
+/***/ 188:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -952,11 +1313,11 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 185;
+webpackEmptyAsyncContext.id = 188;
 
 /***/ }),
 
-/***/ 231:
+/***/ 330:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -969,1035 +1330,7 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 231;
-
-/***/ }),
-
-/***/ 273:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UIHelperService; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-var UIHelperService = /** @class */ (function () {
-    function UIHelperService() {
-        this.rootUrl = 'https://sahakari.azurewebsites.net';
-        this.baseUrl = 'https://sahakari.azurewebsites.net/api';
-        this.rootUrl1 = 'https://sahakari.azurewebsites.net/token';
-    }
-    //    readonly rootUrl = 'http://localhost:55394';
-    //    readonly baseUrl='http://localhost:55394/api';
-    //    readonly rootUrl1 = 'http://localhost:55394/token';
-    UIHelperService.prototype.CallWebAPIUrl = function (api_action_name) {
-        return this.rootUrl + api_action_name;
-    };
-    UIHelperService.prototype.CallWebAPIUrlNew = function (api_action) {
-        return this.baseUrl + api_action;
-    };
-    UIHelperService.prototype.CallWebAPIUrl1 = function () {
-        return this.rootUrl;
-    };
-    UIHelperService = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])()
-    ], UIHelperService);
-    return UIHelperService;
-}());
-
-//# sourceMappingURL=UIHelperService.js.map
-
-/***/ }),
-
-/***/ 274:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BasicPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ngx_toastr__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_Constants__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_app_data_service__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_Storage_Service__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__mobile_recharge_mobile_recharge__ = __webpack_require__(37);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-var BasicPage = /** @class */ (function () {
-    function BasicPage(storageService, alertCtrl, viewCtrl, toastr, constant, registerService, loadingController, navParams, navCtrl, platform) {
-        var _this = this;
-        this.storageService = storageService;
-        this.alertCtrl = alertCtrl;
-        this.viewCtrl = viewCtrl;
-        this.toastr = toastr;
-        this.constant = constant;
-        this.registerService = registerService;
-        this.loadingController = loadingController;
-        this.navParams = navParams;
-        this.navCtrl = navCtrl;
-        this.page = 0;
-        this.planTypes = ["FTT", "TUP", "LSC", "SMS", "OTR", "RMG"];
-        this.isAndroid = false;
-        this.isButtonEnabled = false;
-        this.active_Segmant = "0";
-        var FTT = "FullTalkTime";
-        var LSC = "LSC";
-        var TUP = "TopUp";
-        var SMS = "SMS";
-        var OTR = "Other";
-        var RMG = "Roaming";
-        this.navparams = this.navParams.data;
-        var loading = this.loadingController.create({
-            content: 'Please wait till the screen loads'
-        });
-        loading.present();
-        this.isAndroid = platform.is('android');
-        this.navparams = this.navParams.data;
-        var operatorId = this.navParams.get('OperatorId');
-        var circleId = this.navParams.get('CircleId');
-        var planRequest = {
-            OSId: operatorId,
-            CircleId: circleId,
-            PlanType: this.planTypes[0],
-            TenantId: this.storageService.GetUser().ActiveTenantId
-        };
-        this.registerService.GetPlans(planRequest).subscribe(function (data) {
-            _this.planResponse = data;
-        }, function (error) {
-            _this.toastr.error(error.message, 'Error!');
-            var alert = _this.alertCtrl.create({
-                title: "Error Message",
-                subTitle: error.message,
-                buttons: ['OK']
-            });
-            alert.present();
-        });
-        loading.dismiss();
-    }
-    BasicPage.prototype.ngOnInit = function () {
-        this.ActiveBankName = this.storageService.GetActiveBankName();
-    };
-    BasicPage.prototype.onSegmentChange = function (event) {
-        // this.slider.slideTo(event.value);
-        // this.active_Segmant=event.value.toString();
-        this.active_Segmant = event.toString();
-        this.slider.slideTo(event);
-    };
-    BasicPage.prototype.slideChanged = function () {
-        var _this = this;
-        var operatorId = this.navParams.get('OperatorId');
-        var circleId = this.navParams.get('CircleId');
-        var currentIndex = this.slider.getActiveIndex();
-        this.active_Segmant = currentIndex.toString();
-        if (this.active_Segmant == "6") {
-            this.slider.isEnd();
-            return null;
-        }
-        console.log('Current index is', currentIndex);
-        var loading = this.loadingController.create({
-            content: 'Please wait till the screen loads'
-        });
-        loading.present();
-        this.slider.slideTo(currentIndex);
-        var planRequest = {
-            OSId: operatorId,
-            CircleId: circleId,
-            PlanType: this.planTypes[currentIndex],
-            TenantId: this.storageService.GetUser().ActiveTenantId
-        };
-        this.registerService.GetPlans(planRequest).subscribe(function (data) {
-            _this.planResponse = data;
-            loading.dismiss();
-        }, function (error) {
-            _this.toastr.error(error.message, 'Error!');
-            var alert = _this.alertCtrl.create({
-                title: "Error Message",
-                subTitle: error.message,
-                buttons: ['OK']
-            });
-            alert.present();
-            loading.dismiss();
-        });
-    };
-    BasicPage.prototype.OnAmount = function (amount) {
-        this.isButtonEnabled = true;
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_6__mobile_recharge_mobile_recharge__["a" /* MobileRechargePage */], { 'Amount': amount, 'ParentId': this.navParams.get('ParentId'), 'OperatorId': this.navParams.get('OperatorId'), 'CircleId': this.navParams.get('CircleId'), 'SubscriptionId': this.navParams.get('SubscriptionId'), 'nname': this.navParams.get('nname'), 'ButtonEnabled': this.isButtonEnabled });
-    };
-    __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_11" /* ViewChild */])('slider'),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["o" /* Slides */])
-    ], BasicPage.prototype, "slider", void 0);
-    __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_11" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* Segment */]),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* Segment */])
-    ], BasicPage.prototype, "segment", void 0);
-    BasicPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'page-ViewPlans_Tabs',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\ViewPlans_Tabs\ViewPlans_Tabs.html"*/'<ion-header>\n\n\n\n  <!-- <ion-navbar hideBackButton="true" color="primary"> -->\n\n  <!-- <ion-navbar color="primary">\n\n      <button ion-button menuToggle>\n\n        <ion-icon name="menu"></ion-icon>\n\n      </button>\n\n      <ion-title>\n\n        {{ActiveBankName}}  Mobile App\n\n      </ion-title>\n\n    </ion-navbar> -->\n\n  <!-- <ion-navbar #navbar color="primary" >\n\n      <ion-title>Whatever</ion-title>\n\n      <ion-buttons right>\n\n        <button icon-only ion-button>\n\n          <ion-icon name=\'pause\'></ion-icon>\n\n        </button>\n\n      </ion-buttons>\n\n    </ion-navbar> -->\n\n\n\n  <ion-toolbar no-border-top>\n\n    <!-- <ion-segment [(ngModel)]="active_Segmant" color="dark" (ionChange)="onSegmentChange($event)"> -->\n\n    <ion-segment [(ngModel)]="active_Segmant" color="dark">\n\n      <ion-segment-button value="0" (ionSelect)="onSegmentChange(0)">\n\n        FullTalkTime\n\n      </ion-segment-button>\n\n      <ion-segment-button value="1" (ionSelect)="onSegmentChange(1)">\n\n        LSC\n\n      </ion-segment-button>\n\n      <ion-segment-button value="2" (ionSelect)="onSegmentChange(2)">\n\n        TopUp\n\n      </ion-segment-button>\n\n      <ion-segment-button value="3" (ionSelect)="onSegmentChange(3)">\n\n        SMS\n\n      </ion-segment-button>\n\n      <ion-segment-button value="4" (ionSelect)="onSegmentChange(4)">\n\n        Other\n\n      </ion-segment-button>\n\n      <ion-segment-button value="5" (ionSelect)="onSegmentChange(5)">\n\n        Roaming\n\n      </ion-segment-button>\n\n      <!-- <ion-segment-button value="0">\n\n          FullTalkTime\n\n        </ion-segment-button>\n\n        <ion-segment-button value="1">\n\n          LSC\n\n        </ion-segment-button>\n\n        <ion-segment-button value="2">\n\n          TopUp\n\n        </ion-segment-button>\n\n        <ion-segment-button value="3">\n\n          SMS\n\n        </ion-segment-button>\n\n        <ion-segment-button value="4">\n\n          Other\n\n        </ion-segment-button>\n\n        <ion-segment-button value="5">\n\n          Roaming\n\n        </ion-segment-button> -->\n\n    </ion-segment>\n\n  </ion-toolbar>\n\n\n\n \n\n</ion-header>\n\n\n\n<ion-content padding id="page5">\n\n  <ion-slides #slider (ionSlideDidChange)="slideChanged()">\n\n    <ion-slide>\n\n      <p> Select the plans you want</p>\n\n      <ion-list *ngFor="let order of planResponse" (click)="OnAmount(order.amount)">\n\n        <ion-item style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;background-color: bisque">\n\n          <h3>Talktime:{{ order.talktime }}</h3>\n\n          <button ion-button outline icon-start item-end round medium>\n\n            {{ order.amount |currency:\'INR\' }}\n\n          </button>\n\n          <a style="color:red">{{ order.detail }}</a>\n\n          <h2>Validity:{{ order.validity }}</h2>\n\n        </ion-item>\n\n      </ion-list>\n\n    </ion-slide>\n\n    <ion-slide>\n\n      Select the plans you want\n\n      <ion-list *ngFor="let order of planResponse" (click)="OnAmount(order.amount)">\n\n        <ion-item style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;background-color: bisque">\n\n          <h3>Talktime:{{ order.talktime }}</h3>\n\n          <button ion-button outline icon-start item-end round medium>\n\n            {{ order.amount | currency:\'INR\'}}\n\n          </button>\n\n          <a style="color:red">{{ order.detail }}</a>\n\n          <h2>Validity:{{ order.validity }}</h2>\n\n        </ion-item>\n\n      </ion-list>\n\n    </ion-slide>\n\n    <ion-slide>\n\n      Select the plans you want\n\n      <ion-list *ngFor="let order of planResponse" (click)="OnAmount(order.amount)">\n\n        <ion-item style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;background-color: bisque">\n\n          <h3>Talktime:{{ order.talktime }}</h3>\n\n          <button ion-button outline icon-start item-end round medium>\n\n            {{ order.amount | currency:\'INR\'}}\n\n          </button>\n\n          <a style="color:red">{{ order.detail }}</a>\n\n          <h2>Validity:{{ order.validity }}</h2>\n\n        </ion-item>\n\n      </ion-list>\n\n    </ion-slide>\n\n    <ion-slide>\n\n      Select the plans you want\n\n      <ion-list *ngFor="let order of planResponse" (click)="OnAmount(order.amount)">\n\n        <ion-item style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;background-color: bisque">\n\n          <h3>Talktime:{{ order.talktime }}</h3>\n\n          <button ion-button outline icon-start item-end round medium>\n\n           {{ order.amount | currency:\'INR\'}}\n\n          </button>\n\n          <a style="color:red">{{ order.detail }}</a>\n\n          <h2>Validity:{{ order.validity }}</h2>\n\n        </ion-item>\n\n      </ion-list>\n\n    </ion-slide>\n\n    <ion-slide>\n\n      Select the plans you want\n\n      <ion-list *ngFor="let order of planResponse" (click)="OnAmount(order.amount)">\n\n        <ion-item style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;background-color: bisque">\n\n          <h3>Talktime:{{ order.talktime }}</h3>\n\n          <button ion-button outline icon-start item-end round medium>\n\n          {{ order.amount | currency:\'INR\'}}\n\n          </button>\n\n          <a style="color:red">{{ order.detail }}</a>\n\n          <h2>Validity:{{ order.validity }}</h2>\n\n        </ion-item>\n\n      </ion-list>\n\n    </ion-slide>\n\n    <ion-slide>\n\n      Select the plans you want\n\n      <ion-list *ngFor="let order of planResponse" (click)="OnAmount(order.amount)">\n\n        <ion-item style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;background-color: bisque">\n\n          <h3>Talktime:{{ order.talktime }}</h3>\n\n          <button ion-button outline icon-start item-end round medium>\n\n         {{ order.amount | currency:\'INR\'}}\n\n          </button>\n\n          <a style="color:red">{{ order.detail }}</a>\n\n          <h2>Validity:{{ order.validity }}</h2>\n\n        </ion-item>\n\n      </ion-list>\n\n    </ion-slide>\n\n  </ion-slides>\n\n</ion-content>'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\ViewPlans_Tabs\ViewPlans_Tabs.html"*/
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_5__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* ViewController */], __WEBPACK_IMPORTED_MODULE_2_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_3__services_Constants__["a" /* ConstantService */], __WEBPACK_IMPORTED_MODULE_4__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* Platform */]])
-    ], BasicPage);
-    return BasicPage;
-}());
-
-//# sourceMappingURL=ViewPlans_Tabs.js.map
-
-/***/ }),
-
-/***/ 275:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ModalPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-/**
- * Generated class for the ModalPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var ModalPage = /** @class */ (function () {
-    function ModalPage(viewCtrl, params) {
-        this.viewCtrl = viewCtrl;
-        this.myParam = params.get('myParam');
-        this.Amount = params.get('myParam').Amount;
-        this.VendorExtCode = params.get('myParam').VendorExtCode;
-        this.Date = params.get('myParam').Date;
-        this.Remarks = params.get('myParam').Remarks;
-    }
-    ModalPage.prototype.dismiss = function () {
-        this.viewCtrl.dismiss();
-    };
-    ModalPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'page-modal',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\modal\modal.html"*/'<ion-header>\n\n  <ion-navbar color="primary">\n    <ion-buttons start>\n      <button ion-button (click)="dismiss()">Close</button>\n    </ion-buttons>\n    <ion-title>Reversed Voucher Detail</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <div [hidden]="!myParam">\n    <p>Reversal Transaction ID: {{VendorExtCode}}</p>\n    <p>Amount: {{Amount|currency:\'INR\'}}</p>\n    <p>Date: {{Date|date:\'dd/MM/yyyy\'}}</p>\n    <p>Remarks: {{Remarks}}</p>\n  </div>\n  <div [hidden]="myParam">\n    <p>No parameters passed.</p>\n  </div>\n  <button ion-button color="danger" full (click)="dismiss()">Close</button>\n\n</ion-content>'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\modal\modal.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* ViewController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */]])
-    ], ModalPage);
-    return ModalPage;
-}());
-
-//# sourceMappingURL=modal.js.map
-
-/***/ }),
-
-/***/ 277:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FundTransferConfirmPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ngx_toastr__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_app_data_service__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_Storage_Service__ = __webpack_require__(14);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-/**
- * Generated class for the FundTransferConfirmPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var FundTransferConfirmPage = /** @class */ (function () {
-    function FundTransferConfirmPage(storageService, alertCtrl, toastr, loadingController, registerService, navCtrl, navParams) {
-        this.storageService = storageService;
-        this.alertCtrl = alertCtrl;
-        this.toastr = toastr;
-        this.loadingController = loadingController;
-        this.registerService = registerService;
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-    }
-    FundTransferConfirmPage.prototype.ngOnInit = function () {
-        this.navparams = this.navParams.data;
-        this.HeadName = this.navParams.get('HeadName');
-        this.AcNo = this.navParams.get('AcNo');
-        this.ToName = this.navParams.get('ToName');
-        this.ToAcNo = this.navParams.get('ToAcNo');
-        this.showConfirm = true;
-    };
-    FundTransferConfirmPage.prototype.GetSelfCareAcByTenantID = function (ActiveTenantId) {
-        var AcSubId = this.navParams.get('AcSubId');
-        var SelfCareACs = this.storageService.GetSelfCareAc();
-        // this.selfCareAC=this.SelfCareACs.find(function (obj) { return obj.TenantId === ActiveTenantId&&obj.AcActId=="#SB"&&obj.AcSubId===this.AcSubId; });
-        this.selfCareAC = SelfCareACs.find(function (obj) { return obj.TenantId === ActiveTenantId && obj.AcSubId === AcSubId; });
-        return this.selfCareAC;
-    };
-    FundTransferConfirmPage.prototype.OnConfirm = function () {
-        var _this = this;
-        var ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
-        var loading = this.loadingController.create({
-            content: 'Transferring the Fund..'
-        });
-        loading.present();
-        var doFundTransfer = {
-            TenantId: this.navparams.doFundTransfer.TenantId,
-            DigiPartyId: this.navParams.get('doFundTransfer').DigiPartyId,
-            FromAcMastId: this.navParams.get('doFundTransfer').FromAcMastId,
-            FromAcSubId: this.navParams.get('doFundTransfer').FromAcSubId,
-            FromLocId: this.navParams.get('doFundTransfer').FromLocId,
-            ToAcMastId: this.navParams.get('doFundTransfer').ToAcMastId,
-            ToAcSubId: this.navParams.get('doFundTransfer').ToAcSubId,
-            ToLocId: this.navParams.get('doFundTransfer').ToLocId,
-            Amount: this.navParams.get('doFundTransfer').Amount,
-            ToAcNo: this.navParams.get('doFundTransfer').ToAcNo
-        };
-        this.registerService.FundTransfer(doFundTransfer).subscribe(function (data) {
-            _this.confirm = null;
-            _this.ftd = data;
-            if (data.Status == "1") {
-                _this.toastr.success('Fund Transferred with Success', 'Success!');
-                var alert = _this.alertCtrl.create({
-                    title: "Success Message",
-                    subTitle: "Fund Transferred",
-                    buttons: ['OK']
-                });
-                alert.present();
-                _this.showstatus = true;
-                _this.showConfirm = false;
-            }
-            else {
-                _this.toastr.error(data.AISError, 'Error!');
-                var alert = _this.alertCtrl.create({
-                    title: "Error Message",
-                    subTitle: data.AISError,
-                    buttons: ['OK']
-                });
-                alert.present();
-                _this.showFailure = true;
-                _this.showConfirm = false;
-            }
-            loading.dismiss();
-        }, function (error) {
-            _this.toastr.error(error.message, 'Error!');
-            var alert = _this.alertCtrl.create({
-                title: "Error Message",
-                subTitle: error.message,
-                buttons: ['OK']
-            });
-            alert.present();
-            loading.dismiss();
-        });
-    };
-    FundTransferConfirmPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad FundTransferConfirmPage');
-    };
-    FundTransferConfirmPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'page-fund-transfer-confirm',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\fund-transfer-confirm\fund-transfer-confirm.html"*/'<!--\n  Generated template for the FundTransferConfirmPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar color="primary">\n    <ion-title *ngIf="showConfirm">Confirm Fund Transfer </ion-title>\n    <ion-title *ngIf="showstatus">Fund Transfered </ion-title>\n    <ion-title *ngIf="showFailure">Fund Transfer Failured</ion-title>\n  </ion-navbar>\n  \n</ion-header>\n\n\n<ion-content padding>\n  <div *ngIf="showConfirm">\n      <div>\n    <ion-card>\n\n      <ion-card-header style="background-color:red">\n        From Account\n      </ion-card-header>\n      <ion-card-content>\n        Account Name: {{HeadName}}\n        <br/>\n        Acount No: {{AcNo}}\n      </ion-card-content>\n    </ion-card>\n    <br/>\n    <ion-card>\n\n      <ion-card-header style="background-color:red">\n        To Account\n      </ion-card-header>\n    <br/>\n    <ion-card-content>\n      Name: {{ToName}}\n      <br/>\n      Acount No: {{ToAcNo}}\n      <br/>\n      Amount: {{navparams.doFundTransfer.Amount}}\n    </ion-card-content>\n      <button id="register-button9" (click)="OnConfirm()" ion-button color="positive" block>\n        Confirm\n      </button>\n  </ion-card>\n  </div>\n  </div>\n  <div *ngIf="showstatus">\n    <h1>Fund transferred with Success</h1>\n  </div>\n  <div *ngIf="showFailure">\n    <h1>Fund transfer failured</h1>\n  </div>\n</ion-content>\n'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\fund-transfer-confirm\fund-transfer-confirm.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_2_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_3__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */]])
-    ], FundTransferConfirmPage);
-    return FundTransferConfirmPage;
-}());
-
-//# sourceMappingURL=fund-transfer-confirm.js.map
-
-/***/ }),
-
-/***/ 278:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BalanceEnquiryPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_app_data_service__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_toastr__ = __webpack_require__(24);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-var BalanceEnquiryPage = /** @class */ (function () {
-    function BalanceEnquiryPage(storageService, alertCtrl, toastr, loadingController, registerService, navCtrl) {
-        this.storageService = storageService;
-        this.alertCtrl = alertCtrl;
-        this.toastr = toastr;
-        this.loadingController = loadingController;
-        this.registerService = registerService;
-        this.navCtrl = navCtrl;
-    }
-    BalanceEnquiryPage.prototype.ngOnInit = function () {
-        this.HideMsg = true;
-        this.ShowHide = true;
-        this.ActiveBankName = this.storageService.GetActiveBankName();
-        this.SelfCareAcsBasedOnTenantID = this.storageService.GetSelfCareAcsBasedOnTenantID();
-    };
-    BalanceEnquiryPage.prototype.OnGetAccountBalance = function (AcHeadId, AcSubId) {
-        var _this = this;
-        var loading = this.loadingController.create({
-            content: 'Loading the Account Balance..'
-        });
-        loading.present();
-        var statementRequest = {
-            AcMastId: AcHeadId,
-            AcSubId: AcSubId,
-            TenantId: this.storageService.GetUser().ActiveTenantId
-        };
-        this.registerService.GetAccountBalance(statementRequest).subscribe(function (data) {
-            _this.balance = data;
-            //alert(data.Balance);
-            loading.dismiss();
-        }, function (error) {
-            _this.toastr.error(error.message, 'Error!');
-            var alert = _this.alertCtrl.create({
-                title: "Error Message",
-                subTitle: error.message,
-                buttons: ['OK']
-            });
-            alert.present();
-            loading.dismiss();
-        });
-        this.ShowHide = false;
-        this.HideMsg = false;
-    };
-    BalanceEnquiryPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'page-balance-enquiry',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\balance-enquiry\balance-enquiry.html"*/'<ion-header>\n\n    <ion-navbar color="primary">\n\n      <button ion-button menuToggle>\n\n        <ion-icon name="menu"></ion-icon>\n\n      </button>\n\n      <ion-title>\n\n        Balance-Enquiry  {{ActiveBankName}}\n\n      </ion-title>\n\n    </ion-navbar>\n\n  </ion-header>\n\n  <ion-content padding id="page3">\n\n      <span style="color: blue" *ngIf="HideMsg">Click on Account of your wish</span>  \n\n    <div  *ngIf="ShowHide">   \n\n      <div *ngFor="let order of SelfCareAcsBasedOnTenantID" (click)="OnGetAccountBalance(order.AcHeadId,order.AcSubId)" style="background-color:#ddd;border: 1px solid lightgrey; padding: 15px; margin: 5px 0;">\n\n        <span>Name: {{order.HeadName}}</span> \n\n        <br/>\n\n        <span>Account No: {{order.AcNo}}</span> \n\n    </div> \n\n      </div>\n\n    <div *ngIf="balance">\n\n        <span>Balance Amount : {{ balance.Balance|currency:\'INR\' }}</span>\n\n    </div>\n\n  </ion-content>\n\n\n\n  <ion-footer color="primary">\n\n    <ion-toolbar>\n\n      <ion-title>{{ActiveBankName}}</ion-title>\n\n    </ion-toolbar>\n\n  </ion-footer>\n\n  <ion-footer>\n\n    <ion-toolbar color="primary">\n\n      <ion-title>{{ActiveBankName}} All Rights Rserved</ion-title>\n\n    </ion-toolbar>\n\n  </ion-footer>\n\n'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\balance-enquiry\balance-enquiry.html"*/
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_4_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_3__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]])
-    ], BalanceEnquiryPage);
-    return BalanceEnquiryPage;
-}());
-
-//# sourceMappingURL=balance-enquiry.js.map
-
-/***/ }),
-
-/***/ 279:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MiniStatementPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_app_data_service__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_toastr__ = __webpack_require__(24);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-var MiniStatementPage = /** @class */ (function () {
-    function MiniStatementPage(storageService, alertCtrl, toastr, loadingController, registerService, navCtrl) {
-        this.storageService = storageService;
-        this.alertCtrl = alertCtrl;
-        this.toastr = toastr;
-        this.loadingController = loadingController;
-        this.registerService = registerService;
-        this.navCtrl = navCtrl;
-        this.ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
-    }
-    MiniStatementPage.prototype.ngOnInit = function () {
-        this.ShowHide = true;
-        this.HideMsg = true;
-        this.ActiveBankName = this.storageService.GetActiveBankName();
-        this.SelfCareAcsBasedOnTenantID = this.storageService.GetSelfCareAcsBasedOnTenantID();
-    };
-    MiniStatementPage.prototype.OnGetMiniStatement = function (AcHeadId, AcSubId) {
-        var _this = this;
-        var loading = this.loadingController.create({
-            content: 'Loading the Mini Statement..'
-        });
-        loading.present();
-        var statementRequest = {
-            AcMastId: AcHeadId,
-            AcSubId: AcSubId,
-            TenantId: this.ActiveTenantId
-        };
-        this.registerService.GetStatement(statementRequest).subscribe(function (data) {
-            _this.balance = data;
-            _this.miniStatement = data;
-            _this.statementItem = data.StatementItems;
-            loading.dismiss();
-        }, function (error) {
-            _this.toastr.error(error.message, 'Error!');
-            var alert = _this.alertCtrl.create({
-                title: "Error Message",
-                subTitle: error.message,
-                buttons: ['OK']
-            });
-            alert.present();
-            loading.dismiss();
-        });
-        this.ShowHide = false;
-        this.HideMsg = false;
-    };
-    MiniStatementPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'page-mini-statement',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\mini-statement\mini-statement.html"*/'<ion-header>\n\n  <ion-navbar color="primary">\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>\n\n      Mini Statement {{ActiveBankName}}\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content padding id="page9" >\n\n  <span style="color: blue" *ngIf="HideMsg">Click on Account of your wish</span>  \n\n  <div  *ngIf="ShowHide">   \n\n    <div *ngFor="let order of SelfCareAcsBasedOnTenantID" (click)="OnGetMiniStatement(order.AcHeadId,order.AcSubId)" style="background-color:#ddd;border: 1px solid lightgrey; padding: 15px; margin: 5px 0;">\n\n      <span>Name: {{order.HeadName}}</span> \n\n      <br/>\n\n      <span>Account No: {{order.AcNo}}</span> \n\n  </div> \n\n    </div>\n\n      <div *ngIf="balance">\n\n  <div class="spacer" style="width:300px;height:21px;" id="miniStatement-spacer3"></div>\n\n  <ion-list id="miniStatement-list9">\n\n     <ion-item color="none" id="miniStatement-list-item42" *ngIf="(balance.Amount)<0" style="color: rebeccapurple">\n\n      Account Balance : {{balance.Amount|currency:\'INR\'}} Debit\n\n    </ion-item>\n\n    <ion-item color="none" id="miniStatement-list-item42" *ngIf="(balance.Amount)>0" style="color: rebeccapurple">\n\n      Account Balance : {{balance.Amount|currency:\'INR\'}} Credit\n\n    </ion-item>\n\n  </ion-list>  \n\n  <ion-card id="miniStatement-card22" *ngFor="let order of statementItem">\n\n      <ion-list id="miniStatement-list10">\n\n\n\n      <ion-item color="none" id="miniStatement-list-item46">\n\n        <ion-note item-start>\n\n          <p>{{order.Dt|date:\'dd/MM/yyyy\'}}</p>\n\n         <p *ngIf="(order.Cr)==0" style="color: red">Debited : {{order.Dr|currency:\'INR\'}}</p>\n\n         <p *ngIf="(order.Dr)==0" style="color: green;">Credited : {{order.Cr|currency:\'INR\'}}</p>\n\n          <p style="margin-top:0px;color:#000000;">\n\n              Remark: {{order.Remark}}\n\n            </p>\n\n          </ion-note>\n\n      </ion-item>\n\n    </ion-list>\n\n  \n\n  </ion-card>\n\n</div>\n\n</ion-content>\n\n<ion-footer>\n\n  <ion-toolbar color="primary">\n\n    <ion-title>{{ActiveBankName}} All Rights Rserved</ion-title>\n\n  </ion-toolbar>\n\n</ion-footer>'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\mini-statement\mini-statement.html"*/
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_4_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_3__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]])
-    ], MiniStatementPage);
-    return MiniStatementPage;
-}());
-
-//# sourceMappingURL=mini-statement.js.map
-
-/***/ }),
-
-/***/ 280:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PrepaidConfirmPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_Constants__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_app_data_service__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ngx_toastr__ = __webpack_require__(24);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-var PrepaidConfirmPage = /** @class */ (function () {
-    function PrepaidConfirmPage(storageService, alertCtrl, toastr, registerService, constantService, loadingController, navCtrl, navParams) {
-        this.storageService = storageService;
-        this.alertCtrl = alertCtrl;
-        this.toastr = toastr;
-        this.registerService = registerService;
-        this.constantService = constantService;
-        this.loadingController = loadingController;
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-    }
-    PrepaidConfirmPage.prototype.ngOnInit = function () {
-        this.operator = this.navParams.get('Operator');
-        this.SubscriptionId = this.navParams.get('SubscriptionId');
-        this.Amount = this.navParams.get('Amount');
-        this.ParentId = this.navParams.get('ParentId');
-        this.OperatorId = this.navParams.get('OperatorId');
-        this.ActiveBankName = this.storageService.GetActiveBankName();
-        this.showTitle = true;
-        switch (this.ParentId) {
-            case "S1":
-                this.OperatorService = "PrePaid";
-                break;
-            case "S2":
-                this.OperatorService = "PostPaid";
-                break;
-            case "S3":
-                this.OperatorService = "DTH";
-                break;
-            default:
-                this.OperatorService = "Electricity Bill";
-                break;
-        }
-    };
-    PrepaidConfirmPage.prototype.GetDigiPartyandPartyMastID = function (ActiveTenantId) {
-        var DigiParties = this.storageService.GetDigiParty();
-        var digiparty = DigiParties.find(function (obj) { return obj.TenantId === ActiveTenantId; });
-        return digiparty;
-    };
-    PrepaidConfirmPage.prototype.GetSelfCareAcByTenantID = function (ActiveTenantId) {
-        var SelfCareACs = this.storageService.GetSelfCareAc();
-        var selfCareAC = SelfCareACs.find(function (obj) { return obj.TenantId === ActiveTenantId && obj.AcActId == "#SB"; });
-        return selfCareAC;
-    };
-    PrepaidConfirmPage.prototype.OnConfirm = function () {
-        var _this = this;
-        var loading = this.loadingController.create({
-            content: 'Recharging...'
-        });
-        loading.present();
-        this.showTitle = false;
-        var ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
-        var rechargeModel = {
-            TenantId: ActiveTenantId,
-            DigiPartyId: this.GetDigiPartyandPartyMastID(ActiveTenantId).DigiPartyId,
-            PartyMastId: this.GetDigiPartyandPartyMastID(ActiveTenantId).PartyMastId,
-            AcMastId: this.GetSelfCareAcByTenantID(ActiveTenantId).AcHeadId,
-            AcSubId: this.GetSelfCareAcByTenantID(ActiveTenantId).AcSubId,
-            // Amount: this.rechargeitem.Amount,
-            // OperatorId: this.rechargeitem.OperatorId,
-            // SubscriptionId: this.rechargeitem.SubscriptionId,
-            Amount: this.navParams.get('Amount'),
-            OperatorId: this.navParams.get('OperatorId'),
-            SubscriptionId: this.navParams.get('SubscriptionId'),
-            LocId: this.GetSelfCareAcByTenantID(ActiveTenantId).LocId
-        };
-        this.registerService.PostRecharge(rechargeModel).subscribe(function (data) {
-            _this.tranResponse = data;
-            _this.showConfirm = false;
-            switch (data.StatusCode) {
-                case 1:
-                    var alert = _this.alertCtrl.create({
-                        title: "Message",
-                        subTitle: 'Recharge is successful with Transaction ID ' + _this.tranResponse.VendorExtCode,
-                        buttons: ['OK']
-                    });
-                    alert.present();
-                    _this.showSuccess = true;
-                    break;
-                case 2:
-                    //alert("Recharge is pending with Transaction ID "+ this.tranResponse.VendorExtCode);
-                    var alert = _this.alertCtrl.create({
-                        title: "Message",
-                        subTitle: 'Recharge is pending with Transaction ID ' + _this.tranResponse.VendorExtCode,
-                        buttons: ['OK']
-                    });
-                    alert.present();
-                    _this.showPending = true;
-                    break;
-                case 3:
-                    ///alert("Recharge is initiated with Transaction ID "+ this.tranResponse.VendorExtCode);
-                    var alert = _this.alertCtrl.create({
-                        title: "Message",
-                        subTitle: 'Recharge is initiated with Transaction ID ' + _this.tranResponse.VendorExtCode,
-                        buttons: ['OK']
-                    });
-                    alert.present();
-                    _this.showInit = true;
-                    break;
-                case 4:
-                    //alert("Recharge is failure with Transaction ID "+ this.tranResponse.VendorExtCode);
-                    var alert = _this.alertCtrl.create({
-                        title: "Error Message",
-                        subTitle: 'Recharge is Unsuccessful with Transaction ID ' + _this.tranResponse.VendorExtCode,
-                        buttons: ['OK']
-                    });
-                    alert.present();
-                    _this.showFailure = true;
-                    break;
-                case 5:
-                    //alert("Recharge is refunded with Transaction ID "+ this.tranResponse.VendorExtCode);
-                    var alert = _this.alertCtrl.create({
-                        title: "Message",
-                        subTitle: 'Recharge is refunded with Transaction ID ' + _this.tranResponse.VendorExtCode,
-                        buttons: ['OK']
-                    });
-                    alert.present();
-                    _this.showRefund = true;
-                    break;
-                case 9:
-                    //alert("Recharge is blocked with Transaction ID "+ this.tranResponse.VendorExtCode);
-                    var alert = _this.alertCtrl.create({
-                        title: "Message",
-                        subTitle: 'Recharge is blocked with Transaction ID ' + _this.tranResponse.VendorExtCode,
-                        buttons: ['OK']
-                    });
-                    alert.present();
-                    _this.showBlocked = true;
-                    break;
-                default:
-                    //alert("Recharge is blocked with Transaction ID "+ this.tranResponse.VendorExtCode);
-                    var alert = _this.alertCtrl.create({
-                        title: "Message",
-                        subTitle: _this.tranResponse.AISError,
-                        buttons: ['OK']
-                    });
-                    alert.present();
-                    _this.showBlocked = true;
-                    break;
-            }
-            loading.dismiss();
-        }, function (error) {
-            //this.toastr.error(error.message, 'Error!');
-            var alert = _this.alertCtrl.create({
-                title: "Message",
-                subTitle: error.message,
-                buttons: ['OK']
-            });
-            alert.present();
-            loading.dismiss();
-        });
-    };
-    PrepaidConfirmPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'page-prepaid-confirm',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\prepaid-confirm\prepaid-confirm.html"*/'<!--\n  Generated template for the PrepaidConfirmPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title *ngIf="showTitle">\n      Confirm {{OperatorService}} Recharge-{{ActiveBankName}}\n    </ion-title>\n    <ion-title *ngIf="showSuccess||showPending||showInit||showFailure||showRefund||showBlocked">\n        <!-- <ion-title *ngIf="showSuccess"> -->\n      {{OperatorService}} Recharge -{{ActiveBankName}}\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <div class="row" *ngIf="showTitle">\n    <div class="col s12 m7">\n      <div class="card">\n          <!--interpolation-->\n        <div class="card-content">     \n        <span>Selected Operator : {{ operator }}</span> <br>\n        <span>Mobile No : {{ SubscriptionId }}</span> <br>\n        <span>Recharge Amount : {{ Amount }}</span> <br>\n        </div>       \n      </div>\n    </div>\n    <button id="register-button8" ion-button color="positive" type="button" (click)="OnConfirm()" block>\n      Confirm\n    </button>\n  </div>\n  <div *ngIf="showSuccess">\n  <h1 style="color: green;">Recharge is Successful...</h1>\n  <p>Transaction ID: {{tranResponse.VendorExtCode}}</p>\n  </div>\n  <div *ngIf="showPending">\n    <h1 style="color: darkorange;">Recharge is Pending...</h1>\n    <p>Transaction ID: {{tranResponse.VendorExtCode}}</p>\n  </div>\n  <div *ngIf="showInit">\n    <h1>Recharge is Initiated...Please wait for a minute..</h1>\n    <p>Transaction ID: {{tranResponse.VendorExtCode}}</p>\n  </div>\n  <div *ngIf="showFailure">\n    <h1 style="color: red;">Sorry, Recharge is Unsuccessful...</h1>\n    <p>Transaction ID: {{tranResponse.VendorExtCode}}</p>\n  </div>\n  <div *ngIf="showRefund">\n    <h1>Recharge is Refunded due to some issues...</h1>\n    <p>Transaction ID: {{tranResponse.VendorExtCode}}</p>\n  </div>\n  <div *ngIf="showBlocked">\n    <h1>Recharge is Blocked due to some issues...</h1>\n  </div>\n</ion-content>\n'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\prepaid-confirm\prepaid-confirm.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_5_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_4__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_3__services_Constants__["a" /* ConstantService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */]])
-    ], PrepaidConfirmPage);
-    return PrepaidConfirmPage;
-}());
-
-//# sourceMappingURL=prepaid-confirm.js.map
-
-/***/ }),
-
-/***/ 281:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SettingPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var SettingPage = /** @class */ (function () {
-    function SettingPage(navCtrl) {
-        this.navCtrl = navCtrl;
-    }
-    SettingPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'page-setting',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\setting\setting.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>\n      Setting\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n<ion-content padding id="page2"></ion-content>'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\setting\setting.html"*/
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]])
-    ], SettingPage);
-    return SettingPage;
-}());
-
-//# sourceMappingURL=setting.js.map
-
-/***/ }),
-
-/***/ 282:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyProfilePage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__enter_otp_enter_otp__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_app_data_service__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__login_login__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__node_modules_ngx_toastr__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__page_page__ = __webpack_require__(47);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-/**
- * Generated class for the MyProfilePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var MyProfilePage = /** @class */ (function () {
-    function MyProfilePage(toastrService, loadingController, alertCtrl, storageService, registerService, navCtrl, navParams) {
-        this.toastrService = toastrService;
-        this.loadingController = loadingController;
-        this.alertCtrl = alertCtrl;
-        this.storageService = storageService;
-        this.registerService = registerService;
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-    }
-    MyProfilePage.prototype.ngOnInit = function () {
-        var _this = this;
-        var loading = this.loadingController.create({
-            content: 'Loading the Mini Statement..'
-        });
-        loading.present();
-        this.digipartyname = this.storageService.GetDigipartyBasedOnActiveTenantId().Name;
-        this.mobileno = this.storageService.GetUser().UserName;
-        this.registerService.GetTenantsByMobile(this.mobileno).subscribe(function (data) {
-            _this.tenantList = data;
-            _this.storageService.SetTenant(JSON.stringify(_this.tenantList));
-            _this.tenants = _this.storageService.GetTenant();
-            loading.dismiss();
-        }, function (error) {
-            var alert = _this.alertCtrl.create({
-                title: "Error Message",
-                subTitle: error.message,
-                buttons: ['OK']
-            });
-            alert.present();
-            loading.dismiss();
-        });
-    };
-    MyProfilePage.prototype.OnChange = function () {
-        var ischangePassword = true;
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__enter_otp_enter_otp__["a" /* EnterOTPPage */], { 'ischangePassword': ischangePassword });
-    };
-    MyProfilePage.prototype.OnLogOut = function () {
-        this.storageService.RemoveRecordsForLogout();
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_5__login_login__["a" /* LoginPage */]);
-    };
-    MyProfilePage.prototype.OnSync = function () {
-        var _this = this;
-        this.storageService.RemoveRecordsForLogout();
-        var loading = this.loadingController.create({
-            content: 'Syncing Operators and Services'
-        });
-        loading.present();
-        this.registerService.GetServices().subscribe(function (data) {
-            var oS = JSON.stringify(data);
-            _this.storageService.SetOS(oS);
-            loading.dismiss();
-        }, function (error) {
-            _this.toastrService.error(error.message, 'Error!');
-            loading.dismiss();
-            var alert = _this.alertCtrl.create({
-                title: "Error Message",
-                subTitle: error.message,
-                buttons: ['OK']
-            });
-            alert.present();
-        });
-        var loadingnew = this.loadingController.create({
-            content: 'Syncing Accounts'
-        });
-        loadingnew.present();
-        this.callservices();
-        loadingnew.dismiss();
-    };
-    MyProfilePage.prototype.callservices = function () {
-        var _this = this;
-        var addBankRequest = {
-            TenantId: this.storageService.GetUser().ActiveTenantId,
-            MobileNo: this.storageService.GetUser().UserName
-        };
-        this.registerService.AddBank(addBankRequest).subscribe(function (data) {
-            var tenant = {
-                Id: data.Tenant.Id,
-                Name: data.Tenant.Name,
-                Address: data.Tenant.Address,
-                IconHtml: data.Tenant.IconHtml
-            };
-            _this.storageService.SetTenant(JSON.stringify([tenant]));
-            var ActiveBankName = _this.storageService.GetActiveBankName();
-            var digiParty = {
-                Id: data.DigiPartyId,
-                DigiPartyId: data.DigiPartyId,
-                PartyMastId: data.PartyMastId,
-                MobileNo: data.MobileNo,
-                TenantId: data.TenantId,
-                Name: data.Name
-            };
-            _this.storageService.SetDigiParty(JSON.stringify([digiParty]));
-            _this.storageService.SetSelfCareAc(JSON.stringify(data.SelfCareAcs));
-            _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_7__page_page__["a" /* PagePage */], { 'ActiveBankName': ActiveBankName });
-        }, function (error) {
-            _this.toastrService.error(error.error.ExceptionMessage, 'Error!');
-            var alert = _this.alertCtrl.create({
-                title: "Error Message",
-                subTitle: error.error.ExceptionMessage,
-                buttons: ['OK']
-            });
-            alert.present();
-        });
-    };
-    MyProfilePage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'page-my-profile',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\my-profile\my-profile.html"*/'<!--\n  Generated template for the MyProfilePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n    <ion-navbar color="primary">\n        <button ion-button menuToggle>\n          <ion-icon name="menu"></ion-icon>\n        </button>\n    <ion-title>My Profile</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list id="miniStatement-list9">\n    <ion-item color="none" id="miniStatement-list-item42">\n     Name :{{digipartyname}}\n   </ion-item>\n   <ion-item color="none" id="miniStatement-list-item42">\n    Mobile Number :{{mobileno}}\n  </ion-item>\n  Linked Bank Accounts\n<ion-item *ngFor="let order of tenants">\n        \n        \n        <h2 style="text-transform:capitalize;">{{ order.Name }}</h2>\n        <p>Branch:{{ order.Address }}</p>\n  \n</ion-item>\n<ion-item>\n    <a style="color:darkorange;" (click)="OnChange()">Change password?</a>\n</ion-item>\n<ion-item>\n  <a style="color:darkorange;" (click)="OnSync()">Sync Accounts</a>\n</ion-item>\n<ion-item>\n    <a style="color:darkorange;" (click)="OnLogOut()">LogOut</a>\n</ion-item>\n </ion-list>\n</ion-content>\n'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\my-profile\my-profile.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_6__node_modules_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_4__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */]])
-    ], MyProfilePage);
-    return MyProfilePage;
-}());
-
-//# sourceMappingURL=my-profile.js.map
-
-/***/ }),
-
-/***/ 283:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BankBranchesPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_app_data_service__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_toastr__ = __webpack_require__(24);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-/**
- * Generated class for the BankBranchesPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var BankBranchesPage = /** @class */ (function () {
-    function BankBranchesPage(storageService, alertCtrl, toastr, loadingController, registerService, navCtrl, navParams) {
-        this.storageService = storageService;
-        this.alertCtrl = alertCtrl;
-        this.toastr = toastr;
-        this.loadingController = loadingController;
-        this.registerService = registerService;
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-    }
-    BankBranchesPage.prototype.ngOnInit = function () {
-        var _this = this;
-        var loading = this.loadingController.create({
-            content: 'Loading the Account Balance..'
-        });
-        loading.present();
-        var ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
-        this.registerService.GetLocations(ActiveTenantId).subscribe(function (data) {
-            _this.bankBranch = data;
-            //alert(data.Balance);
-            loading.dismiss();
-        }, function (error) {
-            _this.toastr.error(error.message, 'Error!');
-            var alert = _this.alertCtrl.create({
-                title: "Error Message",
-                subTitle: error.message,
-                buttons: ['OK']
-            });
-            alert.present();
-            loading.dismiss();
-        });
-    };
-    BankBranchesPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad BankBranchesPage');
-    };
-    BankBranchesPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'page-bank-branches',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\bank-branches\bank-branches.html"*/'<!--\n  Generated template for the BankBranchesPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Bank Branches</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <div *ngFor="let order of bankBranch" style="background-color:#ddd;border: 1px solid lightgrey; padding: 15px; margin: 5px 0;">\n    <span>{{order.Name}}</span> \n    <br/>\n    <span>{{order.MailName}}</span> \n</div> \n</ion-content>\n'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\bank-branches\bank-branches.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_4_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_3__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */]])
-    ], BankBranchesPage);
-    return BankBranchesPage;
-}());
-
-//# sourceMappingURL=bank-branches.js.map
-
-/***/ }),
-
-/***/ 284:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthGuard; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(93);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var AuthGuard = /** @class */ (function () {
-    function AuthGuard(router) {
-        this.router = router;
-    }
-    AuthGuard.prototype.canActivate = function (next, state) {
-        if (localStorage.getItem('userToken') != null)
-            return true;
-        this.router.navigateByUrl('/login');
-        //this.navCtrl.push(LoginPage);
-        return false;
-    };
-    AuthGuard = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]])
-    ], AuthGuard);
-    return AuthGuard;
-}());
-
-//# sourceMappingURL=auth.guard.js.map
+webpackEmptyAsyncContext.id = 330;
 
 /***/ }),
 
@@ -2009,15 +1342,15 @@ var AuthGuard = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_app_data_service__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_Storage_Service__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_Storage_Service__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_Constants__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ngx_toastr__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ViewPlans_Tabs_ViewPlans_Tabs__ = __webpack_require__(274);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__favourites_favourites__ = __webpack_require__(157);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__prepaid_confirm_prepaid_confirm__ = __webpack_require__(280);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ViewPlans_Tabs_ViewPlans_Tabs__ = __webpack_require__(373);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__favourites_favourites__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__prepaid_confirm_prepaid_confirm__ = __webpack_require__(379);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__page_page__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_UIService__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_UIService__ = __webpack_require__(54);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2827,6 +2160,727 @@ var MobileRechargePage = /** @class */ (function () {
 
 /***/ }),
 
+/***/ 372:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UIHelperService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var UIHelperService = /** @class */ (function () {
+    function UIHelperService() {
+        this.rootUrl = 'https://sahakari.azurewebsites.net';
+        this.baseUrl = 'https://sahakari.azurewebsites.net/api';
+        this.rootUrl1 = 'https://sahakari.azurewebsites.net/token';
+    }
+    //    readonly rootUrl = 'http://localhost:55394';
+    //    readonly baseUrl='http://localhost:55394/api';
+    //    readonly rootUrl1 = 'http://localhost:55394/token';
+    UIHelperService.prototype.CallWebAPIUrl = function (api_action_name) {
+        return this.rootUrl + api_action_name;
+    };
+    UIHelperService.prototype.CallWebAPIUrlNew = function (api_action) {
+        return this.baseUrl + api_action;
+    };
+    UIHelperService.prototype.CallWebAPIUrl1 = function () {
+        return this.rootUrl;
+    };
+    UIHelperService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])()
+    ], UIHelperService);
+    return UIHelperService;
+}());
+
+//# sourceMappingURL=UIHelperService.js.map
+
+/***/ }),
+
+/***/ 373:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BasicPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ngx_toastr__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_Constants__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_app_data_service__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_Storage_Service__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__mobile_recharge_mobile_recharge__ = __webpack_require__(37);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+var BasicPage = /** @class */ (function () {
+    function BasicPage(storageService, alertCtrl, viewCtrl, toastr, constant, registerService, loadingController, navParams, navCtrl, platform) {
+        var _this = this;
+        this.storageService = storageService;
+        this.alertCtrl = alertCtrl;
+        this.viewCtrl = viewCtrl;
+        this.toastr = toastr;
+        this.constant = constant;
+        this.registerService = registerService;
+        this.loadingController = loadingController;
+        this.navParams = navParams;
+        this.navCtrl = navCtrl;
+        this.page = 0;
+        this.planTypes = ["FTT", "TUP", "LSC", "SMS", "OTR", "RMG"];
+        this.isAndroid = false;
+        this.isButtonEnabled = false;
+        this.active_Segmant = "0";
+        var FTT = "FullTalkTime";
+        var LSC = "LSC";
+        var TUP = "TopUp";
+        var SMS = "SMS";
+        var OTR = "Other";
+        var RMG = "Roaming";
+        this.navparams = this.navParams.data;
+        var loading = this.loadingController.create({
+            content: 'Please wait till the screen loads'
+        });
+        loading.present();
+        this.isAndroid = platform.is('android');
+        this.navparams = this.navParams.data;
+        var operatorId = this.navParams.get('OperatorId');
+        var circleId = this.navParams.get('CircleId');
+        var planRequest = {
+            OSId: operatorId,
+            CircleId: circleId,
+            PlanType: this.planTypes[0],
+            TenantId: this.storageService.GetUser().ActiveTenantId
+        };
+        this.registerService.GetPlans(planRequest).subscribe(function (data) {
+            _this.planResponse = data;
+        }, function (error) {
+            _this.toastr.error(error.message, 'Error!');
+            var alert = _this.alertCtrl.create({
+                title: "Error Message",
+                subTitle: error.message,
+                buttons: ['OK']
+            });
+            alert.present();
+        });
+        loading.dismiss();
+    }
+    BasicPage.prototype.ngOnInit = function () {
+        this.ActiveBankName = this.storageService.GetActiveBankName();
+    };
+    BasicPage.prototype.onSegmentChange = function (event) {
+        // this.slider.slideTo(event.value);
+        // this.active_Segmant=event.value.toString();
+        this.active_Segmant = event.toString();
+        this.slider.slideTo(event);
+    };
+    BasicPage.prototype.slideChanged = function () {
+        var _this = this;
+        var operatorId = this.navParams.get('OperatorId');
+        var circleId = this.navParams.get('CircleId');
+        var currentIndex = this.slider.getActiveIndex();
+        this.active_Segmant = currentIndex.toString();
+        if (this.active_Segmant == "6") {
+            this.slider.isEnd();
+            return null;
+        }
+        console.log('Current index is', currentIndex);
+        var loading = this.loadingController.create({
+            content: 'Please wait till the screen loads'
+        });
+        loading.present();
+        this.slider.slideTo(currentIndex);
+        var planRequest = {
+            OSId: operatorId,
+            CircleId: circleId,
+            PlanType: this.planTypes[currentIndex],
+            TenantId: this.storageService.GetUser().ActiveTenantId
+        };
+        this.registerService.GetPlans(planRequest).subscribe(function (data) {
+            _this.planResponse = data;
+            loading.dismiss();
+        }, function (error) {
+            _this.toastr.error(error.message, 'Error!');
+            var alert = _this.alertCtrl.create({
+                title: "Error Message",
+                subTitle: error.message,
+                buttons: ['OK']
+            });
+            alert.present();
+            loading.dismiss();
+        });
+    };
+    BasicPage.prototype.OnAmount = function (amount) {
+        this.isButtonEnabled = true;
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_6__mobile_recharge_mobile_recharge__["a" /* MobileRechargePage */], { 'Amount': amount, 'ParentId': this.navParams.get('ParentId'), 'OperatorId': this.navParams.get('OperatorId'), 'CircleId': this.navParams.get('CircleId'), 'SubscriptionId': this.navParams.get('SubscriptionId'), 'nname': this.navParams.get('nname'), 'ButtonEnabled': this.isButtonEnabled });
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_11" /* ViewChild */])('slider'),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["o" /* Slides */])
+    ], BasicPage.prototype, "slider", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_11" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* Segment */]),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* Segment */])
+    ], BasicPage.prototype, "segment", void 0);
+    BasicPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'page-ViewPlans_Tabs',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\ViewPlans_Tabs\ViewPlans_Tabs.html"*/'<ion-header>\n\n\n\n  <!-- <ion-navbar hideBackButton="true" color="primary"> -->\n\n  <!-- <ion-navbar color="primary">\n\n      <button ion-button menuToggle>\n\n        <ion-icon name="menu"></ion-icon>\n\n      </button>\n\n      <ion-title>\n\n        {{ActiveBankName}}  Mobile App\n\n      </ion-title>\n\n    </ion-navbar> -->\n\n  <!-- <ion-navbar #navbar color="primary" >\n\n      <ion-title>Whatever</ion-title>\n\n      <ion-buttons right>\n\n        <button icon-only ion-button>\n\n          <ion-icon name=\'pause\'></ion-icon>\n\n        </button>\n\n      </ion-buttons>\n\n    </ion-navbar> -->\n\n\n\n  <ion-toolbar no-border-top>\n\n    <!-- <ion-segment [(ngModel)]="active_Segmant" color="dark" (ionChange)="onSegmentChange($event)"> -->\n\n    <ion-segment [(ngModel)]="active_Segmant" color="dark">\n\n      <ion-segment-button value="0" (ionSelect)="onSegmentChange(0)">\n\n        FullTalkTime\n\n      </ion-segment-button>\n\n      <ion-segment-button value="1" (ionSelect)="onSegmentChange(1)">\n\n        LSC\n\n      </ion-segment-button>\n\n      <ion-segment-button value="2" (ionSelect)="onSegmentChange(2)">\n\n        TopUp\n\n      </ion-segment-button>\n\n      <ion-segment-button value="3" (ionSelect)="onSegmentChange(3)">\n\n        SMS\n\n      </ion-segment-button>\n\n      <ion-segment-button value="4" (ionSelect)="onSegmentChange(4)">\n\n        Other\n\n      </ion-segment-button>\n\n      <ion-segment-button value="5" (ionSelect)="onSegmentChange(5)">\n\n        Roaming\n\n      </ion-segment-button>\n\n      <!-- <ion-segment-button value="0">\n\n          FullTalkTime\n\n        </ion-segment-button>\n\n        <ion-segment-button value="1">\n\n          LSC\n\n        </ion-segment-button>\n\n        <ion-segment-button value="2">\n\n          TopUp\n\n        </ion-segment-button>\n\n        <ion-segment-button value="3">\n\n          SMS\n\n        </ion-segment-button>\n\n        <ion-segment-button value="4">\n\n          Other\n\n        </ion-segment-button>\n\n        <ion-segment-button value="5">\n\n          Roaming\n\n        </ion-segment-button> -->\n\n    </ion-segment>\n\n  </ion-toolbar>\n\n\n\n \n\n</ion-header>\n\n\n\n<ion-content padding id="page5">\n\n  <ion-slides #slider (ionSlideDidChange)="slideChanged()">\n\n    <ion-slide>\n\n      <p> Select the plans you want</p>\n\n      <ion-list *ngFor="let order of planResponse" (click)="OnAmount(order.amount)">\n\n        <ion-item style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;background-color: bisque">\n\n          <h3>Talktime:{{ order.talktime }}</h3>\n\n          <button ion-button outline icon-start item-end round medium>\n\n            {{ order.amount |currency:\'INR\' }}\n\n          </button>\n\n          <a style="color:red">{{ order.detail }}</a>\n\n          <h2>Validity:{{ order.validity }}</h2>\n\n        </ion-item>\n\n      </ion-list>\n\n    </ion-slide>\n\n    <ion-slide>\n\n      Select the plans you want\n\n      <ion-list *ngFor="let order of planResponse" (click)="OnAmount(order.amount)">\n\n        <ion-item style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;background-color: bisque">\n\n          <h3>Talktime:{{ order.talktime }}</h3>\n\n          <button ion-button outline icon-start item-end round medium>\n\n            {{ order.amount | currency:\'INR\'}}\n\n          </button>\n\n          <a style="color:red">{{ order.detail }}</a>\n\n          <h2>Validity:{{ order.validity }}</h2>\n\n        </ion-item>\n\n      </ion-list>\n\n    </ion-slide>\n\n    <ion-slide>\n\n      Select the plans you want\n\n      <ion-list *ngFor="let order of planResponse" (click)="OnAmount(order.amount)">\n\n        <ion-item style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;background-color: bisque">\n\n          <h3>Talktime:{{ order.talktime }}</h3>\n\n          <button ion-button outline icon-start item-end round medium>\n\n            {{ order.amount | currency:\'INR\'}}\n\n          </button>\n\n          <a style="color:red">{{ order.detail }}</a>\n\n          <h2>Validity:{{ order.validity }}</h2>\n\n        </ion-item>\n\n      </ion-list>\n\n    </ion-slide>\n\n    <ion-slide>\n\n      Select the plans you want\n\n      <ion-list *ngFor="let order of planResponse" (click)="OnAmount(order.amount)">\n\n        <ion-item style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;background-color: bisque">\n\n          <h3>Talktime:{{ order.talktime }}</h3>\n\n          <button ion-button outline icon-start item-end round medium>\n\n           {{ order.amount | currency:\'INR\'}}\n\n          </button>\n\n          <a style="color:red">{{ order.detail }}</a>\n\n          <h2>Validity:{{ order.validity }}</h2>\n\n        </ion-item>\n\n      </ion-list>\n\n    </ion-slide>\n\n    <ion-slide>\n\n      Select the plans you want\n\n      <ion-list *ngFor="let order of planResponse" (click)="OnAmount(order.amount)">\n\n        <ion-item style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;background-color: bisque">\n\n          <h3>Talktime:{{ order.talktime }}</h3>\n\n          <button ion-button outline icon-start item-end round medium>\n\n          {{ order.amount | currency:\'INR\'}}\n\n          </button>\n\n          <a style="color:red">{{ order.detail }}</a>\n\n          <h2>Validity:{{ order.validity }}</h2>\n\n        </ion-item>\n\n      </ion-list>\n\n    </ion-slide>\n\n    <ion-slide>\n\n      Select the plans you want\n\n      <ion-list *ngFor="let order of planResponse" (click)="OnAmount(order.amount)">\n\n        <ion-item style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;background-color: bisque">\n\n          <h3>Talktime:{{ order.talktime }}</h3>\n\n          <button ion-button outline icon-start item-end round medium>\n\n         {{ order.amount | currency:\'INR\'}}\n\n          </button>\n\n          <a style="color:red">{{ order.detail }}</a>\n\n          <h2>Validity:{{ order.validity }}</h2>\n\n        </ion-item>\n\n      </ion-list>\n\n    </ion-slide>\n\n  </ion-slides>\n\n</ion-content>'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\ViewPlans_Tabs\ViewPlans_Tabs.html"*/
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_5__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* ViewController */], __WEBPACK_IMPORTED_MODULE_2_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_3__services_Constants__["a" /* ConstantService */], __WEBPACK_IMPORTED_MODULE_4__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* Platform */]])
+    ], BasicPage);
+    return BasicPage;
+}());
+
+//# sourceMappingURL=ViewPlans_Tabs.js.map
+
+/***/ }),
+
+/***/ 374:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ModalPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+/**
+ * Generated class for the ModalPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var ModalPage = /** @class */ (function () {
+    function ModalPage(viewCtrl, params) {
+        this.viewCtrl = viewCtrl;
+        this.myParam = params.get('myParam');
+        this.Amount = params.get('myParam').Amount;
+        this.VendorExtCode = params.get('myParam').VendorExtCode;
+        this.Date = params.get('myParam').Date;
+        this.Remarks = params.get('myParam').Remarks;
+    }
+    ModalPage.prototype.dismiss = function () {
+        this.viewCtrl.dismiss();
+    };
+    ModalPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'page-modal',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\modal\modal.html"*/'<ion-header>\n\n  <ion-navbar color="primary">\n    <ion-buttons start>\n      <button ion-button (click)="dismiss()">Close</button>\n    </ion-buttons>\n    <ion-title>Reversed Voucher Detail</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <div [hidden]="!myParam">\n    <p>Reversal Transaction ID: {{VendorExtCode}}</p>\n    <p>Amount: {{Amount|currency:\'INR\'}}</p>\n    <p>Date: {{Date|date:\'dd/MM/yyyy\'}}</p>\n    <p>Remarks: {{Remarks}}</p>\n  </div>\n  <div [hidden]="myParam">\n    <p>No parameters passed.</p>\n  </div>\n  <button ion-button color="danger" full (click)="dismiss()">Close</button>\n\n</ion-content>'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\modal\modal.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* ViewController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */]])
+    ], ModalPage);
+    return ModalPage;
+}());
+
+//# sourceMappingURL=modal.js.map
+
+/***/ }),
+
+/***/ 376:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FundTransferConfirmPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ngx_toastr__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_app_data_service__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_Storage_Service__ = __webpack_require__(13);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+/**
+ * Generated class for the FundTransferConfirmPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var FundTransferConfirmPage = /** @class */ (function () {
+    function FundTransferConfirmPage(storageService, alertCtrl, toastr, loadingController, registerService, navCtrl, navParams) {
+        this.storageService = storageService;
+        this.alertCtrl = alertCtrl;
+        this.toastr = toastr;
+        this.loadingController = loadingController;
+        this.registerService = registerService;
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+    }
+    FundTransferConfirmPage.prototype.ngOnInit = function () {
+        this.navparams = this.navParams.data;
+        this.HeadName = this.navParams.get('HeadName');
+        this.AcNo = this.navParams.get('AcNo');
+        this.ToName = this.navParams.get('ToName');
+        this.ToAcNo = this.navParams.get('ToAcNo');
+        this.showConfirm = true;
+    };
+    FundTransferConfirmPage.prototype.GetSelfCareAcByTenantID = function (ActiveTenantId) {
+        var AcSubId = this.navParams.get('AcSubId');
+        var SelfCareACs = this.storageService.GetSelfCareAc();
+        // this.selfCareAC=this.SelfCareACs.find(function (obj) { return obj.TenantId === ActiveTenantId&&obj.AcActId=="#SB"&&obj.AcSubId===this.AcSubId; });
+        this.selfCareAC = SelfCareACs.find(function (obj) { return obj.TenantId === ActiveTenantId && obj.AcSubId === AcSubId; });
+        return this.selfCareAC;
+    };
+    FundTransferConfirmPage.prototype.OnConfirm = function () {
+        var _this = this;
+        var ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
+        var loading = this.loadingController.create({
+            content: 'Transferring the Fund..'
+        });
+        loading.present();
+        var doFundTransfer = {
+            TenantId: this.navparams.doFundTransfer.TenantId,
+            DigiPartyId: this.navParams.get('doFundTransfer').DigiPartyId,
+            FromAcMastId: this.navParams.get('doFundTransfer').FromAcMastId,
+            FromAcSubId: this.navParams.get('doFundTransfer').FromAcSubId,
+            FromLocId: this.navParams.get('doFundTransfer').FromLocId,
+            ToAcMastId: this.navParams.get('doFundTransfer').ToAcMastId,
+            ToAcSubId: this.navParams.get('doFundTransfer').ToAcSubId,
+            ToLocId: this.navParams.get('doFundTransfer').ToLocId,
+            Amount: this.navParams.get('doFundTransfer').Amount,
+            ToAcNo: this.navParams.get('doFundTransfer').ToAcNo
+        };
+        this.registerService.FundTransfer(doFundTransfer).subscribe(function (data) {
+            _this.confirm = null;
+            _this.ftd = data;
+            if (data.Status == "1") {
+                _this.toastr.success('Fund Transferred with Success', 'Success!');
+                var alert = _this.alertCtrl.create({
+                    title: "Success Message",
+                    subTitle: "Fund Transferred",
+                    buttons: ['OK']
+                });
+                alert.present();
+                _this.showstatus = true;
+                _this.showConfirm = false;
+            }
+            else {
+                _this.toastr.error(data.AISError, 'Error!');
+                var alert = _this.alertCtrl.create({
+                    title: "Error Message",
+                    subTitle: data.AISError,
+                    buttons: ['OK']
+                });
+                alert.present();
+                _this.showFailure = true;
+                _this.showConfirm = false;
+            }
+            loading.dismiss();
+        }, function (error) {
+            _this.toastr.error(error.message, 'Error!');
+            var alert = _this.alertCtrl.create({
+                title: "Error Message",
+                subTitle: error.message,
+                buttons: ['OK']
+            });
+            alert.present();
+            loading.dismiss();
+        });
+    };
+    FundTransferConfirmPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad FundTransferConfirmPage');
+    };
+    FundTransferConfirmPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'page-fund-transfer-confirm',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\fund-transfer-confirm\fund-transfer-confirm.html"*/'<!--\n  Generated template for the FundTransferConfirmPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar color="primary">\n    <ion-title *ngIf="showConfirm">Confirm Fund Transfer </ion-title>\n    <ion-title *ngIf="showstatus">Fund Transfered </ion-title>\n    <ion-title *ngIf="showFailure">Fund Transfer Failured</ion-title>\n  </ion-navbar>\n  \n</ion-header>\n\n\n<ion-content padding>\n  <div *ngIf="showConfirm">\n      <div>\n    <ion-card>\n\n      <ion-card-header style="background-color:red">\n        From Account\n      </ion-card-header>\n      <ion-card-content>\n        Account Name: {{HeadName}}\n        <br/>\n        Acount No: {{AcNo}}\n      </ion-card-content>\n    </ion-card>\n    <br/>\n    <ion-card>\n\n      <ion-card-header style="background-color:red">\n        To Account\n      </ion-card-header>\n    <br/>\n    <ion-card-content>\n      Name: {{ToName}}\n      <br/>\n      Acount No: {{ToAcNo}}\n      <br/>\n      Amount: {{navparams.doFundTransfer.Amount}}\n    </ion-card-content>\n      <button id="register-button9" (click)="OnConfirm()" ion-button color="positive" block>\n        Confirm\n      </button>\n  </ion-card>\n  </div>\n  </div>\n  <div *ngIf="showstatus">\n    <h1>Fund transferred with Success</h1>\n  </div>\n  <div *ngIf="showFailure">\n    <h1>Fund transfer failured</h1>\n  </div>\n</ion-content>\n'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\fund-transfer-confirm\fund-transfer-confirm.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_2_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_3__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */]])
+    ], FundTransferConfirmPage);
+    return FundTransferConfirmPage;
+}());
+
+//# sourceMappingURL=fund-transfer-confirm.js.map
+
+/***/ }),
+
+/***/ 377:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BalanceEnquiryPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_app_data_service__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_toastr__ = __webpack_require__(24);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var BalanceEnquiryPage = /** @class */ (function () {
+    function BalanceEnquiryPage(storageService, alertCtrl, toastr, loadingController, registerService, navCtrl) {
+        this.storageService = storageService;
+        this.alertCtrl = alertCtrl;
+        this.toastr = toastr;
+        this.loadingController = loadingController;
+        this.registerService = registerService;
+        this.navCtrl = navCtrl;
+    }
+    BalanceEnquiryPage.prototype.ngOnInit = function () {
+        this.HideMsg = true;
+        this.ShowHide = true;
+        this.ActiveBankName = this.storageService.GetActiveBankName();
+        this.SelfCareAcsBasedOnTenantID = this.storageService.GetSelfCareAcsBasedOnTenantID();
+    };
+    BalanceEnquiryPage.prototype.OnGetAccountBalance = function (AcHeadId, AcSubId) {
+        var _this = this;
+        var loading = this.loadingController.create({
+            content: 'Loading the Account Balance..'
+        });
+        loading.present();
+        var statementRequest = {
+            AcMastId: AcHeadId,
+            AcSubId: AcSubId,
+            TenantId: this.storageService.GetUser().ActiveTenantId
+        };
+        this.registerService.GetAccountBalance(statementRequest).subscribe(function (data) {
+            _this.balance = data;
+            //alert(data.Balance);
+            loading.dismiss();
+        }, function (error) {
+            _this.toastr.error(error.message, 'Error!');
+            var alert = _this.alertCtrl.create({
+                title: "Error Message",
+                subTitle: error.message,
+                buttons: ['OK']
+            });
+            alert.present();
+            loading.dismiss();
+        });
+        this.ShowHide = false;
+        this.HideMsg = false;
+    };
+    BalanceEnquiryPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'page-balance-enquiry',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\balance-enquiry\balance-enquiry.html"*/'<ion-header>\n\n    <ion-navbar color="primary">\n\n      <button ion-button menuToggle>\n\n        <ion-icon name="menu"></ion-icon>\n\n      </button>\n\n      <ion-title>\n\n        Balance-Enquiry  {{ActiveBankName}}\n\n      </ion-title>\n\n    </ion-navbar>\n\n  </ion-header>\n\n  <ion-content padding id="page3">\n\n      <span style="color: blue" *ngIf="HideMsg">Click on Account of your wish</span>  \n\n    <div  *ngIf="ShowHide">   \n\n      <div *ngFor="let order of SelfCareAcsBasedOnTenantID" (click)="OnGetAccountBalance(order.AcHeadId,order.AcSubId)" style="background-color:#ddd;border: 1px solid lightgrey; padding: 15px; margin: 5px 0;">\n\n        <span>Name: {{order.HeadName}}</span> \n\n        <br/>\n\n        <span>Account No: {{order.AcNo}}</span> \n\n    </div> \n\n      </div>\n\n    <div *ngIf="balance">\n\n        <span>Balance Amount : {{ balance.Balance|currency:\'INR\' }}</span>\n\n    </div>\n\n  </ion-content>\n\n\n\n  <ion-footer color="primary">\n\n    <ion-toolbar>\n\n      <ion-title>{{ActiveBankName}}</ion-title>\n\n    </ion-toolbar>\n\n  </ion-footer>\n\n  <ion-footer>\n\n    <ion-toolbar color="primary">\n\n      <ion-title>{{ActiveBankName}} All Rights Rserved</ion-title>\n\n    </ion-toolbar>\n\n  </ion-footer>\n\n'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\balance-enquiry\balance-enquiry.html"*/
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_4_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_3__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]])
+    ], BalanceEnquiryPage);
+    return BalanceEnquiryPage;
+}());
+
+//# sourceMappingURL=balance-enquiry.js.map
+
+/***/ }),
+
+/***/ 378:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MiniStatementPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_app_data_service__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_toastr__ = __webpack_require__(24);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var MiniStatementPage = /** @class */ (function () {
+    function MiniStatementPage(storageService, alertCtrl, toastr, loadingController, registerService, navCtrl) {
+        this.storageService = storageService;
+        this.alertCtrl = alertCtrl;
+        this.toastr = toastr;
+        this.loadingController = loadingController;
+        this.registerService = registerService;
+        this.navCtrl = navCtrl;
+        this.ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
+    }
+    MiniStatementPage.prototype.ngOnInit = function () {
+        this.ShowHide = true;
+        this.HideMsg = true;
+        this.ActiveBankName = this.storageService.GetActiveBankName();
+        this.SelfCareAcsBasedOnTenantID = this.storageService.GetSelfCareAcsBasedOnTenantID();
+    };
+    MiniStatementPage.prototype.OnGetMiniStatement = function (AcHeadId, AcSubId) {
+        var _this = this;
+        var loading = this.loadingController.create({
+            content: 'Loading the Mini Statement..'
+        });
+        loading.present();
+        var statementRequest = {
+            AcMastId: AcHeadId,
+            AcSubId: AcSubId,
+            TenantId: this.ActiveTenantId
+        };
+        this.registerService.GetStatement(statementRequest).subscribe(function (data) {
+            _this.balance = data;
+            _this.miniStatement = data;
+            _this.statementItem = data.StatementItems;
+            loading.dismiss();
+        }, function (error) {
+            _this.toastr.error(error.message, 'Error!');
+            var alert = _this.alertCtrl.create({
+                title: "Error Message",
+                subTitle: error.message,
+                buttons: ['OK']
+            });
+            alert.present();
+            loading.dismiss();
+        });
+        this.ShowHide = false;
+        this.HideMsg = false;
+    };
+    MiniStatementPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'page-mini-statement',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\mini-statement\mini-statement.html"*/'<ion-header>\n\n  <ion-navbar color="primary">\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>\n\n      Mini Statement {{ActiveBankName}}\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content padding id="page9" >\n\n  <span style="color: blue" *ngIf="HideMsg">Click on Account of your wish</span>  \n\n  <div  *ngIf="ShowHide">   \n\n    <div *ngFor="let order of SelfCareAcsBasedOnTenantID" (click)="OnGetMiniStatement(order.AcHeadId,order.AcSubId)" style="background-color:#ddd;border: 1px solid lightgrey; padding: 15px; margin: 5px 0;">\n\n      <span>Name: {{order.HeadName}}</span> \n\n      <br/>\n\n      <span>Account No: {{order.AcNo}}</span> \n\n  </div> \n\n    </div>\n\n      <div *ngIf="balance">\n\n  <div class="spacer" style="width:300px;height:21px;" id="miniStatement-spacer3"></div>\n\n  <ion-list id="miniStatement-list9">\n\n     <ion-item color="none" id="miniStatement-list-item42" *ngIf="(balance.Amount)<0" style="color: rebeccapurple">\n\n      Account Balance : {{balance.Amount|currency:\'INR\'}} Debit\n\n    </ion-item>\n\n    <ion-item color="none" id="miniStatement-list-item42" *ngIf="(balance.Amount)>0" style="color: rebeccapurple">\n\n      Account Balance : {{balance.Amount|currency:\'INR\'}} Credit\n\n    </ion-item>\n\n  </ion-list>  \n\n  <ion-card id="miniStatement-card22" *ngFor="let order of statementItem">\n\n      <ion-list id="miniStatement-list10">\n\n\n\n      <ion-item color="none" id="miniStatement-list-item46">\n\n        <ion-note item-start>\n\n          <p>{{order.Dt|date:\'dd/MM/yyyy\'}}</p>\n\n         <p *ngIf="(order.Cr)==0" style="color: red">Debited : {{order.Dr|currency:\'INR\'}}</p>\n\n         <p *ngIf="(order.Dr)==0" style="color: green;">Credited : {{order.Cr|currency:\'INR\'}}</p>\n\n          <p style="margin-top:0px;color:#000000;">\n\n              Remark: {{order.Remark}}\n\n            </p>\n\n          </ion-note>\n\n      </ion-item>\n\n    </ion-list>\n\n  \n\n  </ion-card>\n\n</div>\n\n</ion-content>\n\n<ion-footer>\n\n  <ion-toolbar color="primary">\n\n    <ion-title>{{ActiveBankName}} All Rights Rserved</ion-title>\n\n  </ion-toolbar>\n\n</ion-footer>'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\mini-statement\mini-statement.html"*/
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_4_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_3__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]])
+    ], MiniStatementPage);
+    return MiniStatementPage;
+}());
+
+//# sourceMappingURL=mini-statement.js.map
+
+/***/ }),
+
+/***/ 379:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PrepaidConfirmPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_Constants__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_app_data_service__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ngx_toastr__ = __webpack_require__(24);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+var PrepaidConfirmPage = /** @class */ (function () {
+    function PrepaidConfirmPage(storageService, alertCtrl, toastr, registerService, constantService, loadingController, navCtrl, navParams) {
+        this.storageService = storageService;
+        this.alertCtrl = alertCtrl;
+        this.toastr = toastr;
+        this.registerService = registerService;
+        this.constantService = constantService;
+        this.loadingController = loadingController;
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+    }
+    PrepaidConfirmPage.prototype.ngOnInit = function () {
+        this.operator = this.navParams.get('Operator');
+        this.SubscriptionId = this.navParams.get('SubscriptionId');
+        this.Amount = this.navParams.get('Amount');
+        this.ParentId = this.navParams.get('ParentId');
+        this.OperatorId = this.navParams.get('OperatorId');
+        this.ActiveBankName = this.storageService.GetActiveBankName();
+        this.showTitle = true;
+        switch (this.ParentId) {
+            case "S1":
+                this.OperatorService = "PrePaid";
+                break;
+            case "S2":
+                this.OperatorService = "PostPaid";
+                break;
+            case "S3":
+                this.OperatorService = "DTH";
+                break;
+            default:
+                this.OperatorService = "Electricity Bill";
+                break;
+        }
+    };
+    PrepaidConfirmPage.prototype.GetDigiPartyandPartyMastID = function (ActiveTenantId) {
+        var DigiParties = this.storageService.GetDigiParty();
+        var digiparty = DigiParties.find(function (obj) { return obj.TenantId === ActiveTenantId; });
+        return digiparty;
+    };
+    PrepaidConfirmPage.prototype.GetSelfCareAcByTenantID = function (ActiveTenantId) {
+        var SelfCareACs = this.storageService.GetSelfCareAc();
+        var selfCareAC = SelfCareACs.find(function (obj) { return obj.TenantId === ActiveTenantId && obj.AcActId == "#SB"; });
+        return selfCareAC;
+    };
+    PrepaidConfirmPage.prototype.OnConfirm = function () {
+        var _this = this;
+        var loading = this.loadingController.create({
+            content: 'Recharging...'
+        });
+        loading.present();
+        this.showTitle = false;
+        var ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
+        var rechargeModel = {
+            TenantId: ActiveTenantId,
+            DigiPartyId: this.GetDigiPartyandPartyMastID(ActiveTenantId).DigiPartyId,
+            PartyMastId: this.GetDigiPartyandPartyMastID(ActiveTenantId).PartyMastId,
+            AcMastId: this.GetSelfCareAcByTenantID(ActiveTenantId).AcHeadId,
+            AcSubId: this.GetSelfCareAcByTenantID(ActiveTenantId).AcSubId,
+            // Amount: this.rechargeitem.Amount,
+            // OperatorId: this.rechargeitem.OperatorId,
+            // SubscriptionId: this.rechargeitem.SubscriptionId,
+            Amount: this.navParams.get('Amount'),
+            OperatorId: this.navParams.get('OperatorId'),
+            SubscriptionId: this.navParams.get('SubscriptionId'),
+            LocId: this.GetSelfCareAcByTenantID(ActiveTenantId).LocId
+        };
+        this.registerService.PostRecharge(rechargeModel).subscribe(function (data) {
+            _this.tranResponse = data;
+            _this.showConfirm = false;
+            switch (data.StatusCode) {
+                case 1:
+                    var alert = _this.alertCtrl.create({
+                        title: "Message",
+                        subTitle: 'Recharge is successful with Transaction ID ' + _this.tranResponse.VendorExtCode,
+                        buttons: ['OK']
+                    });
+                    alert.present();
+                    _this.showSuccess = true;
+                    break;
+                case 2:
+                    //alert("Recharge is pending with Transaction ID "+ this.tranResponse.VendorExtCode);
+                    var alert = _this.alertCtrl.create({
+                        title: "Message",
+                        subTitle: 'Recharge is pending with Transaction ID ' + _this.tranResponse.VendorExtCode,
+                        buttons: ['OK']
+                    });
+                    alert.present();
+                    _this.showPending = true;
+                    break;
+                case 3:
+                    ///alert("Recharge is initiated with Transaction ID "+ this.tranResponse.VendorExtCode);
+                    var alert = _this.alertCtrl.create({
+                        title: "Message",
+                        subTitle: 'Recharge is initiated with Transaction ID ' + _this.tranResponse.VendorExtCode,
+                        buttons: ['OK']
+                    });
+                    alert.present();
+                    _this.showInit = true;
+                    break;
+                case 4:
+                    //alert("Recharge is failure with Transaction ID "+ this.tranResponse.VendorExtCode);
+                    var alert = _this.alertCtrl.create({
+                        title: "Error Message",
+                        subTitle: 'Recharge is Unsuccessful with Transaction ID ' + _this.tranResponse.VendorExtCode,
+                        buttons: ['OK']
+                    });
+                    alert.present();
+                    _this.showFailure = true;
+                    break;
+                case 5:
+                    //alert("Recharge is refunded with Transaction ID "+ this.tranResponse.VendorExtCode);
+                    var alert = _this.alertCtrl.create({
+                        title: "Message",
+                        subTitle: 'Recharge is refunded with Transaction ID ' + _this.tranResponse.VendorExtCode,
+                        buttons: ['OK']
+                    });
+                    alert.present();
+                    _this.showRefund = true;
+                    break;
+                case 9:
+                    //alert("Recharge is blocked with Transaction ID "+ this.tranResponse.VendorExtCode);
+                    var alert = _this.alertCtrl.create({
+                        title: "Message",
+                        subTitle: 'Recharge is blocked with Transaction ID ' + _this.tranResponse.VendorExtCode,
+                        buttons: ['OK']
+                    });
+                    alert.present();
+                    _this.showBlocked = true;
+                    break;
+                default:
+                    //alert("Recharge is blocked with Transaction ID "+ this.tranResponse.VendorExtCode);
+                    var alert = _this.alertCtrl.create({
+                        title: "Message",
+                        subTitle: _this.tranResponse.AISError,
+                        buttons: ['OK']
+                    });
+                    alert.present();
+                    _this.showBlocked = true;
+                    break;
+            }
+            loading.dismiss();
+        }, function (error) {
+            //this.toastr.error(error.message, 'Error!');
+            var alert = _this.alertCtrl.create({
+                title: "Message",
+                subTitle: error.message,
+                buttons: ['OK']
+            });
+            alert.present();
+            loading.dismiss();
+        });
+    };
+    PrepaidConfirmPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'page-prepaid-confirm',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\prepaid-confirm\prepaid-confirm.html"*/'<!--\n  Generated template for the PrepaidConfirmPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title *ngIf="showTitle">\n      Confirm {{OperatorService}} Recharge-{{ActiveBankName}}\n    </ion-title>\n    <ion-title *ngIf="showSuccess||showPending||showInit||showFailure||showRefund||showBlocked">\n        <!-- <ion-title *ngIf="showSuccess"> -->\n      {{OperatorService}} Recharge -{{ActiveBankName}}\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <div class="row" *ngIf="showTitle">\n    <div class="col s12 m7">\n      <div class="card">\n          <!--interpolation-->\n        <div class="card-content">     \n        <span>Selected Operator : {{ operator }}</span> <br>\n        <span>Mobile No : {{ SubscriptionId }}</span> <br>\n        <span>Recharge Amount : {{ Amount }}</span> <br>\n        </div>       \n      </div>\n    </div>\n    <button id="register-button8" ion-button color="positive" type="button" (click)="OnConfirm()" block>\n      Confirm\n    </button>\n  </div>\n  <div *ngIf="showSuccess">\n  <h1 style="color: green;">Recharge is Successful...</h1>\n  <p>Transaction ID: {{tranResponse.VendorExtCode}}</p>\n  </div>\n  <div *ngIf="showPending">\n    <h1 style="color: darkorange;">Recharge is Pending...</h1>\n    <p>Transaction ID: {{tranResponse.VendorExtCode}}</p>\n  </div>\n  <div *ngIf="showInit">\n    <h1>Recharge is Initiated...Please wait for a minute..</h1>\n    <p>Transaction ID: {{tranResponse.VendorExtCode}}</p>\n  </div>\n  <div *ngIf="showFailure">\n    <h1 style="color: red;">Sorry, Recharge is Unsuccessful...</h1>\n    <p>Transaction ID: {{tranResponse.VendorExtCode}}</p>\n  </div>\n  <div *ngIf="showRefund">\n    <h1>Recharge is Refunded due to some issues...</h1>\n    <p>Transaction ID: {{tranResponse.VendorExtCode}}</p>\n  </div>\n  <div *ngIf="showBlocked">\n    <h1>Recharge is Blocked due to some issues...</h1>\n  </div>\n</ion-content>\n'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\prepaid-confirm\prepaid-confirm.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_5_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_4__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_3__services_Constants__["a" /* ConstantService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */]])
+    ], PrepaidConfirmPage);
+    return PrepaidConfirmPage;
+}());
+
+//# sourceMappingURL=prepaid-confirm.js.map
+
+/***/ }),
+
 /***/ 38:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2834,10 +2888,10 @@ var MobileRechargePage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BankingPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fund_transfer_fund_transfer__ = __webpack_require__(160);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__balance_enquiry_balance_enquiry__ = __webpack_require__(278);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mini_statement_mini_statement__ = __webpack_require__(279);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fund_transfer_fund_transfer__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__balance_enquiry_balance_enquiry__ = __webpack_require__(377);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mini_statement_mini_statement__ = __webpack_require__(378);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__page_page__ = __webpack_require__(47);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2891,13 +2945,320 @@ var BankingPage = /** @class */ (function () {
 
 /***/ }),
 
+/***/ 380:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SettingPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var SettingPage = /** @class */ (function () {
+    function SettingPage(navCtrl) {
+        this.navCtrl = navCtrl;
+    }
+    SettingPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'page-setting',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\setting\setting.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>\n      Setting\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n<ion-content padding id="page2"></ion-content>'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\setting\setting.html"*/
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]])
+    ], SettingPage);
+    return SettingPage;
+}());
+
+//# sourceMappingURL=setting.js.map
+
+/***/ }),
+
+/***/ 381:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyProfilePage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__enter_otp_enter_otp__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_app_data_service__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__login_login__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__node_modules_ngx_toastr__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__page_page__ = __webpack_require__(47);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+/**
+ * Generated class for the MyProfilePage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var MyProfilePage = /** @class */ (function () {
+    function MyProfilePage(toastrService, loadingController, alertCtrl, storageService, registerService, navCtrl, navParams) {
+        this.toastrService = toastrService;
+        this.loadingController = loadingController;
+        this.alertCtrl = alertCtrl;
+        this.storageService = storageService;
+        this.registerService = registerService;
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+    }
+    MyProfilePage.prototype.ngOnInit = function () {
+        var _this = this;
+        var loading = this.loadingController.create({
+            content: 'Loading the Mini Statement..'
+        });
+        loading.present();
+        this.digipartyname = this.storageService.GetDigipartyBasedOnActiveTenantId().Name;
+        this.mobileno = this.storageService.GetUser().UserName;
+        this.registerService.GetTenantsByMobile(this.mobileno).subscribe(function (data) {
+            _this.tenantList = data;
+            _this.storageService.SetTenant(JSON.stringify(_this.tenantList));
+            _this.tenants = _this.storageService.GetTenant();
+            loading.dismiss();
+        }, function (error) {
+            var alert = _this.alertCtrl.create({
+                title: "Error Message",
+                subTitle: error.message,
+                buttons: ['OK']
+            });
+            alert.present();
+            loading.dismiss();
+        });
+    };
+    MyProfilePage.prototype.OnChange = function () {
+        var ischangePassword = true;
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__enter_otp_enter_otp__["a" /* EnterOTPPage */], { 'ischangePassword': ischangePassword });
+    };
+    MyProfilePage.prototype.OnLogOut = function () {
+        this.storageService.RemoveRecordsForLogout();
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_5__login_login__["a" /* LoginPage */]);
+    };
+    MyProfilePage.prototype.OnSync = function () {
+        var _this = this;
+        this.storageService.RemoveRecordsForLogout();
+        var loading = this.loadingController.create({
+            content: 'Syncing Operators and Services'
+        });
+        loading.present();
+        this.registerService.GetServices().subscribe(function (data) {
+            var oS = JSON.stringify(data);
+            _this.storageService.SetOS(oS);
+            loading.dismiss();
+        }, function (error) {
+            _this.toastrService.error(error.message, 'Error!');
+            loading.dismiss();
+            var alert = _this.alertCtrl.create({
+                title: "Error Message",
+                subTitle: error.message,
+                buttons: ['OK']
+            });
+            alert.present();
+        });
+        var loadingnew = this.loadingController.create({
+            content: 'Syncing Accounts'
+        });
+        loadingnew.present();
+        this.callservices();
+        loadingnew.dismiss();
+    };
+    MyProfilePage.prototype.callservices = function () {
+        var _this = this;
+        var addBankRequest = {
+            TenantId: this.storageService.GetUser().ActiveTenantId,
+            MobileNo: this.storageService.GetUser().UserName
+        };
+        this.registerService.AddBank(addBankRequest).subscribe(function (data) {
+            var tenant = {
+                Id: data.Tenant.Id,
+                Name: data.Tenant.Name,
+                Address: data.Tenant.Address,
+                IconHtml: data.Tenant.IconHtml
+            };
+            _this.storageService.SetTenant(JSON.stringify([tenant]));
+            var ActiveBankName = _this.storageService.GetActiveBankName();
+            var digiParty = {
+                Id: data.DigiPartyId,
+                DigiPartyId: data.DigiPartyId,
+                PartyMastId: data.PartyMastId,
+                MobileNo: data.MobileNo,
+                TenantId: data.TenantId,
+                Name: data.Name
+            };
+            _this.storageService.SetDigiParty(JSON.stringify([digiParty]));
+            _this.storageService.SetSelfCareAc(JSON.stringify(data.SelfCareAcs));
+            _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_7__page_page__["a" /* PagePage */], { 'ActiveBankName': ActiveBankName });
+        }, function (error) {
+            _this.toastrService.error(error.error.ExceptionMessage, 'Error!');
+            var alert = _this.alertCtrl.create({
+                title: "Error Message",
+                subTitle: error.error.ExceptionMessage,
+                buttons: ['OK']
+            });
+            alert.present();
+        });
+    };
+    MyProfilePage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'page-my-profile',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\my-profile\my-profile.html"*/'<!--\n  Generated template for the MyProfilePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n    <ion-navbar color="primary">\n        <button ion-button menuToggle>\n          <ion-icon name="menu"></ion-icon>\n        </button>\n    <ion-title>My Profile</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list id="miniStatement-list9">\n    <ion-item color="none" id="miniStatement-list-item42">\n     Name :{{digipartyname}}\n   </ion-item>\n   <ion-item color="none" id="miniStatement-list-item42">\n    Mobile Number :{{mobileno}}\n  </ion-item>\n  Linked Bank Accounts\n<ion-item *ngFor="let order of tenants">\n        \n        \n        <h2 style="text-transform:capitalize;">{{ order.Name }}</h2>\n        <p>Branch:{{ order.Address }}</p>\n  \n</ion-item>\n<ion-item>\n    <a style="color:darkorange;" (click)="OnChange()">Change password?</a>\n</ion-item>\n<ion-item>\n  <a style="color:darkorange;" (click)="OnSync()">Sync Accounts</a>\n</ion-item>\n<ion-item>\n    <a style="color:darkorange;" (click)="OnLogOut()">LogOut</a>\n</ion-item>\n </ion-list>\n</ion-content>\n'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\my-profile\my-profile.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_6__node_modules_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_4__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */]])
+    ], MyProfilePage);
+    return MyProfilePage;
+}());
+
+//# sourceMappingURL=my-profile.js.map
+
+/***/ }),
+
 /***/ 382:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BankBranchesPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_app_data_service__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_toastr__ = __webpack_require__(24);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+/**
+ * Generated class for the BankBranchesPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var BankBranchesPage = /** @class */ (function () {
+    function BankBranchesPage(storageService, alertCtrl, toastr, loadingController, registerService, navCtrl, navParams) {
+        this.storageService = storageService;
+        this.alertCtrl = alertCtrl;
+        this.toastr = toastr;
+        this.loadingController = loadingController;
+        this.registerService = registerService;
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+    }
+    BankBranchesPage.prototype.ngOnInit = function () {
+        var _this = this;
+        var loading = this.loadingController.create({
+            content: 'Loading the Account Balance..'
+        });
+        loading.present();
+        var ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
+        this.registerService.GetLocations(ActiveTenantId).subscribe(function (data) {
+            _this.bankBranch = data;
+            //alert(data.Balance);
+            loading.dismiss();
+        }, function (error) {
+            _this.toastr.error(error.message, 'Error!');
+            var alert = _this.alertCtrl.create({
+                title: "Error Message",
+                subTitle: error.message,
+                buttons: ['OK']
+            });
+            alert.present();
+            loading.dismiss();
+        });
+    };
+    BankBranchesPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad BankBranchesPage');
+    };
+    BankBranchesPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'page-bank-branches',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\bank-branches\bank-branches.html"*/'<!--\n  Generated template for the BankBranchesPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Bank Branches</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <div *ngFor="let order of bankBranch" style="background-color:#ddd;border: 1px solid lightgrey; padding: 15px; margin: 5px 0;">\n    <span>{{order.Name}}</span> \n    <br/>\n    <span>{{order.MailName}}</span> \n</div> \n</ion-content>\n'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\bank-branches\bank-branches.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_4_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_3__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */]])
+    ], BankBranchesPage);
+    return BankBranchesPage;
+}());
+
+//# sourceMappingURL=bank-branches.js.map
+
+/***/ }),
+
+/***/ 383:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthGuard; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(101);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var AuthGuard = /** @class */ (function () {
+    function AuthGuard(router) {
+        this.router = router;
+    }
+    AuthGuard.prototype.canActivate = function (next, state) {
+        if (localStorage.getItem('userToken') != null)
+            return true;
+        this.router.navigateByUrl('/login');
+        //this.navCtrl.push(LoginPage);
+        return false;
+    };
+    AuthGuard = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]])
+    ], AuthGuard);
+    return AuthGuard;
+}());
+
+//# sourceMappingURL=auth.guard.js.map
+
+/***/ }),
+
+/***/ 384:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(383);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(387);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(385);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(389);
 
 
 Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_1__app_module__["a" /* AppModule */]);
@@ -2905,63 +3266,68 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 /***/ }),
 
-/***/ 387:
+/***/ 389:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
+/* unused harmony export HttpLoaderFactory */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ngx_toastr__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser_animations__ = __webpack_require__(388);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_toast__ = __webpack_require__(390);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_component__ = __webpack_require__(433);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_home_home__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_setting_setting__ = __webpack_require__(281);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_change_bank_change_bank__ = __webpack_require__(161);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_banking_banking__ = __webpack_require__(38);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_page_page__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_login_login__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_recharge_recharge__ = __webpack_require__(158);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_favourites_favourites__ = __webpack_require__(157);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_mini_statement_mini_statement__ = __webpack_require__(279);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_mobile_recharge_mobile_recharge__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_confirm_page_confirm_page__ = __webpack_require__(437);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__pages_recharge_successful_recharge_successful__ = __webpack_require__(438);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__pages_register_register__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pages_bank_list_bank_list__ = __webpack_require__(439);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_enter_otp_enter_otp__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__angular_common_http__ = __webpack_require__(152);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__angular_http__ = __webpack_require__(440);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__pages_auth_auth_guard__ = __webpack_require__(284);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25_ionic2_auto_complete__ = __webpack_require__(443);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__ionic_native_status_bar__ = __webpack_require__(271);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__ionic_native_splash_screen__ = __webpack_require__(272);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__pages_services_app_data_service__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__pages_UIHelperClasses_UIHelperService__ = __webpack_require__(273);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__pages_auth_auth_interceptor__ = __webpack_require__(713);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__angular_router__ = __webpack_require__(93);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__routes__ = __webpack_require__(714);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__pages_services_Storage_Service__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__pages_services_Constants__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__pages_services_AutoLogOutService__ = __webpack_require__(715);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__pages_fund_transfer_fund_transfer__ = __webpack_require__(160);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__pages_balance_enquiry_balance_enquiry__ = __webpack_require__(278);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__pages_ViewPlans_Tabs_ViewPlans_Tabs__ = __webpack_require__(274);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__pages_recharge_report_recharge_report__ = __webpack_require__(159);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__pages_prepaid_confirm_prepaid_confirm__ = __webpack_require__(280);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__pages_services_UIService__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__pages_my_profile_my_profile__ = __webpack_require__(282);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__pages_bank_branches_bank_branches__ = __webpack_require__(283);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__pages_fund_transfer_confirm_fund_transfer_confirm__ = __webpack_require__(277);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__pages_modal_modal__ = __webpack_require__(275);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(390);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_toastr__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_platform_browser_animations__ = __webpack_require__(666);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_toast__ = __webpack_require__(668);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ngx_translate_core__ = __webpack_require__(290);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ngx_translate_http_loader__ = __webpack_require__(672);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__app_component__ = __webpack_require__(708);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_home_home__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_setting_setting__ = __webpack_require__(380);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_change_bank_change_bank__ = __webpack_require__(178);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_banking_banking__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_page_page__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_login_login__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_recharge_recharge__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__pages_favourites_favourites__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__pages_mini_statement_mini_statement__ = __webpack_require__(378);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pages_mobile_recharge_mobile_recharge__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_confirm_page_confirm_page__ = __webpack_require__(712);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__pages_recharge_successful_recharge_successful__ = __webpack_require__(713);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__pages_register_register__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__pages_bank_list_bank_list__ = __webpack_require__(714);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__pages_enter_otp_enter_otp__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__pages_auth_auth_guard__ = __webpack_require__(383);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27_ionic2_auto_complete__ = __webpack_require__(715);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__ionic_native_status_bar__ = __webpack_require__(370);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__ionic_native_splash_screen__ = __webpack_require__(371);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__pages_services_app_data_service__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__pages_UIHelperClasses_UIHelperService__ = __webpack_require__(372);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__pages_auth_auth_interceptor__ = __webpack_require__(716);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__angular_router__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__routes__ = __webpack_require__(717);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__pages_services_Storage_Service__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__pages_services_Constants__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__pages_services_AutoLogOutService__ = __webpack_require__(718);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__pages_fund_transfer_fund_transfer__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__pages_balance_enquiry_balance_enquiry__ = __webpack_require__(377);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__pages_ViewPlans_Tabs_ViewPlans_Tabs__ = __webpack_require__(373);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__pages_recharge_report_recharge_report__ = __webpack_require__(176);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__pages_prepaid_confirm_prepaid_confirm__ = __webpack_require__(379);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__pages_services_UIService__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__pages_my_profile_my_profile__ = __webpack_require__(381);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__pages_bank_branches_bank_branches__ = __webpack_require__(382);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_46__pages_fund_transfer_confirm_fund_transfer_confirm__ = __webpack_require__(376);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_47__pages_modal_modal__ = __webpack_require__(374);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -3016,423 +3382,101 @@ var AppModule = /** @class */ (function () {
     AppModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["J" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* MyApp */],
-                __WEBPACK_IMPORTED_MODULE_7__pages_home_home__["a" /* HomePage */],
-                __WEBPACK_IMPORTED_MODULE_8__pages_setting_setting__["a" /* SettingPage */],
-                __WEBPACK_IMPORTED_MODULE_9__pages_change_bank_change_bank__["a" /* ChangeBankPage */],
-                __WEBPACK_IMPORTED_MODULE_10__pages_banking_banking__["a" /* BankingPage */],
-                __WEBPACK_IMPORTED_MODULE_11__pages_page_page__["a" /* PagePage */],
-                __WEBPACK_IMPORTED_MODULE_12__pages_login_login__["a" /* LoginPage */],
-                __WEBPACK_IMPORTED_MODULE_13__pages_recharge_recharge__["a" /* RechargePage */],
-                __WEBPACK_IMPORTED_MODULE_14__pages_favourites_favourites__["a" /* FavouritesPage */],
-                __WEBPACK_IMPORTED_MODULE_15__pages_mini_statement_mini_statement__["a" /* MiniStatementPage */],
-                __WEBPACK_IMPORTED_MODULE_16__pages_mobile_recharge_mobile_recharge__["a" /* MobileRechargePage */],
-                __WEBPACK_IMPORTED_MODULE_17__pages_confirm_page_confirm_page__["a" /* ConfirmPagePage */],
-                __WEBPACK_IMPORTED_MODULE_18__pages_recharge_successful_recharge_successful__["a" /* RechargeSuccessfulPage */],
-                __WEBPACK_IMPORTED_MODULE_19__pages_register_register__["a" /* RegisterPage */],
-                __WEBPACK_IMPORTED_MODULE_20__pages_bank_list_bank_list__["a" /* BankListPage */],
-                __WEBPACK_IMPORTED_MODULE_21__pages_enter_otp_enter_otp__["a" /* EnterOTPPage */],
-                __WEBPACK_IMPORTED_MODULE_36__pages_fund_transfer_fund_transfer__["a" /* FundTransferPage */],
-                __WEBPACK_IMPORTED_MODULE_37__pages_balance_enquiry_balance_enquiry__["a" /* BalanceEnquiryPage */],
-                __WEBPACK_IMPORTED_MODULE_38__pages_ViewPlans_Tabs_ViewPlans_Tabs__["a" /* BasicPage */],
-                __WEBPACK_IMPORTED_MODULE_39__pages_recharge_report_recharge_report__["a" /* RechargeReportPage */],
-                __WEBPACK_IMPORTED_MODULE_40__pages_prepaid_confirm_prepaid_confirm__["a" /* PrepaidConfirmPage */],
-                __WEBPACK_IMPORTED_MODULE_21__pages_enter_otp_enter_otp__["b" /* FormatTimePipe */],
-                __WEBPACK_IMPORTED_MODULE_42__pages_my_profile_my_profile__["a" /* MyProfilePage */],
-                __WEBPACK_IMPORTED_MODULE_43__pages_bank_branches_bank_branches__["a" /* BankBranchesPage */],
-                __WEBPACK_IMPORTED_MODULE_44__pages_fund_transfer_confirm_fund_transfer_confirm__["a" /* FundTransferConfirmPage */],
-                __WEBPACK_IMPORTED_MODULE_45__pages_modal_modal__["a" /* ModalPage */]
+                __WEBPACK_IMPORTED_MODULE_10__app_component__["a" /* MyApp */],
+                __WEBPACK_IMPORTED_MODULE_11__pages_home_home__["a" /* HomePage */],
+                __WEBPACK_IMPORTED_MODULE_12__pages_setting_setting__["a" /* SettingPage */],
+                __WEBPACK_IMPORTED_MODULE_13__pages_change_bank_change_bank__["a" /* ChangeBankPage */],
+                __WEBPACK_IMPORTED_MODULE_14__pages_banking_banking__["a" /* BankingPage */],
+                __WEBPACK_IMPORTED_MODULE_15__pages_page_page__["a" /* PagePage */],
+                __WEBPACK_IMPORTED_MODULE_16__pages_login_login__["a" /* LoginPage */],
+                __WEBPACK_IMPORTED_MODULE_17__pages_recharge_recharge__["a" /* RechargePage */],
+                __WEBPACK_IMPORTED_MODULE_18__pages_favourites_favourites__["a" /* FavouritesPage */],
+                __WEBPACK_IMPORTED_MODULE_19__pages_mini_statement_mini_statement__["a" /* MiniStatementPage */],
+                __WEBPACK_IMPORTED_MODULE_20__pages_mobile_recharge_mobile_recharge__["a" /* MobileRechargePage */],
+                __WEBPACK_IMPORTED_MODULE_21__pages_confirm_page_confirm_page__["a" /* ConfirmPagePage */],
+                __WEBPACK_IMPORTED_MODULE_22__pages_recharge_successful_recharge_successful__["a" /* RechargeSuccessfulPage */],
+                __WEBPACK_IMPORTED_MODULE_23__pages_register_register__["a" /* RegisterPage */],
+                __WEBPACK_IMPORTED_MODULE_24__pages_bank_list_bank_list__["a" /* BankListPage */],
+                __WEBPACK_IMPORTED_MODULE_25__pages_enter_otp_enter_otp__["a" /* EnterOTPPage */],
+                __WEBPACK_IMPORTED_MODULE_38__pages_fund_transfer_fund_transfer__["a" /* FundTransferPage */],
+                __WEBPACK_IMPORTED_MODULE_39__pages_balance_enquiry_balance_enquiry__["a" /* BalanceEnquiryPage */],
+                __WEBPACK_IMPORTED_MODULE_40__pages_ViewPlans_Tabs_ViewPlans_Tabs__["a" /* BasicPage */],
+                __WEBPACK_IMPORTED_MODULE_41__pages_recharge_report_recharge_report__["a" /* RechargeReportPage */],
+                __WEBPACK_IMPORTED_MODULE_42__pages_prepaid_confirm_prepaid_confirm__["a" /* PrepaidConfirmPage */],
+                __WEBPACK_IMPORTED_MODULE_25__pages_enter_otp_enter_otp__["b" /* FormatTimePipe */],
+                __WEBPACK_IMPORTED_MODULE_44__pages_my_profile_my_profile__["a" /* MyProfilePage */],
+                __WEBPACK_IMPORTED_MODULE_45__pages_bank_branches_bank_branches__["a" /* BankBranchesPage */],
+                __WEBPACK_IMPORTED_MODULE_46__pages_fund_transfer_confirm_fund_transfer_confirm__["a" /* FundTransferConfirmPage */],
+                __WEBPACK_IMPORTED_MODULE_47__pages_modal_modal__["a" /* ModalPage */]
             ],
-            imports: [__WEBPACK_IMPORTED_MODULE_23__angular_http__["a" /* HttpModule */], __WEBPACK_IMPORTED_MODULE_22__angular_common_http__["c" /* HttpClientModule */], __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
+            imports: [__WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* HttpModule */], __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["c" /* HttpClientModule */], __WEBPACK_IMPORTED_MODULE_5__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
                 __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["a" /* BrowserModule */],
-                __WEBPACK_IMPORTED_MODULE_25_ionic2_auto_complete__["a" /* AutoCompleteModule */],
-                __WEBPACK_IMPORTED_MODULE_2_ngx_toastr__["a" /* ToastrModule */].forRoot({
+                __WEBPACK_IMPORTED_MODULE_27_ionic2_auto_complete__["a" /* AutoCompleteModule */],
+                __WEBPACK_IMPORTED_MODULE_4_ngx_toastr__["a" /* ToastrModule */].forRoot({
                     timeOut: 5000,
                     positionClass: 'toast-bottom-center',
                     // positionClass: 'toast-top-center',
                     preventDuplicates: true,
                 }),
-                __WEBPACK_IMPORTED_MODULE_5_ionic_angular__["f" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* MyApp */], {}, {
+                __WEBPACK_IMPORTED_MODULE_7__ngx_translate_core__["a" /* TranslateModule */].forRoot({}),
+                //TranslateModule.forRoot(),
+                __WEBPACK_IMPORTED_MODULE_9_ionic_angular__["f" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_10__app_component__["a" /* MyApp */], {}, {
                     links: []
                 }),
-                __WEBPACK_IMPORTED_MODULE_31__angular_router__["b" /* RouterModule */].forRoot(__WEBPACK_IMPORTED_MODULE_32__routes__["a" /* appRoutes */]),
+                __WEBPACK_IMPORTED_MODULE_33__angular_router__["b" /* RouterModule */].forRoot(__WEBPACK_IMPORTED_MODULE_34__routes__["a" /* appRoutes */]),
             ],
-            bootstrap: [__WEBPACK_IMPORTED_MODULE_5_ionic_angular__["d" /* IonicApp */]],
+            bootstrap: [__WEBPACK_IMPORTED_MODULE_9_ionic_angular__["d" /* IonicApp */]],
             entryComponents: [
-                __WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* MyApp */],
-                __WEBPACK_IMPORTED_MODULE_7__pages_home_home__["a" /* HomePage */],
-                __WEBPACK_IMPORTED_MODULE_8__pages_setting_setting__["a" /* SettingPage */],
-                __WEBPACK_IMPORTED_MODULE_9__pages_change_bank_change_bank__["a" /* ChangeBankPage */],
-                __WEBPACK_IMPORTED_MODULE_10__pages_banking_banking__["a" /* BankingPage */],
-                __WEBPACK_IMPORTED_MODULE_11__pages_page_page__["a" /* PagePage */],
-                __WEBPACK_IMPORTED_MODULE_12__pages_login_login__["a" /* LoginPage */],
-                __WEBPACK_IMPORTED_MODULE_13__pages_recharge_recharge__["a" /* RechargePage */],
-                __WEBPACK_IMPORTED_MODULE_14__pages_favourites_favourites__["a" /* FavouritesPage */],
-                __WEBPACK_IMPORTED_MODULE_15__pages_mini_statement_mini_statement__["a" /* MiniStatementPage */],
-                __WEBPACK_IMPORTED_MODULE_16__pages_mobile_recharge_mobile_recharge__["a" /* MobileRechargePage */],
-                __WEBPACK_IMPORTED_MODULE_17__pages_confirm_page_confirm_page__["a" /* ConfirmPagePage */],
-                __WEBPACK_IMPORTED_MODULE_18__pages_recharge_successful_recharge_successful__["a" /* RechargeSuccessfulPage */],
-                __WEBPACK_IMPORTED_MODULE_19__pages_register_register__["a" /* RegisterPage */],
-                __WEBPACK_IMPORTED_MODULE_20__pages_bank_list_bank_list__["a" /* BankListPage */],
-                __WEBPACK_IMPORTED_MODULE_21__pages_enter_otp_enter_otp__["a" /* EnterOTPPage */],
-                __WEBPACK_IMPORTED_MODULE_36__pages_fund_transfer_fund_transfer__["a" /* FundTransferPage */],
-                __WEBPACK_IMPORTED_MODULE_37__pages_balance_enquiry_balance_enquiry__["a" /* BalanceEnquiryPage */],
-                __WEBPACK_IMPORTED_MODULE_38__pages_ViewPlans_Tabs_ViewPlans_Tabs__["a" /* BasicPage */],
-                __WEBPACK_IMPORTED_MODULE_39__pages_recharge_report_recharge_report__["a" /* RechargeReportPage */],
-                __WEBPACK_IMPORTED_MODULE_40__pages_prepaid_confirm_prepaid_confirm__["a" /* PrepaidConfirmPage */],
-                __WEBPACK_IMPORTED_MODULE_42__pages_my_profile_my_profile__["a" /* MyProfilePage */],
-                __WEBPACK_IMPORTED_MODULE_43__pages_bank_branches_bank_branches__["a" /* BankBranchesPage */],
-                __WEBPACK_IMPORTED_MODULE_44__pages_fund_transfer_confirm_fund_transfer_confirm__["a" /* FundTransferConfirmPage */],
-                __WEBPACK_IMPORTED_MODULE_45__pages_modal_modal__["a" /* ModalPage */]
+                __WEBPACK_IMPORTED_MODULE_10__app_component__["a" /* MyApp */],
+                __WEBPACK_IMPORTED_MODULE_11__pages_home_home__["a" /* HomePage */],
+                __WEBPACK_IMPORTED_MODULE_12__pages_setting_setting__["a" /* SettingPage */],
+                __WEBPACK_IMPORTED_MODULE_13__pages_change_bank_change_bank__["a" /* ChangeBankPage */],
+                __WEBPACK_IMPORTED_MODULE_14__pages_banking_banking__["a" /* BankingPage */],
+                __WEBPACK_IMPORTED_MODULE_15__pages_page_page__["a" /* PagePage */],
+                __WEBPACK_IMPORTED_MODULE_16__pages_login_login__["a" /* LoginPage */],
+                __WEBPACK_IMPORTED_MODULE_17__pages_recharge_recharge__["a" /* RechargePage */],
+                __WEBPACK_IMPORTED_MODULE_18__pages_favourites_favourites__["a" /* FavouritesPage */],
+                __WEBPACK_IMPORTED_MODULE_19__pages_mini_statement_mini_statement__["a" /* MiniStatementPage */],
+                __WEBPACK_IMPORTED_MODULE_20__pages_mobile_recharge_mobile_recharge__["a" /* MobileRechargePage */],
+                __WEBPACK_IMPORTED_MODULE_21__pages_confirm_page_confirm_page__["a" /* ConfirmPagePage */],
+                __WEBPACK_IMPORTED_MODULE_22__pages_recharge_successful_recharge_successful__["a" /* RechargeSuccessfulPage */],
+                __WEBPACK_IMPORTED_MODULE_23__pages_register_register__["a" /* RegisterPage */],
+                __WEBPACK_IMPORTED_MODULE_24__pages_bank_list_bank_list__["a" /* BankListPage */],
+                __WEBPACK_IMPORTED_MODULE_25__pages_enter_otp_enter_otp__["a" /* EnterOTPPage */],
+                __WEBPACK_IMPORTED_MODULE_38__pages_fund_transfer_fund_transfer__["a" /* FundTransferPage */],
+                __WEBPACK_IMPORTED_MODULE_39__pages_balance_enquiry_balance_enquiry__["a" /* BalanceEnquiryPage */],
+                __WEBPACK_IMPORTED_MODULE_40__pages_ViewPlans_Tabs_ViewPlans_Tabs__["a" /* BasicPage */],
+                __WEBPACK_IMPORTED_MODULE_41__pages_recharge_report_recharge_report__["a" /* RechargeReportPage */],
+                __WEBPACK_IMPORTED_MODULE_42__pages_prepaid_confirm_prepaid_confirm__["a" /* PrepaidConfirmPage */],
+                __WEBPACK_IMPORTED_MODULE_44__pages_my_profile_my_profile__["a" /* MyProfilePage */],
+                __WEBPACK_IMPORTED_MODULE_45__pages_bank_branches_bank_branches__["a" /* BankBranchesPage */],
+                __WEBPACK_IMPORTED_MODULE_46__pages_fund_transfer_confirm_fund_transfer_confirm__["a" /* FundTransferConfirmPage */],
+                __WEBPACK_IMPORTED_MODULE_47__pages_modal_modal__["a" /* ModalPage */]
             ],
-            providers: [__WEBPACK_IMPORTED_MODULE_24__pages_auth_auth_guard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_toast__["a" /* Toast */], {
-                    provide: __WEBPACK_IMPORTED_MODULE_22__angular_common_http__["a" /* HTTP_INTERCEPTORS */],
-                    useClass: __WEBPACK_IMPORTED_MODULE_30__pages_auth_auth_interceptor__["a" /* AuthInterceptor */],
+            providers: [__WEBPACK_IMPORTED_MODULE_26__pages_auth_auth_guard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_6__ionic_native_toast__["a" /* Toast */], {
+                    provide: __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HTTP_INTERCEPTORS */],
+                    useClass: __WEBPACK_IMPORTED_MODULE_32__pages_auth_auth_interceptor__["a" /* AuthInterceptor */],
                     multi: true
                 },
-                __WEBPACK_IMPORTED_MODULE_28__pages_services_app_data_service__["a" /* RegisterService */],
-                __WEBPACK_IMPORTED_MODULE_29__pages_UIHelperClasses_UIHelperService__["a" /* UIHelperService */],
-                __WEBPACK_IMPORTED_MODULE_33__pages_services_Storage_Service__["a" /* StorageService */],
-                __WEBPACK_IMPORTED_MODULE_34__pages_services_Constants__["a" /* ConstantService */],
-                __WEBPACK_IMPORTED_MODULE_35__pages_services_AutoLogOutService__["a" /* AutoLogoutService */],
-                __WEBPACK_IMPORTED_MODULE_41__pages_services_UIService__["a" /* UISercice */],
-                __WEBPACK_IMPORTED_MODULE_26__ionic_native_status_bar__["a" /* StatusBar */],
-                __WEBPACK_IMPORTED_MODULE_27__ionic_native_splash_screen__["a" /* SplashScreen */],
-                { provide: __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_5_ionic_angular__["e" /* IonicErrorHandler */] }
+                __WEBPACK_IMPORTED_MODULE_30__pages_services_app_data_service__["a" /* RegisterService */],
+                __WEBPACK_IMPORTED_MODULE_31__pages_UIHelperClasses_UIHelperService__["a" /* UIHelperService */],
+                __WEBPACK_IMPORTED_MODULE_35__pages_services_Storage_Service__["a" /* StorageService */],
+                __WEBPACK_IMPORTED_MODULE_36__pages_services_Constants__["a" /* ConstantService */],
+                __WEBPACK_IMPORTED_MODULE_37__pages_services_AutoLogOutService__["a" /* AutoLogoutService */],
+                __WEBPACK_IMPORTED_MODULE_43__pages_services_UIService__["a" /* UISercice */],
+                __WEBPACK_IMPORTED_MODULE_28__ionic_native_status_bar__["a" /* StatusBar */],
+                __WEBPACK_IMPORTED_MODULE_29__ionic_native_splash_screen__["a" /* SplashScreen */],
+                { provide: __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_9_ionic_angular__["e" /* IonicErrorHandler */] }
             ]
         })
     ], AppModule);
     return AppModule;
 }());
 
+function HttpLoaderFactory(http) {
+    return new __WEBPACK_IMPORTED_MODULE_8__ngx_translate_http_loader__["a" /* TranslateHttpLoader */](http, './assets/i18n/', '.json');
+}
 //# sourceMappingURL=app.module.js.map
-
-/***/ }),
-
-/***/ 433:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(271);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(272);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_mobile_recharge_mobile_recharge__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_banking_banking__ = __webpack_require__(38);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_setting_setting__ = __webpack_require__(281);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_change_bank_change_bank__ = __webpack_require__(161);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_login_login__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_register_register__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_services_Storage_Service__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_services_app_data_service__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_page_page__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_services_Constants__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_my_profile_my_profile__ = __webpack_require__(282);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_bank_branches_bank_branches__ = __webpack_require__(283);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var MyApp = /** @class */ (function () {
-    // constructor(platform: Platform, statusBar: StatusBar, private reg:RegisterPage, log:LoginPage, splashScreen: SplashScreen) {
-    function MyApp(storageService, event, constant, platform, statusBar, splashScreen, regService) {
-        var _this = this;
-        this.storageService = storageService;
-        this.event = event;
-        this.constant = constant;
-        this.regService = regService;
-        this.event.subscribe('UNAUTHORIZED', function () {
-            _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_8__pages_login_login__["a" /* LoginPage */]);
-        });
-        platform.ready().then(function () {
-            // Okay, so the platform is ready and our plugins are available.
-            // Here you can do any higher level native things you might need.
-            statusBar.styleDefault();
-            splashScreen.hide();
-            //localStorage.clear();
-            //localStorage.removeItem('userToken');
-            _this.event.subscribe('REFRESH_DIGIPARTYNAME', function () {
-                _this.ActiveBankName = _this.storageService.GetActiveBankName();
-                _this.digipartyname = _this.storageService.GetDigipartyBasedOnActiveTenantId().Name;
-                _this.showMenuOptions = true;
-            });
-            if (_this.storageService.GetUser() == null) {
-                _this.rootPage = __WEBPACK_IMPORTED_MODULE_9__pages_register_register__["a" /* RegisterPage */];
-            }
-            else {
-                _this.rootPage = __WEBPACK_IMPORTED_MODULE_8__pages_login_login__["a" /* LoginPage */];
-                _this.showMenuOptions = false;
-            }
-        });
-    }
-    MyApp.prototype.goToPage = function (params) {
-        if (!params)
-            params = {};
-        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_12__pages_page_page__["a" /* PagePage */]);
-    };
-    MyApp.prototype.goToMobileRecharge = function (params) {
-        if (!params)
-            params = {};
-        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_4__pages_mobile_recharge_mobile_recharge__["a" /* MobileRechargePage */]);
-    };
-    MyApp.prototype.goToBanking = function (params) {
-        if (!params)
-            params = {};
-        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_5__pages_banking_banking__["a" /* BankingPage */]);
-    };
-    MyApp.prototype.goToSetting = function (params) {
-        if (!params)
-            params = {};
-        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_6__pages_setting_setting__["a" /* SettingPage */]);
-    };
-    MyApp.prototype.goToChangeBank = function (params) {
-        if (!params)
-            params = {};
-        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_7__pages_change_bank_change_bank__["a" /* ChangeBankPage */]);
-    };
-    MyApp.prototype.goToMyProfile = function (params) {
-        if (!params)
-            params = {};
-        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_14__pages_my_profile_my_profile__["a" /* MyProfilePage */]);
-    };
-    MyApp.prototype.goToBankBranches = function (params) {
-        if (!params)
-            params = {};
-        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_15__pages_bank_branches_bank_branches__["a" /* BankBranchesPage */]);
-    };
-    __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_11" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Nav */]),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Nav */])
-    ], MyApp.prototype, "navCtrl", void 0);
-    MyApp = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\app\app.html"*/'<ion-menu [content]="mainContent" *ngIf="showMenuOptions">\n\n\n\n\n\n\n\n  <ion-content id="side-menu21">\n\n    <div class="spacer" style="width:268px;height:17px;" id="menu-spacer9"></div>\n\n\n\n    <img src="data:image/png;base64,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"\n\n      style="display:block;width:30%;height:30;margin-left:auto;margin-right:auto;" />\n\n\n\n    <div class="spacer" style="width:268px;height:11px;" id="menu-spacer12"></div>\n\n    <h3 style="margin-left:35%; color:deeppink; ">{{digipartyname}}</h3>\n\n    <hr>\n\n    <ion-list id="menu-list1">\n\n      <ion-item-sliding>\n\n\n\n        <ion-item color="positive" menuClose="" on-click="goToPage()" id="menu-list-item1" >\n\n\n\n          <ion-icon name="home" item-left></ion-icon>\n\n          Home\n\n        </ion-item>\n\n        <ion-item-options side="left">\n\n          <button ion-button color="positive"></button>\n\n        </ion-item-options>\n\n      </ion-item-sliding>\n\n      <ion-item color="positive" menuClose="" on-click="goToSetting()" id="menu-list-item2" *ngIf="showMenuOptions">\n\n        <ion-icon name="settings" item-left></ion-icon>\n\n        Settings\n\n      </ion-item>\n\n      <ion-item color="positive" menuClose="" on-click="goToChangeBank()" id="menu-list-item3" *ngIf="showMenuOptions">\n\n        <ion-icon name="repeat" item-left></ion-icon>\n\n        Change Bank\n\n      </ion-item>\n\n      <ion-item color="positive" menuClose="" on-click="goToChangeBank()" id="menu-list-item12">\n\n        <ion-icon name="mail" item-left></ion-icon>\n\n        Contact Us\n\n      </ion-item>\n\n      <ion-item color="positive" menuClose="" on-click="goToMyProfile()" id="menu-list-item12" *ngIf="showMenuOptions">\n\n        <ion-icon name="mail" item-left></ion-icon>\n\n        My Account\n\n      </ion-item>\n\n      <ion-item color="positive" menuClose="" on-click="goToBankBranches()" id="menu-list-item12" *ngIf="showMenuOptions">\n\n        <ion-icon name="mail" item-left></ion-icon>\n\n        Bank Branches\n\n      </ion-item>\n\n    </ion-list>\n\n  </ion-content>\n\n</ion-menu>\n\n\n\n<ion-nav #mainContent [root]="rootPage"></ion-nav>'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\app\app.html"*/
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_10__pages_services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["c" /* Events */], __WEBPACK_IMPORTED_MODULE_13__pages_services_Constants__["a" /* ConstantService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */], __WEBPACK_IMPORTED_MODULE_11__pages_services_app_data_service__["a" /* RegisterService */]])
-    ], MyApp);
-    return MyApp;
-}());
-
-//# sourceMappingURL=app.component.js.map
-
-/***/ }),
-
-/***/ 437:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConfirmPagePage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var ConfirmPagePage = /** @class */ (function () {
-    function ConfirmPagePage(navCtrl) {
-        this.navCtrl = navCtrl;
-    }
-    ConfirmPagePage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'page-confirm-page',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\confirm-page\confirm-page.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>\n      Confirm Page\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n<ion-content padding id="page11">\n  <ion-list id="confirmPage-list12">\n    <ion-item color="none" id="confirmPage-list-item20">\n      Operator\n      <ion-note item-right></ion-note>\n    </ion-item>\n    <ion-item color="none" id="confirmPage-list-item29">\n      Mobile No:\n      <ion-note item-right></ion-note>\n    </ion-item>\n    <ion-item color="none" id="confirmPage-list-item30">\n      Amount\n      <ion-note item-right></ion-note>\n    </ion-item>\n    <ion-item color="none" id="confirmPage-list-item31">\n      Nick Name\n      <ion-note item-right></ion-note>\n    </ion-item>\n  </ion-list>\n  <button id="confirmPage-button5" ion-button color="positive">\n    <ion-icon name="arrow-dropleft"></ion-icon>\n    Cancel\n  </button>\n  <button id="confirmPage-button6" ion-button color="positive" icon-right>\n    Submit\n    <ion-icon name="arrow-dropright"></ion-icon>\n  </button>\n</ion-content>'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\confirm-page\confirm-page.html"*/
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]])
-    ], ConfirmPagePage);
-    return ConfirmPagePage;
-}());
-
-//# sourceMappingURL=confirm-page.js.map
-
-/***/ }),
-
-/***/ 438:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RechargeSuccessfulPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var RechargeSuccessfulPage = /** @class */ (function () {
-    function RechargeSuccessfulPage(navCtrl) {
-        this.navCtrl = navCtrl;
-    }
-    RechargeSuccessfulPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'page-recharge-successful',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\recharge-successful\recharge-successful.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>\n      Recharge Successful\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n<ion-content padding id="page12">\n  <ion-list id="rechargeSuccessful-list16">\n    <ion-item color="balanced" id="rechargeSuccessful-list-item52">\n      <ion-icon name="information" item-left></ion-icon>\n      Recharge Succesfull\n    </ion-item>\n  </ion-list>\n  <div class="spacer" style="width:300px;height:15px;" id="rechargeSuccessful-spacer6"></div>\n  <ion-list id="rechargeSuccessful-list15">\n    <ion-item color="none" id="rechargeSuccessful-list-item48">\n      <ion-avatar item-left>\n        <img />\n      </ion-avatar>\n      <h2>\n        Idea\n      </h2>\n    </ion-item>\n  </ion-list>\n  <div class="spacer" style="width:300px;height:15px;" id="rechargeSuccessful-spacer7"></div>\n  <ion-list id="rechargeSuccessful-list17">\n    <ion-item color="none" id="rechargeSuccessful-list-item49">\n      <ion-icon name="help" item-left></ion-icon>\n      Issue with this transaction\n    </ion-item>\n  </ion-list>\n</ion-content>'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\recharge-successful\recharge-successful.html"*/
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]])
-    ], RechargeSuccessfulPage);
-    return RechargeSuccessfulPage;
-}());
-
-//# sourceMappingURL=recharge-successful.js.map
-
-/***/ }),
-
-/***/ 439:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BankListPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__enter_otp_enter_otp__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__home_home__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mobile_recharge_mobile_recharge__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__banking_banking__ = __webpack_require__(38);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-var BankListPage = /** @class */ (function () {
-    function BankListPage(navCtrl) {
-        this.navCtrl = navCtrl;
-    }
-    BankListPage.prototype.goToEnterOTP = function (params) {
-        if (!params)
-            params = {};
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__enter_otp_enter_otp__["a" /* EnterOTPPage */]);
-    };
-    BankListPage.prototype.goToHome = function (params) {
-        if (!params)
-            params = {};
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__home_home__["a" /* HomePage */]);
-    };
-    BankListPage.prototype.goToMobileRecharge = function (params) {
-        if (!params)
-            params = {};
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__mobile_recharge_mobile_recharge__["a" /* MobileRechargePage */]);
-    };
-    BankListPage.prototype.goToBanking = function (params) {
-        if (!params)
-            params = {};
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_5__banking_banking__["a" /* BankingPage */]);
-    };
-    BankListPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'page-bank-list',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\bank-list\bank-list.html"*/'<ion-header>\n\n  <ion-navbar color="primary">\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>\n\n      Bank List\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content padding id="page14">\n\n  <ion-list id="bankList-list14">\n\n    <ion-item color="none" on-click="goToEnterOTP()" id="bankList-list-item17">\n\n      <ion-avatar item-left>\n\n        <img />\n\n      </ion-avatar>\n\n      <h2>\n\n        1. Co-Operative Bank\n\n      </h2>\n\n    </ion-item>\n\n    <ion-item color="none" on-click="goToEnterOTP()" id="bankList-list-item19">\n\n      <ion-avatar item-left>\n\n        <img />\n\n      </ion-avatar>\n\n      <h2>\n\n        2. Co-Operative Bank\n\n      </h2>\n\n    </ion-item>\n\n    <ion-item color="none" on-click="goToEnterOTP()" id="bankList-list-item32">\n\n      <ion-avatar item-left>\n\n        <img />\n\n      </ion-avatar>\n\n      <h2>\n\n        3.Co-Operative Bank\n\n      </h2>\n\n    </ion-item>\n\n    <ion-item color="none" on-click="goToEnterOTP()" id="bankList-list-item18">\n\n      <ion-avatar item-left>\n\n        <img />\n\n      </ion-avatar>\n\n      <h2>\n\n        4. Co-Operative Bank\n\n      </h2>\n\n    </ion-item>\n\n  </ion-list>\n\n</ion-content>\n\n\n\n\n\n'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\bank-list\bank-list.html"*/
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]])
-    ], BankListPage);
-    return BankListPage;
-}());
-
-// export class ShuklaDay{
-//   static Sun:number[]=[2,3,1,4,5];
-//   static Mon:number[]=[5,2,3,1,4];
-//   static Tue:number[]=[2,3,1,4,5];
-//   static Wed:number[]=[5,2,3,1,4];
-//   static Thu:number[]=[4,5,2,3,1];
-//   static Fri:number[]=[1,4,5,2,3];
-//   static Sat:number[]=[3,1,4,5,2];
-// }
-// export class ShuklaNight{
-//   static Sun:number[]=[5,3,4,2,1];
-//   static Mon:number[]=[3,4,2,1,5];
-//   static Tue:number[]=[5,3,4,2,1];
-//   static Wed:number[]=[3,4,2,1,5];
-//   static Thu:number[]=[4,2,1,5,3];
-//   static Fri:number[]=[2,1,5,3,4];
-//   static Sat:number[]=[1,5,3,4,2];
-// }
-// export class KrishnaDay{
-//   static Sun:number[]=[3,2,5,4,1];
-//   static Mon:number[]=[4,1,3,2,5];
-//   static Tue:number[]=[3,2,5,4,1];
-//   static Wed:number[]=[5,4,1,3,2];
-//   static Thu:number[]=[1,3,2,5,4];
-//   static Fri:number[]=[2,5,4,1,3];
-//   static Sat:number[]=[4,1,3,2,5];
-// }
-// export class KrishnaNight{
-//   static Sun:number[]=[2,4,3,5,1];
-//   static Mon:number[]=[5,1,2,4,3];
-//   static Tue:number[]=[2,4,3,5,1];
-//   static Wed:number[]=[4,3,5,1,2];
-//   static Thu:number[]=[3,5,1,2,4];
-//   static Fri:number[]=[1,2,4,3,5];
-//   static Sat:number[]=[5,1,2,4,3];
-// }
-// export class xxxxx{
-//  static Paksha:number[]=[1,2];
-//  static DayNight:number[]=[1,2];
-//  static Vara:number[]=[1,2,3,4,5,6,7];
-//  static Activities:number[]=[1,2,3,4,5];
-// }
-// if(xxxxx.Paksha[0]==1&&xxxxx.DayNight[0]==1&&xxxxx.Vara[0]==1&&xxxxx.Activities[0]==1){
-// }
-// if(xxxxx.Paksha[0]==1&&xxxxx.DayNight[0]==1&&xxxxx.Vara[0]==1){
-//   switch(xxxxx.Activities){
-//     case [0]:var y=3;
-//     break;
-//     case [1]:
-//     break;
-//     default:
-//     break;
-//   }
-// }
-// if(xxxxx.Paksha[0]==1&&xxxxx.DayNight[0]==1&&xxxxx.Activities[0]==1){
-//   switch(xxxxx.Vara){
-//     case [0]:var y=3;
-//     break;
-//     case [1]:
-//     break;
-//     default:
-//     break;
-//   }
-// }
-// xxxxx.Paksha
-//# sourceMappingURL=bank-list.js.map
 
 /***/ }),
 
@@ -3492,9 +3536,9 @@ var ConstantService = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__banking_banking__ = __webpack_require__(38);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__recharge_recharge__ = __webpack_require__(158);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_Storage_Service__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__recharge_report_recharge_report__ = __webpack_require__(159);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__recharge_recharge__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_Storage_Service__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__recharge_report_recharge_report__ = __webpack_require__(176);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3554,16 +3598,16 @@ var PagePage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_home__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_home__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mobile_recharge_mobile_recharge__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__banking_banking__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_forms__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_app_data_service__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__page_page__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__services_Storage_Service__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__services_Storage_Service__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_UIService__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__register_register__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_UIService__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__register_register__ = __webpack_require__(75);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3757,7 +3801,7 @@ var LoginPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 53:
+/***/ 54:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3787,7 +3831,7 @@ var UISercice = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 54:
+/***/ 55:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3842,22 +3886,554 @@ var HomePage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 65:
+/***/ 708:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(370);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(371);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_mobile_recharge_mobile_recharge__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_banking_banking__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_setting_setting__ = __webpack_require__(380);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_change_bank_change_bank__ = __webpack_require__(178);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_login_login__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_register_register__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_services_Storage_Service__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_services_app_data_service__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_page_page__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_services_Constants__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_my_profile_my_profile__ = __webpack_require__(381);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_bank_branches_bank_branches__ = __webpack_require__(382);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__ngx_translate_core__ = __webpack_require__(290);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var MyApp = /** @class */ (function () {
+    // constructor(platform: Platform, statusBar: StatusBar, private reg:RegisterPage, log:LoginPage, splashScreen: SplashScreen) {
+    function MyApp(translate, storageService, event, constant, platform, statusBar, splashScreen, regService) {
+        var _this = this;
+        this.translate = translate;
+        this.storageService = storageService;
+        this.event = event;
+        this.constant = constant;
+        this.regService = regService;
+        this.event.subscribe('UNAUTHORIZED', function () {
+            _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_8__pages_login_login__["a" /* LoginPage */]);
+        });
+        platform.ready().then(function () {
+            // Okay, so the platform is ready and our plugins are available.
+            // Here you can do any higher level native things you might need.
+            statusBar.styleDefault();
+            splashScreen.hide();
+            translate.setDefaultLang('ka');
+            //localStorage.clear();
+            //localStorage.removeItem('userToken');
+            _this.event.subscribe('REFRESH_DIGIPARTYNAME', function () {
+                _this.ActiveBankName = _this.storageService.GetActiveBankName();
+                _this.digipartyname = _this.storageService.GetDigipartyBasedOnActiveTenantId().Name;
+                _this.showMenuOptions = true;
+            });
+            if (_this.storageService.GetUser() == null) {
+                _this.rootPage = __WEBPACK_IMPORTED_MODULE_9__pages_register_register__["a" /* RegisterPage */];
+            }
+            else {
+                _this.rootPage = __WEBPACK_IMPORTED_MODULE_8__pages_login_login__["a" /* LoginPage */];
+                _this.showMenuOptions = false;
+            }
+        });
+    }
+    MyApp.prototype.changeLanguage = function (language) {
+        this.translate.use(language);
+    };
+    MyApp.prototype.goToPage = function (params) {
+        if (!params)
+            params = {};
+        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_12__pages_page_page__["a" /* PagePage */]);
+    };
+    MyApp.prototype.goToMobileRecharge = function (params) {
+        if (!params)
+            params = {};
+        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_4__pages_mobile_recharge_mobile_recharge__["a" /* MobileRechargePage */]);
+    };
+    MyApp.prototype.goToBanking = function (params) {
+        if (!params)
+            params = {};
+        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_5__pages_banking_banking__["a" /* BankingPage */]);
+    };
+    MyApp.prototype.goToSetting = function (params) {
+        if (!params)
+            params = {};
+        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_6__pages_setting_setting__["a" /* SettingPage */]);
+    };
+    MyApp.prototype.goToChangeBank = function (params) {
+        if (!params)
+            params = {};
+        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_7__pages_change_bank_change_bank__["a" /* ChangeBankPage */]);
+    };
+    MyApp.prototype.goToMyProfile = function (params) {
+        if (!params)
+            params = {};
+        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_14__pages_my_profile_my_profile__["a" /* MyProfilePage */]);
+    };
+    MyApp.prototype.goToBankBranches = function (params) {
+        if (!params)
+            params = {};
+        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_15__pages_bank_branches_bank_branches__["a" /* BankBranchesPage */]);
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_11" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Nav */]),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Nav */])
+    ], MyApp.prototype, "navCtrl", void 0);
+    MyApp = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\app\app.html"*/'<ion-menu [content]="mainContent" *ngIf="showMenuOptions">\n\n\n\n\n\n\n\n  <ion-content id="side-menu21">\n\n    <div class="spacer" style="width:268px;height:17px;" id="menu-spacer9"></div>\n\n\n\n    <img src="data:image/png;base64,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"\n\n      style="display:block;width:30%;height:30;margin-left:auto;margin-right:auto;" />\n\n\n\n    <div class="spacer" style="width:268px;height:11px;" id="menu-spacer12"></div>\n\n    <h3 style="margin-left:35%; color:deeppink; ">{{digipartyname}}</h3>\n\n    <hr>\n\n    <ion-list id="menu-list1">\n\n      <ion-item-sliding>\n\n\n\n        <ion-item color="positive" menuClose="" on-click="goToPage()" id="menu-list-item1" >\n\n\n\n          <ion-icon name="home" item-left></ion-icon>\n\n          Home\n\n        </ion-item>\n\n        <ion-item-options side="left">\n\n          <button ion-button color="positive"></button>\n\n        </ion-item-options>\n\n      </ion-item-sliding>\n\n      <ion-item color="positive" menuClose="" on-click="goToSetting()" id="menu-list-item2" *ngIf="showMenuOptions">\n\n        <ion-icon name="settings" item-left></ion-icon>\n\n        Settings\n\n      </ion-item>\n\n      <ion-item color="positive" menuClose="" on-click="goToChangeBank()" id="menu-list-item3" *ngIf="showMenuOptions">\n\n        <ion-icon name="repeat" item-left></ion-icon>\n\n        Change Bank\n\n      </ion-item>\n\n      <ion-item color="positive" menuClose="" on-click="goToChangeBank()" id="menu-list-item12">\n\n        <ion-icon name="mail" item-left></ion-icon>\n\n        Contact Us\n\n      </ion-item>\n\n      <ion-item color="positive" menuClose="" on-click="goToMyProfile()" id="menu-list-item12" *ngIf="showMenuOptions">\n\n        <ion-icon name="mail" item-left></ion-icon>\n\n        My Account\n\n      </ion-item>\n\n      <ion-item color="positive" menuClose="" on-click="goToBankBranches()" id="menu-list-item12" *ngIf="showMenuOptions">\n\n        <ion-icon name="mail" item-left></ion-icon>\n\n        Bank Branches\n\n      </ion-item>\n\n      <ion-item>\n\n        <button ion-button (click)="changeLanguage(\'ka\')" >{{ \'demo.kannada\'| translate }}</button>\n\n        <button ion-button (click)="changeLanguage(\'en\')">{{ \'demo.english\'| translate }}</button>\n\n      </ion-item>\n\n    </ion-list>\n\n  </ion-content>\n\n</ion-menu>\n\n\n\n<ion-nav #mainContent [root]="rootPage"></ion-nav>'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\app\app.html"*/
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_16__ngx_translate_core__["b" /* TranslateService */], __WEBPACK_IMPORTED_MODULE_10__pages_services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["c" /* Events */], __WEBPACK_IMPORTED_MODULE_13__pages_services_Constants__["a" /* ConstantService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */], __WEBPACK_IMPORTED_MODULE_11__pages_services_app_data_service__["a" /* RegisterService */]])
+    ], MyApp);
+    return MyApp;
+}());
+
+//# sourceMappingURL=app.component.js.map
+
+/***/ }),
+
+/***/ 712:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConfirmPagePage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var ConfirmPagePage = /** @class */ (function () {
+    function ConfirmPagePage(navCtrl) {
+        this.navCtrl = navCtrl;
+    }
+    ConfirmPagePage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'page-confirm-page',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\confirm-page\confirm-page.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>\n      Confirm Page\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n<ion-content padding id="page11">\n  <ion-list id="confirmPage-list12">\n    <ion-item color="none" id="confirmPage-list-item20">\n      Operator\n      <ion-note item-right></ion-note>\n    </ion-item>\n    <ion-item color="none" id="confirmPage-list-item29">\n      Mobile No:\n      <ion-note item-right></ion-note>\n    </ion-item>\n    <ion-item color="none" id="confirmPage-list-item30">\n      Amount\n      <ion-note item-right></ion-note>\n    </ion-item>\n    <ion-item color="none" id="confirmPage-list-item31">\n      Nick Name\n      <ion-note item-right></ion-note>\n    </ion-item>\n  </ion-list>\n  <button id="confirmPage-button5" ion-button color="positive">\n    <ion-icon name="arrow-dropleft"></ion-icon>\n    Cancel\n  </button>\n  <button id="confirmPage-button6" ion-button color="positive" icon-right>\n    Submit\n    <ion-icon name="arrow-dropright"></ion-icon>\n  </button>\n</ion-content>'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\confirm-page\confirm-page.html"*/
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]])
+    ], ConfirmPagePage);
+    return ConfirmPagePage;
+}());
+
+//# sourceMappingURL=confirm-page.js.map
+
+/***/ }),
+
+/***/ 713:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RechargeSuccessfulPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var RechargeSuccessfulPage = /** @class */ (function () {
+    function RechargeSuccessfulPage(navCtrl) {
+        this.navCtrl = navCtrl;
+    }
+    RechargeSuccessfulPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'page-recharge-successful',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\recharge-successful\recharge-successful.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>\n      Recharge Successful\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n<ion-content padding id="page12">\n  <ion-list id="rechargeSuccessful-list16">\n    <ion-item color="balanced" id="rechargeSuccessful-list-item52">\n      <ion-icon name="information" item-left></ion-icon>\n      Recharge Succesfull\n    </ion-item>\n  </ion-list>\n  <div class="spacer" style="width:300px;height:15px;" id="rechargeSuccessful-spacer6"></div>\n  <ion-list id="rechargeSuccessful-list15">\n    <ion-item color="none" id="rechargeSuccessful-list-item48">\n      <ion-avatar item-left>\n        <img />\n      </ion-avatar>\n      <h2>\n        Idea\n      </h2>\n    </ion-item>\n  </ion-list>\n  <div class="spacer" style="width:300px;height:15px;" id="rechargeSuccessful-spacer7"></div>\n  <ion-list id="rechargeSuccessful-list17">\n    <ion-item color="none" id="rechargeSuccessful-list-item49">\n      <ion-icon name="help" item-left></ion-icon>\n      Issue with this transaction\n    </ion-item>\n  </ion-list>\n</ion-content>'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\recharge-successful\recharge-successful.html"*/
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]])
+    ], RechargeSuccessfulPage);
+    return RechargeSuccessfulPage;
+}());
+
+//# sourceMappingURL=recharge-successful.js.map
+
+/***/ }),
+
+/***/ 714:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BankListPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__enter_otp_enter_otp__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__home_home__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mobile_recharge_mobile_recharge__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__banking_banking__ = __webpack_require__(38);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+var BankListPage = /** @class */ (function () {
+    function BankListPage(navCtrl) {
+        this.navCtrl = navCtrl;
+    }
+    BankListPage.prototype.goToEnterOTP = function (params) {
+        if (!params)
+            params = {};
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__enter_otp_enter_otp__["a" /* EnterOTPPage */]);
+    };
+    BankListPage.prototype.goToHome = function (params) {
+        if (!params)
+            params = {};
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__home_home__["a" /* HomePage */]);
+    };
+    BankListPage.prototype.goToMobileRecharge = function (params) {
+        if (!params)
+            params = {};
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__mobile_recharge_mobile_recharge__["a" /* MobileRechargePage */]);
+    };
+    BankListPage.prototype.goToBanking = function (params) {
+        if (!params)
+            params = {};
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_5__banking_banking__["a" /* BankingPage */]);
+    };
+    BankListPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'page-bank-list',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\bank-list\bank-list.html"*/'<ion-header>\n\n  <ion-navbar color="primary">\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>\n\n      Bank List\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content padding id="page14">\n\n  <ion-list id="bankList-list14">\n\n    <ion-item color="none" on-click="goToEnterOTP()" id="bankList-list-item17">\n\n      <ion-avatar item-left>\n\n        <img />\n\n      </ion-avatar>\n\n      <h2>\n\n        1. Co-Operative Bank\n\n      </h2>\n\n    </ion-item>\n\n    <ion-item color="none" on-click="goToEnterOTP()" id="bankList-list-item19">\n\n      <ion-avatar item-left>\n\n        <img />\n\n      </ion-avatar>\n\n      <h2>\n\n        2. Co-Operative Bank\n\n      </h2>\n\n    </ion-item>\n\n    <ion-item color="none" on-click="goToEnterOTP()" id="bankList-list-item32">\n\n      <ion-avatar item-left>\n\n        <img />\n\n      </ion-avatar>\n\n      <h2>\n\n        3.Co-Operative Bank\n\n      </h2>\n\n    </ion-item>\n\n    <ion-item color="none" on-click="goToEnterOTP()" id="bankList-list-item18">\n\n      <ion-avatar item-left>\n\n        <img />\n\n      </ion-avatar>\n\n      <h2>\n\n        4. Co-Operative Bank\n\n      </h2>\n\n    </ion-item>\n\n  </ion-list>\n\n</ion-content>\n\n\n\n\n\n'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\bank-list\bank-list.html"*/
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]])
+    ], BankListPage);
+    return BankListPage;
+}());
+
+// export class ShuklaDay{
+//   static Sun:number[]=[2,3,1,4,5];
+//   static Mon:number[]=[5,2,3,1,4];
+//   static Tue:number[]=[2,3,1,4,5];
+//   static Wed:number[]=[5,2,3,1,4];
+//   static Thu:number[]=[4,5,2,3,1];
+//   static Fri:number[]=[1,4,5,2,3];
+//   static Sat:number[]=[3,1,4,5,2];
+// }
+// export class ShuklaNight{
+//   static Sun:number[]=[5,3,4,2,1];
+//   static Mon:number[]=[3,4,2,1,5];
+//   static Tue:number[]=[5,3,4,2,1];
+//   static Wed:number[]=[3,4,2,1,5];
+//   static Thu:number[]=[4,2,1,5,3];
+//   static Fri:number[]=[2,1,5,3,4];
+//   static Sat:number[]=[1,5,3,4,2];
+// }
+// export class KrishnaDay{
+//   static Sun:number[]=[3,2,5,4,1];
+//   static Mon:number[]=[4,1,3,2,5];
+//   static Tue:number[]=[3,2,5,4,1];
+//   static Wed:number[]=[5,4,1,3,2];
+//   static Thu:number[]=[1,3,2,5,4];
+//   static Fri:number[]=[2,5,4,1,3];
+//   static Sat:number[]=[4,1,3,2,5];
+// }
+// export class KrishnaNight{
+//   static Sun:number[]=[2,4,3,5,1];
+//   static Mon:number[]=[5,1,2,4,3];
+//   static Tue:number[]=[2,4,3,5,1];
+//   static Wed:number[]=[4,3,5,1,2];
+//   static Thu:number[]=[3,5,1,2,4];
+//   static Fri:number[]=[1,2,4,3,5];
+//   static Sat:number[]=[5,1,2,4,3];
+// }
+// export class xxxxx{
+//  static Paksha:number[]=[1,2];
+//  static DayNight:number[]=[1,2];
+//  static Vara:number[]=[1,2,3,4,5,6,7];
+//  static Activities:number[]=[1,2,3,4,5];
+// }
+// if(xxxxx.Paksha[0]==1&&xxxxx.DayNight[0]==1&&xxxxx.Vara[0]==1&&xxxxx.Activities[0]==1){
+// }
+// if(xxxxx.Paksha[0]==1&&xxxxx.DayNight[0]==1&&xxxxx.Vara[0]==1){
+//   switch(xxxxx.Activities){
+//     case [0]:var y=3;
+//     break;
+//     case [1]:
+//     break;
+//     default:
+//     break;
+//   }
+// }
+// if(xxxxx.Paksha[0]==1&&xxxxx.DayNight[0]==1&&xxxxx.Activities[0]==1){
+//   switch(xxxxx.Vara){
+//     case [0]:var y=3;
+//     break;
+//     case [1]:
+//     break;
+//     default:
+//     break;
+//   }
+// }
+// xxxxx.Paksha
+//# sourceMappingURL=bank-list.js.map
+
+/***/ }),
+
+/***/ 716:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthInterceptor; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_do__ = __webpack_require__(217);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_do___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_do__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_Storage_Service__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_app_data_service__ = __webpack_require__(18);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+var AuthInterceptor = /** @class */ (function () {
+    function AuthInterceptor(registerService, storageService, event, router, localstorageService) {
+        this.registerService = registerService;
+        this.storageService = storageService;
+        this.event = event;
+        this.router = router;
+        this.localstorageService = localstorageService;
+    }
+    AuthInterceptor.prototype.intercept = function (req, next) {
+        var _this = this;
+        // console.log(req);
+        if (req.headers.get('No-Auth') == "True") {
+            return next.handle(req.clone());
+        }
+        if (req.url.indexOf("/token") > 0) {
+            var headersforTokenAPI = new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["d" /* HttpHeaders */]({ 'Content-Type': 'application/x-www-urlencoded' });
+            return next.handle(req);
+        }
+        // if(req.method=="POST"){
+        // }
+        // if(req.method=="GET"){
+        // }
+        //if (localStorage.getItem('userToken') != null) {
+        if (this.registerService.userToken != null) {
+            var clonedreq = req.clone({
+                // headers: req.headers.set("Authorization", "Bearer " + localStorage.getItem('userToken'))
+                headers: req.headers.set("Authorization", "Bearer " + this.registerService.userToken)
+            });
+            return next.handle(clonedreq)
+                .do(function (succ) { }, function (err) {
+                if (err.status === 401)
+                    //this.router.navigateByUrl('/login');
+                    // this.navCtrl.push(LoginPage);  
+                    _this.event.publish('UNAUTHORIZED');
+            });
+        }
+        else if (this.storageService.GetUser() == null && this.registerService.userToken == null) {
+            var clonedreq = req.clone({
+                headers: req.headers.set("Authorization", "Bearer ")
+            });
+            return next.handle(clonedreq)
+                .do(function (succ) { }, function (err) {
+                if (err.status === 401)
+                    //this.router.navigateByUrl('/login');
+                    // this.navCtrl.push(LoginPage);  
+                    _this.event.publish('UNAUTHORIZED');
+            });
+        }
+        else {
+            this.router.navigateByUrl('/login');
+            // this.navCtrl.push(LoginPage); 
+        }
+    };
+    AuthInterceptor = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["B" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_6__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_4__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_5_ionic_angular__["c" /* Events */], __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */], __WEBPACK_IMPORTED_MODULE_4__services_Storage_Service__["a" /* StorageService */]])
+    ], AuthInterceptor);
+    return AuthInterceptor;
+}());
+
+//# sourceMappingURL=auth.interceptor.js.map
+
+/***/ }),
+
+/***/ 717:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return appRoutes; });
+/* unused harmony export routing */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pages_register_register__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pages_home_home__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pages_login_login__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_auth_auth_guard__ = __webpack_require__(383);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__(101);
+
+
+
+
+
+var appRoutes = [
+    { path: 'home', component: __WEBPACK_IMPORTED_MODULE_1__pages_home_home__["a" /* HomePage */], canActivate: [__WEBPACK_IMPORTED_MODULE_3__pages_auth_auth_guard__["a" /* AuthGuard */]] },
+    { path: 'register', component: __WEBPACK_IMPORTED_MODULE_0__pages_register_register__["a" /* RegisterPage */], canActivate: [__WEBPACK_IMPORTED_MODULE_3__pages_auth_auth_guard__["a" /* AuthGuard */]] },
+    { path: 'login', component: __WEBPACK_IMPORTED_MODULE_2__pages_login_login__["a" /* LoginPage */], canActivate: [__WEBPACK_IMPORTED_MODULE_3__pages_auth_auth_guard__["a" /* AuthGuard */]] },
+];
+var routing = __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* RouterModule */].forRoot(appRoutes);
+//# sourceMappingURL=routes.js.map
+
+/***/ }),
+
+/***/ 718:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AutoLogoutService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login_login__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Storage_Service__ = __webpack_require__(13);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var MINUTES_UNITL_AUTO_LOGOUT = 5; // in mins
+var CHECK_INTERVAL = 15000; // in ms
+var STORE_KEY = 'lastAction';
+var AutoLogoutService = /** @class */ (function () {
+    function AutoLogoutService(app) {
+        this.app = app;
+        this.navCtrl = app.getActiveNav();
+        console.log('object created');
+        this.check();
+        this.initListener();
+        this.initInterval();
+    }
+    AutoLogoutService.prototype.getLastAction = function () {
+        return parseInt(__WEBPACK_IMPORTED_MODULE_3__Storage_Service__["a" /* StorageService */].GetItem(STORE_KEY));
+    };
+    AutoLogoutService.prototype.setLastAction = function (lastAction) {
+        __WEBPACK_IMPORTED_MODULE_3__Storage_Service__["a" /* StorageService */].SetItem(STORE_KEY, lastAction.toString());
+    };
+    AutoLogoutService.prototype.initListener = function () {
+        var _this = this;
+        document.body.addEventListener('click', function () { return _this.reset(); });
+        document.body.addEventListener('mouseover', function () { return _this.reset(); });
+        document.body.addEventListener('mouseout', function () { return _this.reset(); });
+        document.body.addEventListener('keydown', function () { return _this.reset(); });
+        document.body.addEventListener('keyup', function () { return _this.reset(); });
+        document.body.addEventListener('keypress', function () { return _this.reset(); });
+    };
+    AutoLogoutService.prototype.reset = function () {
+        this.setLastAction(Date.now());
+    };
+    AutoLogoutService.prototype.initInterval = function () {
+        var _this = this;
+        setInterval(function () {
+            _this.check();
+        }, CHECK_INTERVAL);
+    };
+    AutoLogoutService.prototype.check = function () {
+        var now = Date.now();
+        var timeleft = this.getLastAction() + MINUTES_UNITL_AUTO_LOGOUT * 60 * 1000;
+        var diff = timeleft - now;
+        var isTimeout = diff < 0;
+        if (isTimeout) {
+            __WEBPACK_IMPORTED_MODULE_3__Storage_Service__["a" /* StorageService */].RemoveItem("lastAction");
+            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__login_login__["a" /* LoginPage */]);
+        }
+    };
+    AutoLogoutService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */]])
+    ], AutoLogoutService);
+    return AutoLogoutService;
+}());
+
+//# sourceMappingURL=AutoLogOutService.js.map
+
+/***/ }),
+
+/***/ 75:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RegisterPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__enter_otp_enter_otp__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__home_home__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__enter_otp_enter_otp__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__home_home__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mobile_recharge_mobile_recharge__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__banking_banking__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_app_data_service__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_ngx_toastr__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_forms__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_UIService__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_Storage_Service__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_UIService__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_Storage_Service__ = __webpack_require__(13);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4071,566 +4647,7 @@ var RegisterPage = /** @class */ (function () {
 
 //# sourceMappingURL=register.js.map
 
-/***/ }),
-
-/***/ 713:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthInterceptor; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(152);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_do__ = __webpack_require__(317);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_do___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_do__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__(93);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_Storage_Service__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_app_data_service__ = __webpack_require__(18);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-var AuthInterceptor = /** @class */ (function () {
-    function AuthInterceptor(registerService, storageService, event, router, localstorageService) {
-        this.registerService = registerService;
-        this.storageService = storageService;
-        this.event = event;
-        this.router = router;
-        this.localstorageService = localstorageService;
-    }
-    AuthInterceptor.prototype.intercept = function (req, next) {
-        var _this = this;
-        // console.log(req);
-        if (req.headers.get('No-Auth') == "True") {
-            return next.handle(req.clone());
-        }
-        if (req.url.indexOf("/token") > 0) {
-            var headersforTokenAPI = new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["d" /* HttpHeaders */]({ 'Content-Type': 'application/x-www-urlencoded' });
-            return next.handle(req);
-        }
-        // if(req.method=="POST"){
-        // }
-        // if(req.method=="GET"){
-        // }
-        //if (localStorage.getItem('userToken') != null) {
-        if (this.registerService.userToken != null) {
-            var clonedreq = req.clone({
-                // headers: req.headers.set("Authorization", "Bearer " + localStorage.getItem('userToken'))
-                headers: req.headers.set("Authorization", "Bearer " + this.registerService.userToken)
-            });
-            return next.handle(clonedreq)
-                .do(function (succ) { }, function (err) {
-                if (err.status === 401)
-                    //this.router.navigateByUrl('/login');
-                    // this.navCtrl.push(LoginPage);  
-                    _this.event.publish('UNAUTHORIZED');
-            });
-        }
-        else if (this.storageService.GetUser() == null && this.registerService.userToken == null) {
-            var clonedreq = req.clone({
-                headers: req.headers.set("Authorization", "Bearer ")
-            });
-            return next.handle(clonedreq)
-                .do(function (succ) { }, function (err) {
-                if (err.status === 401)
-                    //this.router.navigateByUrl('/login');
-                    // this.navCtrl.push(LoginPage);  
-                    _this.event.publish('UNAUTHORIZED');
-            });
-        }
-        else {
-            this.router.navigateByUrl('/login');
-            // this.navCtrl.push(LoginPage); 
-        }
-    };
-    AuthInterceptor = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["B" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_6__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_4__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_5_ionic_angular__["c" /* Events */], __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */], __WEBPACK_IMPORTED_MODULE_4__services_Storage_Service__["a" /* StorageService */]])
-    ], AuthInterceptor);
-    return AuthInterceptor;
-}());
-
-//# sourceMappingURL=auth.interceptor.js.map
-
-/***/ }),
-
-/***/ 714:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return appRoutes; });
-/* unused harmony export routing */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pages_register_register__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pages_home_home__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pages_login_login__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_auth_auth_guard__ = __webpack_require__(284);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__(93);
-
-
-
-
-
-var appRoutes = [
-    { path: 'home', component: __WEBPACK_IMPORTED_MODULE_1__pages_home_home__["a" /* HomePage */], canActivate: [__WEBPACK_IMPORTED_MODULE_3__pages_auth_auth_guard__["a" /* AuthGuard */]] },
-    { path: 'register', component: __WEBPACK_IMPORTED_MODULE_0__pages_register_register__["a" /* RegisterPage */], canActivate: [__WEBPACK_IMPORTED_MODULE_3__pages_auth_auth_guard__["a" /* AuthGuard */]] },
-    { path: 'login', component: __WEBPACK_IMPORTED_MODULE_2__pages_login_login__["a" /* LoginPage */], canActivate: [__WEBPACK_IMPORTED_MODULE_3__pages_auth_auth_guard__["a" /* AuthGuard */]] },
-];
-var routing = __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* RouterModule */].forRoot(appRoutes);
-//# sourceMappingURL=routes.js.map
-
-/***/ }),
-
-/***/ 715:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AutoLogoutService; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login_login__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Storage_Service__ = __webpack_require__(14);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-var MINUTES_UNITL_AUTO_LOGOUT = 5; // in mins
-var CHECK_INTERVAL = 15000; // in ms
-var STORE_KEY = 'lastAction';
-var AutoLogoutService = /** @class */ (function () {
-    function AutoLogoutService(app) {
-        this.app = app;
-        this.navCtrl = app.getActiveNav();
-        console.log('object created');
-        this.check();
-        this.initListener();
-        this.initInterval();
-    }
-    AutoLogoutService.prototype.getLastAction = function () {
-        return parseInt(__WEBPACK_IMPORTED_MODULE_3__Storage_Service__["a" /* StorageService */].GetItem(STORE_KEY));
-    };
-    AutoLogoutService.prototype.setLastAction = function (lastAction) {
-        __WEBPACK_IMPORTED_MODULE_3__Storage_Service__["a" /* StorageService */].SetItem(STORE_KEY, lastAction.toString());
-    };
-    AutoLogoutService.prototype.initListener = function () {
-        var _this = this;
-        document.body.addEventListener('click', function () { return _this.reset(); });
-        document.body.addEventListener('mouseover', function () { return _this.reset(); });
-        document.body.addEventListener('mouseout', function () { return _this.reset(); });
-        document.body.addEventListener('keydown', function () { return _this.reset(); });
-        document.body.addEventListener('keyup', function () { return _this.reset(); });
-        document.body.addEventListener('keypress', function () { return _this.reset(); });
-    };
-    AutoLogoutService.prototype.reset = function () {
-        this.setLastAction(Date.now());
-    };
-    AutoLogoutService.prototype.initInterval = function () {
-        var _this = this;
-        setInterval(function () {
-            _this.check();
-        }, CHECK_INTERVAL);
-    };
-    AutoLogoutService.prototype.check = function () {
-        var now = Date.now();
-        var timeleft = this.getLastAction() + MINUTES_UNITL_AUTO_LOGOUT * 60 * 1000;
-        var diff = timeleft - now;
-        var isTimeout = diff < 0;
-        if (isTimeout) {
-            __WEBPACK_IMPORTED_MODULE_3__Storage_Service__["a" /* StorageService */].RemoveItem("lastAction");
-            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__login_login__["a" /* LoginPage */]);
-        }
-    };
-    AutoLogoutService = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */]])
-    ], AutoLogoutService);
-    return AutoLogoutService;
-}());
-
-//# sourceMappingURL=AutoLogOutService.js.map
-
-/***/ }),
-
-/***/ 92:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EnterOTPPage; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return FormatTimePipe; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_home__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mobile_recharge_mobile_recharge__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__banking_banking__ = __webpack_require__(38);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_app_data_service__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_forms__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__login_login__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__services_Storage_Service__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_UIService__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__register_register__ = __webpack_require__(65);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-
-
-
-
-var EnterOTPPage = /** @class */ (function () {
-    function EnterOTPPage(storageService, alertCtrl, uiService, toastrService, navParams, loadingController, fb, navCtrl, registerService) {
-        var _this = this;
-        this.storageService = storageService;
-        this.alertCtrl = alertCtrl;
-        this.uiService = uiService;
-        this.toastrService = toastrService;
-        this.navParams = navParams;
-        this.loadingController = loadingController;
-        this.fb = fb;
-        this.navCtrl = navCtrl;
-        this.registerService = registerService;
-        this.validationMessages = {
-            otp_required: '*Enter OTP Number',
-            otp_minlength: 'Enter 4 digits',
-            oldPassword_required: '*Please Enter Old Password',
-            oldPassword_minlength: 'Mobile Number cannot be less than 4 characters',
-            password_required: 'Please enter password',
-            password_minlength: 'Enter minimum 4 digits',
-            confirmpwd_required: 'Please Re-Enter password',
-            confirmpwd_minlength: 'This field should match with Password',
-            confirmpwd_invalid: 'Password doesnot match'
-        };
-        this.counter = 40;
-        this.tick = 1000;
-        this.HideIf = true;
-        this.formgroup = this.fb.group({
-            otp: ['', [__WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].minLength(4)]]
-        });
-        var otpControl = this.formgroup.get('otp');
-        otpControl.valueChanges.subscribe(function (value) { return _this.setErrorMessageForOTPField(otpControl); });
-        this.SavePasswordForm = this.fb.group({
-            password: ['', [__WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].minLength(4)]],
-            confirmpwd: ['', [__WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].minLength(4)]]
-        }, { validator: this.matchingPasswords });
-        var passwordControl = this.SavePasswordForm.get('password');
-        passwordControl.valueChanges.subscribe(function (value) { return _this.setErrorMessageForPasswordField(passwordControl); });
-        var confirmpasswordControl = this.SavePasswordForm.get('confirmpwd');
-        confirmpasswordControl.valueChanges.subscribe(function (value) { return _this.setErrorMessageForPasswordField(confirmpasswordControl); });
-        this.ChangePasswordForm = this.fb.group({
-            oldPassword: ['', [__WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].required]],
-            newPassword: ['', [__WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].minLength(4)]],
-            confirmNewpwd: ['', [__WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_6__angular_forms__["h" /* Validators */].minLength(4)]]
-        }, { validator: this.matchingPasswordsForCP });
-        var oldPasswordControl = this.ChangePasswordForm.get('oldPassword');
-        oldPasswordControl.valueChanges.subscribe(function (value) { return _this.setErrorMessageForChangePasswordForm(oldPasswordControl); });
-        var passwordControl_CP = this.ChangePasswordForm.get('newPassword');
-        passwordControl_CP.valueChanges.subscribe(function (value) { return _this.setErrorMessageForChangePasswordForm(passwordControl_CP); });
-        var confirmpasswordControl_CP = this.ChangePasswordForm.get('confirmNewpwd');
-        confirmpasswordControl_CP.valueChanges.subscribe(function (value) { return _this.setErrorMessageForChangePasswordForm(confirmpasswordControl_CP); });
-    }
-    EnterOTPPage.prototype.setErrorMessageForOTPField = function (c) {
-        var _this = this;
-        this.userMessage = '';
-        var control = this.uiService.getControlName(c);
-        if ((c.touched || c.dirty) && c.errors) {
-            if (control === 'otp') {
-                this.userMessage = Object.keys(c.errors).map(function (key) { return _this.validationMessages[control + '_' + key]; }).join(' ');
-            }
-        }
-    };
-    EnterOTPPage.prototype.setErrorMessageForPasswordField = function (c) {
-        var _this = this;
-        this.passwordMessage = '';
-        this.confirmpasswordMessage = '';
-        var control = this.uiService.getControlName(c);
-        if ((c.touched || c.dirty) && c.errors) {
-            if (control === 'password') {
-                this.passwordMessage = Object.keys(c.errors).map(function (key) { return _this.validationMessages[control + '_' + key]; }).join(' ');
-            }
-            else if (control === 'confirmpwd') {
-                this.confirmpasswordMessage = Object.keys(c.errors).map(function (key) { return _this.validationMessages[control + '_' + key]; }).join(' ');
-            }
-        }
-    };
-    EnterOTPPage.prototype.setErrorMessageForChangePasswordForm = function (c) {
-        var _this = this;
-        this.oldPasswordMessage = '';
-        this.passwordMessage = '';
-        this.confirmpasswordMessage = '';
-        var control = this.uiService.getControlName(c);
-        if ((c.touched || c.dirty) && c.errors) {
-            if (control === 'oldPassword') {
-                this.oldPasswordMessage = Object.keys(c.errors).map(function (key) { return _this.validationMessages[control + '_' + key]; }).join(' ');
-            }
-            else if (control === 'newPassword') {
-                this.passwordMessage = Object.keys(c.errors).map(function (key) { return _this.validationMessages[control + '_' + key]; }).join(' ');
-            }
-            else if (control === 'confirmNewpwd') {
-                this.confirmpasswordMessage = Object.keys(c.errors).map(function (key) { return _this.validationMessages[control + '_' + key]; }).join(' ');
-            }
-        }
-    };
-    EnterOTPPage.prototype.ngOnInit = function () {
-        var _this = this;
-        // this.countDown = Observable.timer(0, this.tick)
-        //   .take(this.counter)
-        //   .map(() => --this.counter);
-        this.ShowIf = this.navParams.get('ischangePassword');
-        if (this.ShowIf == null) {
-            this.ShowIf == false;
-            this.ShowUserNameAndOldPassword = false;
-        }
-        else if (this.ShowIf == true) {
-            this.HideIf = false;
-            this.ShowUserNameAndOldPassword = true;
-            this.ShowIf = false;
-        }
-        this.countDown = this.registerService.getCounter().do(function () { return --_this.counter; });
-    };
-    // stopTimer() {
-    //   this.countDown = null;
-    // }
-    EnterOTPPage.prototype.matchingPasswords = function (group) {
-        var password = group.controls.password.value;
-        var confirmpwd = group.controls.confirmpwd.value;
-        if (!password || !confirmpwd) {
-            return null;
-        }
-        return password === confirmpwd ? null : { notSame: true };
-    };
-    EnterOTPPage.prototype.matchingPasswordsForCP = function (group) {
-        var password = group.controls.newPassword.value;
-        var confirmpwd = group.controls.confirmNewpwd.value;
-        if (!password || !confirmpwd) {
-            return null;
-        }
-        return password === confirmpwd ? null : { notSame: true };
-    };
-    EnterOTPPage.prototype.OnSubmit = function () {
-        var _this = this;
-        var OTPRefNo = this.navParams.get('OTPRefNo');
-        var loading = this.loadingController.create({
-            content: 'Please wait till the screen loads'
-        });
-        loading.present();
-        var postOPT = {
-            TenantId: this.registerService.TenantId,
-            MobileNo: this.registerService.MobileNo,
-            OTPRef: OTPRefNo,
-            OTP: this.formgroup.get('otp').value
-        };
-        this.registerService.ValidateOTP(postOPT).subscribe(function (data) {
-            _this.storeboolean = data;
-            if (_this.storeboolean == true) {
-                _this.ShowIf = true;
-                _this.HideIf = false;
-                _this.ShowUserNameAndOldPassword = false;
-            }
-            else {
-                _this.ShowIf = false;
-                _this.HideIf = true;
-                _this.toastrService.error("OTP is Invalid", 'Error!');
-                _this.formgroup.get('otp').reset();
-            }
-            loading.dismiss();
-        }, function (error) {
-            _this.toastrService.error(error.message, 'Error!');
-            var alert = _this.alertCtrl.create({
-                title: "Error Message",
-                subTitle: error.message,
-                buttons: ['OK']
-            });
-            alert.present();
-            loading.dismiss();
-        });
-    };
-    EnterOTPPage.prototype.OnResendOTP = function () {
-        var _this = this;
-        var loading = this.loadingController.create({
-            content: 'Please wait till the screen loads'
-        });
-        loading.present();
-        var oTPRequest = {
-            TenantId: this.navParams.get('TenantId').value,
-            MobileNo: this.navParams.get('MobileNo').value
-        };
-        this.registerService.RequestOTP(oTPRequest).subscribe(function (data) {
-            //ADDED toastr.css in the path "node_modules/ngx-toastr/toastr.css" from https://github.com/scttcper/ngx-toastr/blob/master/src/lib/toastr.css
-            _this.toastrService.success('OTP Sent to ' + data.MobileNo + ' with Reference No. ' + data.OTPRefNo, 'Success!');
-            loading.dismiss();
-        }, function (error) {
-            _this.toastrService.error(error.error.ExceptionMessage, 'Error!');
-            var alert = _this.alertCtrl.create({
-                title: "Error Message",
-                subTitle: error.error.ExceptionMessage,
-                buttons: ['OK']
-            });
-            alert.present();
-            loading.dismiss();
-        });
-    };
-    EnterOTPPage.prototype.OnSavePassword = function () {
-        var _this = this;
-        var DigiPartyId = this.navParams.get('DigiPartyId');
-        var userPost = {
-            DigiPartyId: DigiPartyId,
-            TenantId: this.registerService.TenantId,
-            PIN: this.SavePasswordForm.controls['confirmpwd'].value,
-            UniqueId: this.guid(),
-            OTPRef: this.navParams.get('OTPRefNo'),
-            OTP: this.formgroup.get('otp').value,
-            MobileNo: this.registerService.MobileNo
-        };
-        var loading = this.loadingController.create({
-            content: 'Please wait while registering the Password......'
-        });
-        loading.present();
-        this.registerService.SaveMPin(userPost).subscribe(function (data) {
-            var user = {
-                ActiveTenantId: _this.registerService.TenantId,
-                UserId: data.UserId,
-                UserName: data.UserName,
-                UniqueKey: data.UniqueKey
-            };
-            _this.storageService.SetUser(JSON.stringify(user));
-            _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_7__login_login__["a" /* LoginPage */]);
-            loading.dismiss();
-        }, function (error) {
-            _this.toastrService.error(error.error.ExceptionMessage, 'Error!');
-            var alert = _this.alertCtrl.create({
-                title: "Error Message",
-                subTitle: error.error.ExceptionMessage,
-                buttons: ['OK']
-            });
-            alert.present();
-            loading.dismiss();
-        });
-    };
-    EnterOTPPage.prototype.OnChangePassword = function () {
-        var _this = this;
-        var changePassword = {
-            UserName: this.storageService.GetUser().UserName,
-            Old: this.ChangePasswordForm.get('oldPassword').value,
-            New: this.ChangePasswordForm.get('confirmNewpwd').value
-        };
-        var loading = this.loadingController.create({
-            content: 'Please wait while we Change Password....'
-        });
-        loading.present();
-        this.registerService.ChangePassword(changePassword).subscribe(function (data) {
-            if (data.IsValid == false) {
-                _this.toastrService.error(data.Message, 'Error!');
-            }
-            else {
-                _this.toastrService.success('Please login with the New Password', 'Success!');
-                var alert = _this.alertCtrl.create({
-                    title: "Message",
-                    subTitle: "Please login with the New Password",
-                    buttons: ['OK']
-                });
-                alert.present();
-                _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_7__login_login__["a" /* LoginPage */]);
-            }
-            loading.dismiss();
-        }, function (error) {
-            _this.toastrService.error(error.error.ExceptionMessage, 'Error!');
-            var alert = _this.alertCtrl.create({
-                title: "Error Message",
-                subTitle: error.error.ExceptionMessage,
-                buttons: ['OK']
-            });
-            alert.present();
-            loading.dismiss();
-        });
-    };
-    EnterOTPPage.prototype.OnForgot = function () {
-        this.isForgotten = true;
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_11__register_register__["a" /* RegisterPage */], { 'isForgotPassword': this.isForgotten });
-    };
-    //below code is from here https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript/105074#105074
-    EnterOTPPage.prototype.guid = function () {
-        function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000)
-                .toString(16)
-                .substring(1);
-        }
-        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-    };
-    EnterOTPPage.prototype.goToHome = function (params) {
-        if (!params)
-            params = {};
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__home_home__["a" /* HomePage */]);
-    };
-    EnterOTPPage.prototype.goToMobileRecharge = function (params) {
-        if (!params)
-            params = {};
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__mobile_recharge_mobile_recharge__["a" /* MobileRechargePage */]);
-    };
-    EnterOTPPage.prototype.goToBanking = function (params) {
-        if (!params)
-            params = {};
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__banking_banking__["a" /* BankingPage */]);
-    };
-    EnterOTPPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'page-enter-otp',template:/*ion-inline-start:"D:\sahakariupdate\sahakariupdate\src\pages\enter-otp\enter-otp.html"*/'<ion-header>\n\n  <ion-navbar  color="primary">\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title *ngIf="HideIf">\n\n      Enter OTP\n\n    </ion-title>\n\n    <ion-title *ngIf="ShowIf">\n\n      Password Entry\n\n    </ion-title>\n\n    <ion-title *ngIf="ShowUserNameAndOldPassword">\n\n      Change Password \n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content padding class="back-image" id="page15">\n\n    <!-- <div class="spacer" style="width:300px;height:199px;" id="enterOTP-spacer11"></div> -->\n\n    <div *ngIf="HideIf">\n\n  <form [formGroup]="formgroup" id="enterOTP-form4" #enterOTPForm="ngForm" (ngSubmit)="OnSubmit()">\n\n    <ion-list id="enterOTP-list18">\n\n      <ion-item id="enterOTP-input12">\n\n        <ion-label floating>\n\n          OTP\n\n        </ion-label>\n\n        <ion-input formControlName="otp" type="number" placeholder=""></ion-input>\n\n        <!-- <ion-input formControlName="otp" type="number" #OTPNo ngModel name="OTPNo" placeholder=""></ion-input> -->\n\n        <!-- <ion-input type="number" placeholder="" name="OTPNo" #OTPNo="ngModel" [(ngModel)]="order.Id"></ion-input> -->\n\n     \n\n      </ion-item>\n\n      <!-- <p style="color:darkorange;" *ngIf="otp.hasError(\'required\') && otp.touched"> *OTP is required</p> -->\n\n      <p style="color:darkorange;">{{userMessage}}</p>\n\n    </ion-list>\n\n    <div class="spacer" style="height:40px;" id="enterOTP-spacer8"></div>\n\n    <button [disabled]="enterOTPForm.invalid" id="enterOTP-button8" ion-button color="positive" block>\n\n      Submit\n\n    </button>\n\n  </form>\n\n  <h2>{{countDown | async | formatTime}}</h2>\n\n  <!-- <button (click)="stopTimer()">Stop</button> -->\n\n\n\n  <button style="color: darkorange" [disabled]="counter !== 0" ion-button clear item-centre (click)="OnResendOTP()">Click here to Resend OTP</button>       \n\n  </div>\n\n  <div *ngIf="ShowIf">\n\n  <!-- <form id="enterOTP-form2" [formGroup]="SavePasswordForm"  #NewPasswordEntryForm="ngForm" (ngSubmit)="OnSavePassword(CPassword.value)"> -->\n\n    <form id="enterOTP-form2" [formGroup]="SavePasswordForm"  #NewPasswordEntryForm="ngForm" (ngSubmit)="OnSavePassword()">\n\n      <ion-item id="enterOTP-input3">\n\n      <ion-label floating>\n\n        New Password\n\n      </ion-label>\n\n      <!-- <ion-input type="text" placeholder="" name="NPassword" #NPassword="ngModel" [(ngModel)]="npef.NPassword"></ion-input> -->\n\n      <!-- <ion-input formControlName="password" type="password" required #NPassword ngModel name="NPassword" placeholder=""></ion-input>       -->\n\n      <ion-input formControlName="password" type="password" placeholder=""></ion-input>      \n\n    </ion-item>\n\n    <!-- <p style="color:red;" *ngIf="password.hasError(\'required\') && password.touched"> *Password is required</p> -->\n\n    <p style="color:darkorange;">{{passwordMessage}}</p>\n\n\n\n    <ion-item id="enterOTP-input5">\n\n      <ion-label floating>\n\n        Confirm Password\n\n      </ion-label>\n\n      <!-- <ion-input type="text" placeholder="" name="CPassword" #CPassword="ngModel" [(ngModel)]="npef.CPassword"></ion-input> -->\n\n      <!-- <ion-input formControlName="confirmpwd" type="password" required Equalvalidate="password" #CPassword ngModel name="CPassword" placeholder=""></ion-input> -->\n\n      <ion-input formControlName="confirmpwd" type="password" Equalvalidate="password" placeholder=""></ion-input>\n\n      <!-- <div [hidden]="CPassword.valid || CPassword.pristine" class="alert alert-danger">\n\n        Password mismatch\n\n    </div> -->\n\n    </ion-item>\n\n    <!-- <p style="color:red;" *ngIf="confirmpwd.hasError(\'required\') && confirmpwd.touched"> *Confirmation is required</p> -->\n\n    <p style="color:darkorange;">{{confirmpasswordMessage}}</p>\n\n    <button [disabled]="NewPasswordEntryForm.invalid" id="enterOTP-button9" ion-button color="positive" block>\n\n      Save Password\n\n    </button>\n\n  </form>\n\n  <div style="color:red;" *ngIf="NewPasswordEntryForm.errors?.notSame"><span>Passwords do not match</span></div>\n\n</div>\n\n\n\n\n\n<div *ngIf="ShowUserNameAndOldPassword">\n\n    <form id="enterOTP-form2" [formGroup]="ChangePasswordForm"  #ChangePasswordEntryForm="ngForm" (ngSubmit)="OnChangePassword()">\n\n      <ion-item id="enterOTP-input3">\n\n        <ion-label floating>\n\n          Old Password\n\n        </ion-label>\n\n        <ion-input formControlName="oldPassword" type="password" placeholder=""></ion-input>      \n\n      </ion-item>\n\n      <p style="color:darkorange;">{{oldPasswordMessage}}</p>\n\n      <ion-item id="enterOTP-input3">\n\n      <ion-label floating>\n\n        New Password\n\n      </ion-label>\n\n      <ion-input formControlName="newPassword" type="password" placeholder=""></ion-input>      \n\n    </ion-item>\n\n    <p style="color:darkorange;">{{passwordMessage}}</p>\n\n    <ion-item id="enterOTP-input5">\n\n      <ion-label floating>\n\n        Confirm Password\n\n      </ion-label>\n\n      <ion-input formControlName="confirmNewpwd" type="password" Equalvalidate="password" placeholder=""></ion-input>\n\n    </ion-item>\n\n    <p style="color:darkorange;">{{confirmpasswordMessage}}</p>\n\n    <a style="color:darkorange;" (click)="OnForgot()">Forgot password?</a>\n\n    <button [disabled]="ChangePasswordEntryForm.invalid" id="enterOTP-button9" ion-button color="positive" block>\n\n      Change Password\n\n    </button>\n\n  </form>\n\n  <div style="color:red;" *ngIf="ChangePasswordEntryForm.errors?.notSame"><span>Passwords do not match</span></div>\n\n</div>\n\n</ion-content>'/*ion-inline-end:"D:\sahakariupdate\sahakariupdate\src\pages\enter-otp\enter-otp.html"*/
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_8__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_10__services_UIService__["a" /* UISercice */], __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_6__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_5__services_app_data_service__["a" /* RegisterService */]])
-    ], EnterOTPPage);
-    return EnterOTPPage;
-}());
-
-var FormatTimePipe = /** @class */ (function () {
-    function FormatTimePipe() {
-    }
-    FormatTimePipe.prototype.transform = function (value) {
-        var minutes = Math.floor(value / 60);
-        return ('00' + minutes).slice(-2) + ':' + ('00' + Math.floor(value - minutes * 60)).slice(-2);
-    };
-    FormatTimePipe = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["U" /* Pipe */])({
-            name: 'formatTime'
-        })
-    ], FormatTimePipe);
-    return FormatTimePipe;
-}());
-
-//# sourceMappingURL=enter-otp.js.map
-
 /***/ })
 
-},[382]);
+},[384]);
 //# sourceMappingURL=main.js.map

@@ -14,6 +14,7 @@ import { PagePage } from '../pages/page/page';
 import { ConstantService } from '../pages/services/Constants';
 import { MyProfilePage } from '../pages/my-profile/my-profile';
 import { BankBranchesPage } from '../pages/bank-branches/bank-branches';
+import {TranslateService} from '@ngx-translate/core';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class MyApp {
   rootPage: any;
   showMenuOptions: boolean;
   // constructor(platform: Platform, statusBar: StatusBar, private reg:RegisterPage, log:LoginPage, splashScreen: SplashScreen) {
-  constructor(private storageService:StorageService, private event: Events, public constant: ConstantService, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private regService: RegisterService) {
+  constructor(private translate: TranslateService,private storageService:StorageService, private event: Events, public constant: ConstantService, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private regService: RegisterService) {
     this.event.subscribe('UNAUTHORIZED', () => {
       this.navCtrl.push(LoginPage);
     });
@@ -37,6 +38,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
+      translate.setDefaultLang('ka');
 
       //localStorage.clear();
       //localStorage.removeItem('userToken');
@@ -61,7 +63,10 @@ export class MyApp {
         }
     });
   }
-
+  changeLanguage(language:string)
+  {
+    this.translate.use(language);
+  }
   goToPage(params) {
     if (!params) params = {};
     this.navCtrl.setRoot(PagePage);
