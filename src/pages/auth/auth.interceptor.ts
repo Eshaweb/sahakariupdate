@@ -33,8 +33,7 @@ export class AuthInterceptor implements HttpInterceptor {
         // }
 
 
-        //if (localStorage.getItem('userToken') != null) {
-       if (this.registerService.userToken != null) {  
+        if (this.registerService.userToken != null) {  
         const clonedreq = req.clone({
                 // headers: req.headers.set("Authorization", "Bearer " + localStorage.getItem('userToken'))
                 headers: req.headers.set("Authorization", "Bearer " + this.registerService.userToken)
@@ -51,7 +50,6 @@ export class AuthInterceptor implements HttpInterceptor {
                     }
                 );
         }
-        //else if(localStorage.getItem('User')==null&&localStorage.getItem('userToken')== null){
         else if(this.storageService.GetUser()==null&&this.registerService.userToken== null){
             
             const clonedreq = req.clone({

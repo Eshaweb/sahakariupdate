@@ -24,7 +24,6 @@ import { MiniStatementPage } from '../pages/mini-statement/mini-statement';
 import { MobileRechargePage } from '../pages/mobile-recharge/mobile-recharge';
 import { RegisterPage } from '../pages/register/register';
 import { EnterOTPPage, FormatTimePipe } from '../pages/enter-otp/enter-otp';
-import { AuthGuard } from '../pages/auth/auth.guard';
 import { AutoCompleteModule } from 'ionic2-auto-complete';
 
 
@@ -49,6 +48,8 @@ import { MyProfilePage } from '../pages/my-profile/my-profile';
 import { BankBranchesPage } from '../pages/bank-branches/bank-branches';
 import { FundTransferConfirmPage } from '../pages/fund-transfer-confirm/fund-transfer-confirm';
 import { ModalPage } from '../pages/modal/modal';
+import { Observable } from '../../node_modules/rxjs';
+import { AuthGuard } from '../pages/auth/auth.guard';
 
 
 
@@ -88,11 +89,11 @@ import { ModalPage } from '../pages/modal/modal';
       preventDuplicates: true,
     }),
     TranslateModule.forRoot({
-      // loader: {
-      //     provide: TranslateLoader,
-      //     useFactory: (HttpLoaderFactory),
-      //     deps: [HttpClient]
-      // }
+      loader: {
+          provide: TranslateLoader,
+          useFactory: (HttpLoaderFactory),
+          deps: [HttpClient]
+      }
   }),
 
   //TranslateModule.forRoot(),

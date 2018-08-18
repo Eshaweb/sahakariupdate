@@ -26,12 +26,8 @@ export class MyApp {
   @ViewChild(Nav) navCtrl: Nav;
   rootPage: any;
   showMenuOptions: boolean;
-<<<<<<< HEAD
   // constructor(platform: Platform, statusBar: StatusBar, private reg:RegisterPage, log:LoginPage, splashScreen: SplashScreen) {
-  constructor(private translate: TranslateService,private storageService:StorageService, private event: Events, public constant: ConstantService, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private regService: RegisterService) {
-=======
-  constructor(private storageService:StorageService, private event: Events, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private regService: RegisterService) {
->>>>>>> e52c8a5d36b51fbf905ab6e3828d7afb595bf3a2
+  constructor(private translate: TranslateService,private storageService:StorageService, private event: Events, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private regService: RegisterService) {
     this.event.subscribe('UNAUTHORIZED', () => {
       this.navCtrl.push(LoginPage);
     });
@@ -41,13 +37,14 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
-      translate.setDefaultLang('ka');
+      
 
       //localStorage.clear();
       this.event.subscribe('REFRESH_DIGIPARTYNAME', () => {  
         this.ActiveBankName = this.storageService.GetActiveBankName();
           this.digipartyname = this.storageService.GetDigipartyBasedOnActiveTenantId().Name;
           this.showMenuOptions=true;
+          translate.setDefaultLang('ka');
         });  //Above is for refreshing digipartyname
       if (this.storageService.GetUser() == null) {  //Checks whether the User table in localstorage is null or not
         this.rootPage = RegisterPage;

@@ -30,22 +30,24 @@ import { AddBankResponse } from '../View Models/AddBankResponse';
 import { FundTransferResponse } from '../View Models/FundTransferResponse';
 import { BankBranch } from '../View Models/BankBranch';
 import { CheckVoucher } from '../View Models/CheckVoucher';
+import { TranslateHttpLoader } from '../../../node_modules/@ngx-translate/http-loader';
 
 @Injectable()
 export class RegisterService {
     TenantId: string;
     MobileNo: string;
-    userToken:string;
+    userToken: string;
     tenantlist: Tenant;
     //constructor(private sqlite: SQLite,private httpclient:HttpClient,private locals:StorageService,private uihelper: UIHelperService,private http: Http) {
     constructor(private httpclient: HttpClient, private uIHelperService: UIHelperService) {
 
 
     }
-GetToken(Token:string){
-    this.userToken=Token;
-    return "true";
-}
+
+    GetToken(Token: string) {
+        this.userToken = Token;
+        return "true";
+    }
     GetTenantsByMobile(mobno: any) {
         this.MobileNo = mobno;
         var data = "MobileNo=" + mobno;
@@ -71,7 +73,7 @@ GetToken(Token:string){
         return this.httpclient.post<UserResult>(this.uIHelperService.CallWebAPIUrlNew("/User/SaveMPin"), userPost);
     }
 
-    ChangePassword(changePassword:ChangePassword){
+    ChangePassword(changePassword: ChangePassword) {
         return this.httpclient.post<ChangePasswordResult>(this.uIHelperService.CallWebAPIUrlNew("/User/ChangePassword"), changePassword);
     }
     loginbyHttpClient(userName, password, unique): Observable<TokenParams> {
@@ -96,56 +98,56 @@ GetToken(Token:string){
 
     }
     GetPlans(planRequest: PlanRequest) {
-       
+
         return this.httpclient.post<PlanResponse>(this.uIHelperService.CallWebAPIUrlNew("/Operator/GetPlans"), planRequest);
         // return this.httpclient.post<PlanResponse>(this.uIHelperService.CallWebAPIUrlNew("/Operator/GetPlans"), body);
 
     }
     PostRecharge(rechargeModel: RechargeModel) {
-        
+
         return this.httpclient.post<TranResponse>(this.uIHelperService.CallWebAPIUrlNew("/Recharge/PostRecharge"), rechargeModel);
 
     }
 
     GetFTAccount(fundTransferRequest: FundTransferRequest) {
-       
+
         return this.httpclient.post<FundTransferResponse>(this.uIHelperService.CallWebAPIUrlNew("/Banking/GetFTAccount"), fundTransferRequest);
 
     }
 
     FundTransfer(doFundTransfer: DoFundTransfer) {
-       
+
         return this.httpclient.post<TranResponse>(this.uIHelperService.CallWebAPIUrlNew("/Banking/FundTransfer"), doFundTransfer);
 
     }
 
     GetAccountBalance(statementRequest: StatementRequest) {
-       
+
         return this.httpclient.post<StatementRequest>(this.uIHelperService.CallWebAPIUrlNew("/Banking/GetAccountBalance"), statementRequest);
     }
 
     GetStatement(statementRequest: StatementRequest) {
-        
+
         return this.httpclient.post<StatementRequest>(this.uIHelperService.CallWebAPIUrlNew("/Banking/GetStatement"), statementRequest);
     }
 
     GetOperaterCircle(operaterCircleQuery: OperaterCircleQuery) {
-        
+
         return this.httpclient.post<OperaterCircleQuery>(this.uIHelperService.CallWebAPIUrlNew("/Operator/GetOperaterCircle"), operaterCircleQuery);
 
     }
     GetRechargeReport(rRRequest: RRRequest) {
-       
+
         return this.httpclient.post<StatementRequest>(this.uIHelperService.CallWebAPIUrlNew("/Recharge/GetRechargeReport"), rRRequest);
     }
     GetLocations(TenantId) {
         // var data = "MobileNo=" + mobno;
         // var url = this.uIHelperService.CallWebAPIUrlNew("/Tenant/GetTenantsByMobile") + "?" + data;
         // return this.httpclient.get<Tenant>(url);
-        return this.httpclient.get<BankBranch>(this.uIHelperService.CallWebAPIUrlNew("/Banking/GetLocations?TenantId="+TenantId));
+        return this.httpclient.get<BankBranch>(this.uIHelperService.CallWebAPIUrlNew("/Banking/GetLocations?TenantId=" + TenantId));
     }
     GetReversedVoucher(checkVoucher: CheckVoucher) {
-       
+
         return this.httpclient.post<StatementRequest>(this.uIHelperService.CallWebAPIUrlNew("/Recharge/GetReversedVoucher"), checkVoucher);
     }
     countDown;
@@ -154,9 +156,9 @@ GetToken(Token:string){
     tick = 1000;
     getCounter() {
         return Observable.timer(0, this.tick)
-          .take(this.counter)
-          .map(() => --this.counter)
-      }
+            .take(this.counter)
+            .map(() => --this.counter)
+    }
     private ExtractData(res: Response) {
 
         let body = res.json();
