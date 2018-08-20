@@ -97,6 +97,9 @@ export class StorageService {
     GetFavourite(): Favourites {
         return JSON.parse(localStorage.getItem("Favourite")) as Favourites;
     }
+    GetLanguage(): string {
+        return localStorage.getItem("Language");
+    }
     SetUser(param) {
         localStorage.setItem("User", param);
     }
@@ -117,6 +120,9 @@ export class StorageService {
     }
     SetFavourite(param) {
         localStorage.setItem("Favourite", param);
+    }
+    SetLanguage(param) {
+        localStorage.setItem("Language", param);
     }
     RemoveRecordsForLogout() {
         localStorage.removeItem("OS");

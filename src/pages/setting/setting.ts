@@ -12,22 +12,19 @@ export class SettingPage {
   isKannada: boolean;
   isEnglish: boolean;
 
-  constructor(private events: Events, private translate: TranslateService, public navCtrl: NavController) {
-  if(StorageService.GetItem("Language")=='ka'){
-    this.isKannada=true;
-  }else{
-    this.isKannada=false;
+  constructor(private storageService: StorageService, private events: Events, private translate: TranslateService, public navCtrl: NavController) {
+    if (this.storageService.GetLanguage() == 'ka') {
+      this.isKannada = true;
+      this.isEnglish = false;
+    } else {
+      this.isKannada = false;
+      this.isEnglish = true;
+    }
+
   }
-  if(StorageService.GetItem("Language")=='en'){
-    this.isEnglish=true;
-  }else{
-    this.isEnglish=false;
-  }
-  }
-  changeLanguage(language:string)
-  {
+  changeLanguage(language: string) {  //Fires, when we select the Language radio button
     this.translate.use(language);
-    StorageService.SetItem("Language",language);
+    this.storageService.SetLanguage(language);
     this.navCtrl.setRoot(PagePage);
     this.events.publish('REFRESH_DIGIPARTYNAME');
   }
