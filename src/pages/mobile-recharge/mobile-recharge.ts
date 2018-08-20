@@ -601,15 +601,15 @@ export class MobileRechargePage implements OnInit {
   ];
 
   showerrortext: boolean;
-  operaterCircle: OperaterCircle;
+  operatorCircle: OperaterCircle;
   singleosrespone: OSResponse;
   oid: string;
   statename: string;
   sid: string;
   singleState: SingleState;
 
-  OnMobileNo(id) {
-    if (id.length < 10) {
+  OnMobileNo(id) {  //Fires for keyup event of MobileNo field
+    if (id.length < 10) {  //checks for mobileno length
       this.isMobileNoEntered = false;
       return this.showerrortext = true;
     }
@@ -626,20 +626,22 @@ export class MobileRechargePage implements OnInit {
       }
 
       this.registerService.GetOperaterCircle(operaterCircleQuery).subscribe((data: any) => {
-        this.operaterCircle = data;
-        var operaterCircle = data;
+        this.operatorCircle = data;
+        var operatorCircle = data;
         if (data.ResponseMessage == null) {
           //var OsId = this.operaterCircle.operator;
-          var OsId = operaterCircle.operator;
+          var OsId = operatorCircle.operator;
           //this.operatorname = this.operaterCircle.operator;
           const OSResponseNew = this.OSResponseNew;
           this.singleosrespone = OSResponseNew.find(function (obj) { return obj.Id === OsId; });
+          //To find the OSResponse with particular OSId
           this.oid = this.singleosrespone.Id;
           this.rechargeitem.OperatorId = this.oid;
           //setTimeout(()=>{ this.rechargeitem.OperatorId = this.oid; }, 8000);
-          var circle = this.operaterCircle.circle;
-          this.statename = this.operaterCircle.circle;
+          var circle = this.operatorCircle.circle;
+          this.statename = this.operatorCircle.circle;
           this.singleState = this.StatesOfIndia.find(function (obj) { return obj.Name === circle })
+          //To get the State with particular circle
           this.sid = this.singleState.Id;
           this.rechargeitem.CircleId = this.sid;
           this.isStateEnabled = true;

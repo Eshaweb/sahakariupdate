@@ -24,9 +24,7 @@
         </ion-label>
         <!-- <ion-input type="text" placeholder="" name="SubscriptionId" #SubscriptionId="ngModel" [(ngModel)]="rechargeitem.SubscriptionId" (ngModelChange)="OnMobileNo($event)" maxlength="10"></ion-input> -->
         <!-- <ion-input type="text" placeholder="" name="SubscriptionId" #SubscriptionId="ngModel" [(ngModel)]="rechargeitem.SubscriptionId" (change)="OnMobileNo($event.target.value)" maxlength="10"></ion-input>-->
-        <!-- <ion-input type="text" placeholder="" name="SubscriptionId" #SubscriptionId="ngModel" [(ngModel)]="rechargeitem.SubscriptionId" (input)="OnMobileNo($event.target.value)" minlength="5"></ion-input> -->
-        
-        <!-- <ion-input type="text" placeholder="" name="SubscriptionId" #SubscriptionId="ngModel" [(ngModel)]="rechargeitem.SubscriptionId" (keyup)="OnMobileNo($event.target.value)" maxlength="10"></ion-input>      -->
+        <!-- <ion-input type="text" placeholder="" name="SubscriptionId" #SubscriptionId="ngModel" [(ngModel)]="rechargeitem.SubscriptionId" (input)="OnMobileNo($event.target.value)" minlength="5"></ion-input> -->       
         <ion-input formControlName="subscriptionId" type="number" placeholder="" [(ngModel)]="rechargeitem.SubscriptionId" (keyup)="OnMobileNo($event.target.value)" maxlength="10"></ion-input>
       </ion-item>
       <p style="color:red;">{{subscriptionIdMessage}}</p>

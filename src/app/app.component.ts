@@ -55,10 +55,7 @@ export class MyApp {
         }
     });
   }
-  changeLanguage(language:string)
-  {
-    this.translate.use(language);
-  }
+  
   goToPage(params) {
     if (!params) params = {};
     this.navCtrl.setRoot(PagePage);
