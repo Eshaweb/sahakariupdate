@@ -30,10 +30,24 @@ export class RechargePage implements OnInit {
     //To filter based on Id
     this.ActiveBankName = this.storageService.GetActiveBankName();
   }
-  //ParentId: string;
-  OnOperatorSelection(ParentId) { //Fires, when we click on categories
-    this.navCtrl.push(FavouritesPage, { 'ParentId': ParentId });
+  // OnOperatorSelection(ParentId) { //Fires, when we click on categories
+  //   this.navCtrl.push(FavouritesPage, { 'ParentId': ParentId });
+  // }
+
+
+  OnPrepaid(){
+    this.navCtrl.push(FavouritesPage, { 'ParentId': 'S1' });
   }
+  OnPostpaid(){
+    this.navCtrl.push(FavouritesPage, { 'ParentId': 'S2' });
+  }
+  OnDTH(){
+    this.navCtrl.push(FavouritesPage, { 'ParentId': 'S3' });
+  }
+  OnElectricity(){
+    this.navCtrl.push(FavouritesPage, { 'ParentId': 'S5' });
+  }
+  
   OnReports() {  //Fires, when we click on reports
     this.navCtrl.push(RechargeReportPage);
   }
