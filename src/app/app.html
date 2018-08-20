@@ -15,7 +15,7 @@
         <ion-item color="positive" menuClose="" on-click="goToPage()" id="menu-list-item1" >
 
           <ion-icon name="home" item-left></ion-icon>
-          Home
+          {{'home' | translate}}
         </ion-item>
         <ion-item-options side="left">
           <button ion-button color="positive"></button>
@@ -23,15 +23,15 @@
       </ion-item-sliding>
       <ion-item color="positive" menuClose="" on-click="goToSetting()" id="menu-list-item2" *ngIf="showMenuOptions">
         <ion-icon name="settings" item-left></ion-icon>
-        Settings
+        {{'settings' | translate}
       </ion-item>
       <ion-item color="positive" menuClose="" on-click="goToChangeBank()" id="menu-list-item3" *ngIf="showMenuOptions">
         <ion-icon name="repeat" item-left></ion-icon>
-        Change Bank
+        {{'change bank' | translate}}
       </ion-item>
       <ion-item color="positive" menuClose="" on-click="goToChangeBank()" id="menu-list-item12">
         <ion-icon name="mail" item-left></ion-icon>
-        Contact Us
+        {{'contactus' | translate}}
       </ion-item>
       <ion-item color="positive" menuClose="" on-click="goToMyProfile()" id="menu-list-item12" *ngIf="showMenuOptions">
         <ion-icon name="mail" item-left></ion-icon>
