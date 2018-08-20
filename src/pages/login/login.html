@@ -20,7 +20,10 @@
         <!-- <ion-input formControlName="pword" type="password" #Password ngModel name="Password" placeholder=""></ion-input> -->
         <ion-input formControlName="password" type="password" placeholder=""></ion-input>
       </ion-item>
-      <a style="color:darkorange;" (click)="OnForgot()">Forgot password?</a>
+      <br>
+      
+      <button class="button button-small" ion-button color="assertive" (click)="OnForgot()">Forgot password?</button>
+    
       <!-- <p style="color:red;" *ngIf="password.hasError('required') && password.touched"> *Please Enter Password</p> -->
       <p style="color:darkorange;">{{passwordMessage}}</p>
     </ion-list>
