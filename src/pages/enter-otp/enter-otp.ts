@@ -11,6 +11,7 @@ import { StorageService } from '../services/Storage_Service';
 import { ToastrService } from 'ngx-toastr';
 import { UISercice } from '../services/UIService';
 import { RegisterPage } from '../register/register';
+import { Observable } from '../../../node_modules/rxjs';
 @Component({
   selector: 'page-enter-otp',
   templateUrl: 'enter-otp.html'
@@ -27,6 +28,9 @@ export class EnterOTPPage implements OnInit {
   mobilenoMessage: string;
   oldPasswordMessage: string;
   isForgotten: boolean;
+  isResendOTP: boolean=false;
+  OTPRef: string;
+  OTPRefNo: string;
   constructor(private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, private toastrService: ToastrService, public navParams: NavParams, public loadingController: LoadingController, private fb: FormBuilder, public navCtrl: NavController, private registerService: RegisterService) {
     this.formgroup = this.fb.group({
       otp: ['', [Validators.required, Validators.minLength(4)]]
@@ -65,7 +69,7 @@ export class EnterOTPPage implements OnInit {
     if ((c.touched || c.dirty) && c.errors) {  //checks for error in particular control.
       if (control === 'otp') {
         this.userMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
-        //maps the error message from validationMessages array. 
+        //maps the error message from validationMessages array.
       }
     }
   }
@@ -76,11 +80,11 @@ export class EnterOTPPage implements OnInit {
     if ((c.touched || c.dirty) && c.errors) {
       if (control === 'password') {
         this.passwordMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
-        //maps the error message from validationMessages array. 
+        //maps the error message from validationMessages array.
       }
       else if (control === 'confirmpwd') {
         this.confirmpasswordMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
-        //maps the error message from validationMessages array. 
+        //maps the error message from validationMessages array.
       }
     }
   }
@@ -117,13 +121,14 @@ export class EnterOTPPage implements OnInit {
   };
 
   countDown;
-  counter = 40;
+  counter = 20;
   tick = 1000;
   ngOnInit() {
 
-    // this.countDown = Observable.timer(0, this.tick)
-    //   .take(this.counter)
-    //   .map(() => --this.counter);
+    this.countDown = Observable.timer(0, this.tick)
+      .take(this.counter)
+      .map(() => --this.counter);  //To count down the time.
+
     this.ShowIf = this.navParams.get('ischangePassword');
     //used to show a Change Password form, based on above property value.
     if (this.ShowIf == null) {
@@ -135,8 +140,6 @@ export class EnterOTPPage implements OnInit {
       this.ShowOldPassword = true;//To show oldPassword field for Change Password form.
       this.ShowIf = false;
     }
-    this.countDown = this.registerService.getCounter().do(() => --this.counter);
-    //To count down the time.
   }
   // stopTimer() {
   //   this.countDown = null;
@@ -162,7 +165,12 @@ export class EnterOTPPage implements OnInit {
   HideIf = true;
   postOPT: PostOPT;
   OnSubmit() {  //Fires, while clicking Enter OTP submit button.
-    let OTPRefNo = this.navParams.get('OTPRefNo');
+    if(this.isResendOTP==true){
+      this.OTPRefNo=this.OTPRef;
+    }
+    else{
+      this.OTPRefNo = this.navParams.data.OTPRefNo;
+    }
     let loading = this.loadingController.create({
       content: 'Please wait till the screen loads'
     });
@@ -171,7 +179,7 @@ export class EnterOTPPage implements OnInit {
     const postOPT = {
       TenantId: this.registerService.TenantId,  //ActiveTenantId
       MobileNo: this.registerService.MobileNo,
-      OTPRef: OTPRefNo,
+      OTPRef: this.OTPRefNo,
       OTP: this.formgroup.get('otp').value
     }
     this.registerService.ValidateOTP(postOPT).subscribe((data: any) => {
@@ -205,12 +213,16 @@ export class EnterOTPPage implements OnInit {
     });
     loading.present();
     let oTPRequest = {
-      TenantId: this.navParams.get('TenantId').value,
-      MobileNo: this.navParams.get('MobileNo').value
+      // TenantId: this.navParams.get('TenantId').value,
+      // MobileNo: this.navParams.get('MobileNo').value
+      TenantId: this.navParams.data.TenantId,
+      MobileNo: this.navParams.data.MobileNo
     }
     this.registerService.RequestOTP(oTPRequest).subscribe((data: any) => {
       //ADDED toastr.css in the path "node_modules/ngx-toastr/toastr.css" from https://github.com/scttcper/ngx-toastr/blob/master/src/lib/toastr.css
-      this.toastrService.success('OTP Sent to ' + data.MobileNo + ' with Reference No. ' + data.OTPRefNo, 'Success!');
+      this.toastrService.success('OTP Sent to ' + oTPRequest.MobileNo + ' with Reference No. ' + data.OTPRef, 'Success!');
+      this.isResendOTP=true;
+      this.OTPRef=data.OTPRef;
       loading.dismiss();
     }, (error) => {
       this.toastrService.error(error.error.ExceptionMessage, 'Error!');
@@ -225,17 +237,31 @@ export class EnterOTPPage implements OnInit {
   }
 
   OnSavePassword() {  //Fires, if we click on SavePasswordForm Submit button.
-    var DigiPartyId = this.navParams.get('DigiPartyId');
-    var userPost = {
-      DigiPartyId: DigiPartyId,
-      TenantId: this.registerService.TenantId,  //ActiveTenantId
-      PIN: this.SavePasswordForm.controls['confirmpwd'].value,
-      UniqueId: this.guid(),
-      OTPRef: this.navParams.get('OTPRefNo'),
-      OTP: this.formgroup.get('otp').value,
-      MobileNo: this.registerService.MobileNo
+    if(this.isResendOTP==true){
+      var DigiPartyId = this.navParams.data.DigiPartyId;
+      var userPost = {
+        DigiPartyId: DigiPartyId,
+        TenantId: this.registerService.TenantId,  //ActiveTenantId
+        PIN: this.SavePasswordForm.controls['confirmpwd'].value,
+        UniqueId: this.guid(),
+        OTPRef: this.OTPRefNo,
+        OTP: this.formgroup.get('otp').value,
+        MobileNo: this.registerService.MobileNo
+      }
     }
-
+    else{
+      var DigiPartyId = this.navParams.get('DigiPartyId');
+      var OTPRefNo:string = this.navParams.get('OTPRefNo');
+      var userPost = {
+        DigiPartyId: DigiPartyId,
+        TenantId: this.registerService.TenantId,  //ActiveTenantId
+        PIN: this.SavePasswordForm.controls['confirmpwd'].value,
+        UniqueId: this.guid(),
+        OTPRef: OTPRefNo,
+        OTP: this.formgroup.get('otp').value,
+        MobileNo: this.registerService.MobileNo
+      }
+    }
     let loading = this.loadingController.create({
       content: 'Please wait while registering the Password......'
     });

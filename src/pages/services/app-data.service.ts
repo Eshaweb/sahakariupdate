@@ -150,15 +150,15 @@ export class RegisterService {
 
         return this.httpclient.post<StatementRequest>(this.uIHelperService.CallWebAPIUrlNew("/Recharge/GetReversedVoucher"), checkVoucher);
     }
-    countDown;
-    //counter = 30*60;
-    counter = 60;
-    tick = 1000;
-    getCounter() {
-        return Observable.timer(0, this.tick)
-            .take(this.counter)
-            .map(() => --this.counter)
-    }
+    // countDown;
+    // //counter = 30*60;
+    // counter = 60;
+    // tick = 1000;
+    // getCounter() {
+    //     return Observable.timer(0, this.tick)
+    //         .take(this.counter)
+    //         .map(() => --this.counter)
+    // }
     private ExtractData(res: Response) {
 
         let body = res.json();

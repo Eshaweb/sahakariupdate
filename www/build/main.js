@@ -141,7 +141,7 @@ var StorageService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 173:
+/***/ 174:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -150,7 +150,7 @@ var StorageService = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mobile_recharge_mobile_recharge__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_Storage_Service__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__recharge_recharge__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__recharge_recharge__ = __webpack_require__(175);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -245,16 +245,16 @@ var FavouritesPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 174:
+/***/ 175:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RechargePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__favourites_favourites__ = __webpack_require__(173);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__favourites_favourites__ = __webpack_require__(174);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_Storage_Service__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__recharge_report_recharge_report__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__recharge_report_recharge_report__ = __webpack_require__(176);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__page_page__ = __webpack_require__(37);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -326,7 +326,7 @@ var RechargePage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 175:
+/***/ 176:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -447,7 +447,7 @@ var RechargeReportPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 176:
+/***/ 177:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -459,7 +459,7 @@ var RechargeReportPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_app_data_service__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ngx_toastr__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_UIService__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__change_bank_change_bank__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__change_bank_change_bank__ = __webpack_require__(178);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__banking_banking__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__fund_transfer_confirm_fund_transfer_confirm__ = __webpack_require__(375);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -632,7 +632,7 @@ var FundTransferPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 177:
+/***/ 178:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -645,7 +645,7 @@ var FundTransferPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__login_login__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__page_page__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_ngx_toastr__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__fund_transfer_fund_transfer__ = __webpack_require__(176);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__fund_transfer_fund_transfer__ = __webpack_require__(177);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -818,7 +818,7 @@ var ChangeBankPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 178:
+/***/ 179:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -836,6 +836,8 @@ var ChangeBankPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_UIService__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__register_register__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__node_modules_rxjs__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__node_modules_rxjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__node_modules_rxjs__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -845,6 +847,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -869,6 +872,7 @@ var EnterOTPPage = /** @class */ (function () {
         this.fb = fb;
         this.navCtrl = navCtrl;
         this.registerService = registerService;
+        this.isResendOTP = false;
         this.validationMessages = {
             otp_required: '*Enter OTP Number',
             otp_minlength: 'Enter 4 digits',
@@ -880,7 +884,7 @@ var EnterOTPPage = /** @class */ (function () {
             confirmpwd_minlength: 'This field should match with Password',
             confirmpwd_invalid: 'Password doesnot match'
         };
-        this.counter = 40;
+        this.counter = 20;
         this.tick = 1000;
         this.HideIf = true;
         this.formgroup = this.fb.group({
@@ -915,7 +919,7 @@ var EnterOTPPage = /** @class */ (function () {
         if ((c.touched || c.dirty) && c.errors) {
             if (control === 'otp') {
                 this.userMessage = Object.keys(c.errors).map(function (key) { return _this.validationMessages[control + '_' + key]; }).join(' ');
-                //maps the error message from validationMessages array. 
+                //maps the error message from validationMessages array.
             }
         }
     };
@@ -927,11 +931,11 @@ var EnterOTPPage = /** @class */ (function () {
         if ((c.touched || c.dirty) && c.errors) {
             if (control === 'password') {
                 this.passwordMessage = Object.keys(c.errors).map(function (key) { return _this.validationMessages[control + '_' + key]; }).join(' ');
-                //maps the error message from validationMessages array. 
+                //maps the error message from validationMessages array.
             }
             else if (control === 'confirmpwd') {
                 this.confirmpasswordMessage = Object.keys(c.errors).map(function (key) { return _this.validationMessages[control + '_' + key]; }).join(' ');
-                //maps the error message from validationMessages array. 
+                //maps the error message from validationMessages array.
             }
         }
     };
@@ -955,9 +959,9 @@ var EnterOTPPage = /** @class */ (function () {
     };
     EnterOTPPage.prototype.ngOnInit = function () {
         var _this = this;
-        // this.countDown = Observable.timer(0, this.tick)
-        //   .take(this.counter)
-        //   .map(() => --this.counter);
+        this.countDown = __WEBPACK_IMPORTED_MODULE_12__node_modules_rxjs__["Observable"].timer(0, this.tick)
+            .take(this.counter)
+            .map(function () { return --_this.counter; }); //To count down the time.
         this.ShowIf = this.navParams.get('ischangePassword');
         //used to show a Change Password form, based on above property value.
         if (this.ShowIf == null) {
@@ -969,8 +973,6 @@ var EnterOTPPage = /** @class */ (function () {
             this.ShowOldPassword = true; //To show oldPassword field for Change Password form.
             this.ShowIf = false;
         }
-        this.countDown = this.registerService.getCounter().do(function () { return --_this.counter; });
-        //To count down the time.
     };
     // stopTimer() {
     //   this.countDown = null;
@@ -993,7 +995,12 @@ var EnterOTPPage = /** @class */ (function () {
     };
     EnterOTPPage.prototype.OnSubmit = function () {
         var _this = this;
-        var OTPRefNo = this.navParams.get('OTPRefNo');
+        if (this.isResendOTP == true) {
+            this.OTPRefNo = this.OTPRef;
+        }
+        else {
+            this.OTPRefNo = this.navParams.data.OTPRefNo;
+        }
         var loading = this.loadingController.create({
             content: 'Please wait till the screen loads'
         });
@@ -1001,7 +1008,7 @@ var EnterOTPPage = /** @class */ (function () {
         var postOPT = {
             TenantId: this.registerService.TenantId,
             MobileNo: this.registerService.MobileNo,
-            OTPRef: OTPRefNo,
+            OTPRef: this.OTPRefNo,
             OTP: this.formgroup.get('otp').value
         };
         this.registerService.ValidateOTP(postOPT).subscribe(function (data) {
@@ -1036,12 +1043,16 @@ var EnterOTPPage = /** @class */ (function () {
         });
         loading.present();
         var oTPRequest = {
-            TenantId: this.navParams.get('TenantId').value,
-            MobileNo: this.navParams.get('MobileNo').value
+            // TenantId: this.navParams.get('TenantId').value,
+            // MobileNo: this.navParams.get('MobileNo').value
+            TenantId: this.navParams.data.TenantId,
+            MobileNo: this.navParams.data.MobileNo
         };
         this.registerService.RequestOTP(oTPRequest).subscribe(function (data) {
             //ADDED toastr.css in the path "node_modules/ngx-toastr/toastr.css" from https://github.com/scttcper/ngx-toastr/blob/master/src/lib/toastr.css
-            _this.toastrService.success('OTP Sent to ' + data.MobileNo + ' with Reference No. ' + data.OTPRefNo, 'Success!');
+            _this.toastrService.success('OTP Sent to ' + oTPRequest.MobileNo + ' with Reference No. ' + data.OTPRef, 'Success!');
+            _this.isResendOTP = true;
+            _this.OTPRef = data.OTPRef;
             loading.dismiss();
         }, function (error) {
             _this.toastrService.error(error.error.ExceptionMessage, 'Error!');
@@ -1056,16 +1067,31 @@ var EnterOTPPage = /** @class */ (function () {
     };
     EnterOTPPage.prototype.OnSavePassword = function () {
         var _this = this;
-        var DigiPartyId = this.navParams.get('DigiPartyId');
-        var userPost = {
-            DigiPartyId: DigiPartyId,
-            TenantId: this.registerService.TenantId,
-            PIN: this.SavePasswordForm.controls['confirmpwd'].value,
-            UniqueId: this.guid(),
-            OTPRef: this.navParams.get('OTPRefNo'),
-            OTP: this.formgroup.get('otp').value,
-            MobileNo: this.registerService.MobileNo
-        };
+        if (this.isResendOTP == true) {
+            var DigiPartyId = this.navParams.data.DigiPartyId;
+            var userPost = {
+                DigiPartyId: DigiPartyId,
+                TenantId: this.registerService.TenantId,
+                PIN: this.SavePasswordForm.controls['confirmpwd'].value,
+                UniqueId: this.guid(),
+                OTPRef: this.OTPRefNo,
+                OTP: this.formgroup.get('otp').value,
+                MobileNo: this.registerService.MobileNo
+            };
+        }
+        else {
+            var DigiPartyId = this.navParams.get('DigiPartyId');
+            var OTPRefNo = this.navParams.get('OTPRefNo');
+            var userPost = {
+                DigiPartyId: DigiPartyId,
+                TenantId: this.registerService.TenantId,
+                PIN: this.SavePasswordForm.controls['confirmpwd'].value,
+                UniqueId: this.guid(),
+                OTPRef: OTPRefNo,
+                OTP: this.formgroup.get('otp').value,
+                MobileNo: this.registerService.MobileNo
+            };
+        }
         var loading = this.loadingController.create({
             content: 'Please wait while registering the Password......'
         });
@@ -1159,11 +1185,12 @@ var EnterOTPPage = /** @class */ (function () {
     };
     EnterOTPPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'page-enter-otp',template:/*ion-inline-start:"D:\shailesh_bhat\Angular2Projects\ionic_sahakari\sahakariupdate\src\pages\enter-otp\enter-otp.html"*/'<ion-header>\n\n  <ion-navbar  color="primary">\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title *ngIf="HideIf">\n\n      Enter OTP\n\n    </ion-title>\n\n    <ion-title *ngIf="ShowIf">\n\n      Password Entry\n\n    </ion-title>\n\n    <ion-title *ngIf="ShowUserNameAndOldPassword">\n\n      Change Password \n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content padding class="back-image" id="page15">\n\n    <!-- <div class="spacer" style="width:300px;height:199px;" id="enterOTP-spacer11"></div> -->\n\n    <div *ngIf="HideIf">\n\n  <form [formGroup]="formgroup" id="enterOTP-form4" #enterOTPForm="ngForm" (ngSubmit)="OnSubmit()">\n\n    <ion-list id="enterOTP-list18">\n\n      <ion-item id="enterOTP-input12">\n\n        <ion-label floating>\n\n          OTP\n\n        </ion-label>\n\n        <ion-input formControlName="otp" type="number" placeholder=""></ion-input>\n\n      </ion-item>\n\n      <!-- <p style="color:darkorange;" *ngIf="otp.hasError(\'required\') && otp.touched"> *OTP is required</p> -->\n\n      <p style="color:darkorange;">{{userMessage}}</p>\n\n    </ion-list>\n\n    <div class="spacer" style="height:40px;" id="enterOTP-spacer8"></div>\n\n    <button [disabled]="enterOTPForm.invalid" id="enterOTP-button8" ion-button color="positive" block>\n\n      Submit\n\n    </button>\n\n  </form>\n\n  <h2>{{countDown | async | formatTime}}</h2>\n\n  <!-- <button (click)="stopTimer()">Stop</button> -->\n\n\n\n  <button style="color: darkorange" [disabled]="counter !== 0" ion-button clear item-centre (click)="OnResendOTP()">Click here to Resend OTP</button>       \n\n  </div>\n\n  <div *ngIf="ShowIf">\n\n    <form id="enterOTP-form2" [formGroup]="SavePasswordForm"  #NewPasswordEntryForm="ngForm" (ngSubmit)="OnSavePassword()">\n\n    <ion-item id="enterOTP-input3">\n\n      <ion-label floating>\n\n        New Password\n\n      </ion-label>\n\n      <ion-input formControlName="password" type="password" placeholder=""></ion-input>      \n\n    </ion-item>\n\n    <!-- <p style="color:red;" *ngIf="password.hasError(\'required\') && password.touched"> *Password is required</p> -->\n\n    <p style="color:darkorange;">{{passwordMessage}}</p>\n\n\n\n    <ion-item id="enterOTP-input5">\n\n      <ion-label floating>\n\n        Confirm Password\n\n      </ion-label>\n\n      <ion-input formControlName="confirmpwd" type="password" Equalvalidate="password" placeholder=""></ion-input>\n\n      <!-- <div [hidden]="CPassword.valid || CPassword.pristine" class="alert alert-danger">\n\n        Password mismatch\n\n    </div> -->\n\n    </ion-item>\n\n    <!-- <p style="color:red;" *ngIf="confirmpwd.hasError(\'required\') && confirmpwd.touched"> *Confirmation is required</p> -->\n\n    <p style="color:darkorange;">{{confirmpasswordMessage}}</p>\n\n    <button [disabled]="NewPasswordEntryForm.invalid" id="enterOTP-button9" ion-button color="positive" block>\n\n      Save Password\n\n    </button>\n\n  </form>\n\n  <div style="color:red;" *ngIf="NewPasswordEntryForm.errors?.notSame"><span>Passwords do not match</span></div>\n\n</div>\n\n\n\n\n\n<div *ngIf="ShowOldPassword">\n\n    <form id="enterOTP-form2" [formGroup]="ChangePasswordForm"  #ChangePasswordEntryForm="ngForm" (ngSubmit)="OnChangePassword()">\n\n      <ion-item id="enterOTP-input3">\n\n        <ion-label floating>\n\n          Old Password\n\n        </ion-label>\n\n        <ion-input formControlName="oldPassword" type="password" placeholder=""></ion-input>      \n\n      </ion-item>\n\n      <p style="color:darkorange;">{{oldPasswordMessage}}</p>\n\n      <ion-item id="enterOTP-input3">\n\n      <ion-label floating>\n\n        New Password\n\n      </ion-label>\n\n      <ion-input formControlName="newPassword" type="password" placeholder=""></ion-input>      \n\n    </ion-item>\n\n    <p style="color:darkorange;">{{passwordMessage}}</p>\n\n    <ion-item id="enterOTP-input5">\n\n      <ion-label floating>\n\n        Confirm Password\n\n      </ion-label>\n\n      <ion-input formControlName="confirmNewpwd" type="password" Equalvalidate="password" placeholder=""></ion-input>\n\n    </ion-item>\n\n    <p style="color:darkorange;">{{confirmpasswordMessage}}</p>\n\n    <a style="color:darkorange;" (click)="OnForgot()">Forgot password?</a>\n\n    <button [disabled]="ChangePasswordEntryForm.invalid" id="enterOTP-button9" ion-button color="positive" block>\n\n      Change Password\n\n    </button>\n\n  </form>\n\n  <div style="color:red;" *ngIf="ChangePasswordEntryForm.errors?.notSame"><span>Passwords do not match</span></div>\n\n</div>\n\n</ion-content>'/*ion-inline-end:"D:\shailesh_bhat\Angular2Projects\ionic_sahakari\sahakariupdate\src\pages\enter-otp\enter-otp.html"*/
+            selector: 'page-enter-otp',template:/*ion-inline-start:"D:\shailesh_bhat\Angular2Projects\ionic_sahakari\sahakariupdate\src\pages\enter-otp\enter-otp.html"*/'<ion-header>\n\n  <ion-navbar  color="primary">\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title *ngIf="HideIf">\n\n      Enter OTP\n\n    </ion-title>\n\n    <ion-title *ngIf="ShowIf">\n\n      Password Entry\n\n    </ion-title>\n\n    <ion-title *ngIf="ShowUserNameAndOldPassword">\n\n      Change Password \n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content padding class="back-image" id="page15">\n\n    <!-- <div class="spacer" style="width:300px;height:199px;" id="enterOTP-spacer11"></div> -->\n\n    <div *ngIf="HideIf">\n\n  <form [formGroup]="formgroup" id="enterOTP-form4" #enterOTPForm="ngForm" (ngSubmit)="OnSubmit()">\n\n    <ion-list id="enterOTP-list18">\n\n      <ion-item id="enterOTP-input12">\n\n        <ion-label floating>\n\n          OTP\n\n        </ion-label>\n\n        <ion-input formControlName="otp" type="number" placeholder=""></ion-input>\n\n      </ion-item>\n\n      <!-- <p style="color:darkorange;" *ngIf="otp.hasError(\'required\') && otp.touched"> *OTP is required</p> -->\n\n      <p style="color:darkorange;">{{userMessage}}</p>\n\n    </ion-list>\n\n    <div class="spacer" style="height:40px;" id="enterOTP-spacer8"></div>\n\n    <button [disabled]="enterOTPForm.invalid" id="enterOTP-button8" ion-button color="positive" block>\n\n      Submit\n\n    </button>\n\n  </form>\n\n  <h2>{{countDown | async | formatTime}}</h2>\n\n  <!-- <button (click)="stopTimer()">Stop</button> -->\n\n\n\n  <button style="color: darkorange" [disabled]="counter!= 0" ion-button clear item-centre (click)="OnResendOTP()">Click here to Resend OTP</button>       \n\n  </div>\n\n  <div *ngIf="ShowIf">\n\n    <form id="enterOTP-form2" [formGroup]="SavePasswordForm"  #NewPasswordEntryForm="ngForm" (ngSubmit)="OnSavePassword()">\n\n    <ion-item id="enterOTP-input3">\n\n      <ion-label floating>\n\n        New Password\n\n      </ion-label>\n\n      <ion-input formControlName="password" type="password" placeholder=""></ion-input>      \n\n    </ion-item>\n\n    <!-- <p style="color:red;" *ngIf="password.hasError(\'required\') && password.touched"> *Password is required</p> -->\n\n    <p style="color:darkorange;">{{passwordMessage}}</p>\n\n\n\n    <ion-item id="enterOTP-input5">\n\n      <ion-label floating>\n\n        Confirm Password\n\n      </ion-label>\n\n      <ion-input formControlName="confirmpwd" type="password" Equalvalidate="password" placeholder=""></ion-input>\n\n      <!-- <div [hidden]="CPassword.valid || CPassword.pristine" class="alert alert-danger">\n\n        Password mismatch\n\n    </div> -->\n\n    </ion-item>\n\n    <!-- <p style="color:red;" *ngIf="confirmpwd.hasError(\'required\') && confirmpwd.touched"> *Confirmation is required</p> -->\n\n    <p style="color:darkorange;">{{confirmpasswordMessage}}</p>\n\n    <button [disabled]="NewPasswordEntryForm.invalid" id="enterOTP-button9" ion-button color="positive" block>\n\n      Save Password\n\n    </button>\n\n  </form>\n\n  <div style="color:red;" *ngIf="NewPasswordEntryForm.errors?.notSame"><span>Passwords do not match</span></div>\n\n</div>\n\n\n\n\n\n<div *ngIf="ShowOldPassword">\n\n    <form id="enterOTP-form2" [formGroup]="ChangePasswordForm"  #ChangePasswordEntryForm="ngForm" (ngSubmit)="OnChangePassword()">\n\n      <ion-item id="enterOTP-input3">\n\n        <ion-label floating>\n\n          Old Password\n\n        </ion-label>\n\n        <ion-input formControlName="oldPassword" type="password" placeholder=""></ion-input>      \n\n      </ion-item>\n\n      <p style="color:darkorange;">{{oldPasswordMessage}}</p>\n\n      <ion-item id="enterOTP-input3">\n\n      <ion-label floating>\n\n        New Password\n\n      </ion-label>\n\n      <ion-input formControlName="newPassword" type="password" placeholder=""></ion-input>      \n\n    </ion-item>\n\n    <p style="color:darkorange;">{{passwordMessage}}</p>\n\n    <ion-item id="enterOTP-input5">\n\n      <ion-label floating>\n\n        Confirm Password\n\n      </ion-label>\n\n      <ion-input formControlName="confirmNewpwd" type="password" Equalvalidate="password" placeholder=""></ion-input>\n\n    </ion-item>\n\n    <p style="color:darkorange;">{{confirmpasswordMessage}}</p>\n\n    <a style="color:darkorange;" (click)="OnForgot()">Forgot password?</a>\n\n    <button [disabled]="ChangePasswordEntryForm.invalid" id="enterOTP-button9" ion-button color="positive" block>\n\n      Change Password\n\n    </button>\n\n  </form>\n\n  <div style="color:red;" *ngIf="ChangePasswordEntryForm.errors?.notSame"><span>Passwords do not match</span></div>\n\n</div>\n\n</ion-content>'/*ion-inline-end:"D:\shailesh_bhat\Angular2Projects\ionic_sahakari\sahakariupdate\src\pages\enter-otp\enter-otp.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_8__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_10__services_UIService__["a" /* UISercice */], __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_6__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_5__services_app_data_service__["a" /* RegisterService */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_8__services_Storage_Service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__services_Storage_Service__["a" /* StorageService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_10__services_UIService__["a" /* UISercice */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_10__services_UIService__["a" /* UISercice */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__["b" /* ToastrService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__["b" /* ToastrService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_6__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__angular_forms__["a" /* FormBuilder */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_5__services_app_data_service__["a" /* RegisterService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_app_data_service__["a" /* RegisterService */]) === "function" && _j || Object])
     ], EnterOTPPage);
     return EnterOTPPage;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
 }());
 
 var FormatTimePipe = /** @class */ (function () {
@@ -1193,8 +1220,6 @@ var FormatTimePipe = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__(104);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__UIHelperClasses_UIHelperService__ = __webpack_require__(371);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1207,15 +1232,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
 var RegisterService = /** @class */ (function () {
     //constructor(private sqlite: SQLite,private httpclient:HttpClient,private locals:StorageService,private uihelper: UIHelperService,private http: Http) {
     function RegisterService(httpclient, uIHelperService) {
         this.httpclient = httpclient;
         this.uIHelperService = uIHelperService;
-        //counter = 30*60;
-        this.counter = 60;
-        this.tick = 1000;
     }
     RegisterService.prototype.GetToken = function (Token) {
         this.userToken = Token;
@@ -1294,12 +1315,15 @@ var RegisterService = /** @class */ (function () {
     RegisterService.prototype.GetReversedVoucher = function (checkVoucher) {
         return this.httpclient.post(this.uIHelperService.CallWebAPIUrlNew("/Recharge/GetReversedVoucher"), checkVoucher);
     };
-    RegisterService.prototype.getCounter = function () {
-        var _this = this;
-        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].timer(0, this.tick)
-            .take(this.counter)
-            .map(function () { return --_this.counter; });
-    };
+    // countDown;
+    // //counter = 30*60;
+    // counter = 60;
+    // tick = 1000;
+    // getCounter() {
+    //     return Observable.timer(0, this.tick)
+    //         .take(this.counter)
+    //         .map(() => --this.counter)
+    // }
     RegisterService.prototype.ExtractData = function (res) {
         var body = res.json();
         return body || [];
@@ -1315,7 +1339,7 @@ var RegisterService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 188:
+/***/ 189:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -1328,7 +1352,7 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 188;
+webpackEmptyAsyncContext.id = 189;
 
 /***/ }),
 
@@ -1357,9 +1381,9 @@ webpackEmptyAsyncContext.id = 329;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__banking_banking__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__recharge_recharge__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__recharge_recharge__ = __webpack_require__(175);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_Storage_Service__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__recharge_report_recharge_report__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__recharge_report_recharge_report__ = __webpack_require__(176);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2134,7 +2158,7 @@ var PrepaidConfirmPage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SettingPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_ngx_translate_core__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_ngx_translate_core__ = __webpack_require__(130);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__page_page__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_Storage_Service__ = __webpack_require__(12);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -2193,7 +2217,7 @@ var SettingPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__enter_otp_enter_otp__ = __webpack_require__(178);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__enter_otp_enter_otp__ = __webpack_require__(179);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_app_data_service__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__login_login__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__node_modules_ngx_toastr__ = __webpack_require__(24);
@@ -2488,22 +2512,22 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_toastr__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_platform_browser_animations__ = __webpack_require__(665);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_toast__ = __webpack_require__(667);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ngx_translate_core__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ngx_translate_core__ = __webpack_require__(130);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ngx_translate_http_loader__ = __webpack_require__(671);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_ionic_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__app_component__ = __webpack_require__(706);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_home_home__ = __webpack_require__(73);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_setting_setting__ = __webpack_require__(379);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_change_bank_change_bank__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_change_bank_change_bank__ = __webpack_require__(178);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_banking_banking__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_page_page__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_login_login__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_recharge_recharge__ = __webpack_require__(174);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__pages_favourites_favourites__ = __webpack_require__(173);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_recharge_recharge__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__pages_favourites_favourites__ = __webpack_require__(174);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__pages_mini_statement_mini_statement__ = __webpack_require__(377);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pages_mobile_recharge_mobile_recharge__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_register_register__ = __webpack_require__(74);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__pages_enter_otp_enter_otp__ = __webpack_require__(178);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__pages_enter_otp_enter_otp__ = __webpack_require__(179);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_ionic2_auto_complete__ = __webpack_require__(710);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__ionic_native_status_bar__ = __webpack_require__(369);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__ionic_native_splash_screen__ = __webpack_require__(370);
@@ -2514,10 +2538,10 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__routes__ = __webpack_require__(712);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__pages_services_Storage_Service__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__pages_services_AutoLogOutService__ = __webpack_require__(713);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__pages_fund_transfer_fund_transfer__ = __webpack_require__(176);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__pages_fund_transfer_fund_transfer__ = __webpack_require__(177);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__pages_balance_enquiry_balance_enquiry__ = __webpack_require__(376);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__pages_ViewPlans_Tabs_ViewPlans_Tabs__ = __webpack_require__(372);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__pages_recharge_report_recharge_report__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__pages_recharge_report_recharge_report__ = __webpack_require__(176);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__pages_prepaid_confirm_prepaid_confirm__ = __webpack_require__(378);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__pages_services_UIService__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__pages_my_profile_my_profile__ = __webpack_require__(380);
@@ -2692,7 +2716,7 @@ function HttpLoaderFactory(http) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ngx_toastr__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ViewPlans_Tabs_ViewPlans_Tabs__ = __webpack_require__(372);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__favourites_favourites__ = __webpack_require__(173);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__favourites_favourites__ = __webpack_require__(174);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__prepaid_confirm_prepaid_confirm__ = __webpack_require__(378);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__page_page__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_UIService__ = __webpack_require__(53);
@@ -3515,7 +3539,7 @@ var MobileRechargePage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fund_transfer_fund_transfer__ = __webpack_require__(176);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fund_transfer_fund_transfer__ = __webpack_require__(177);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__balance_enquiry_balance_enquiry__ = __webpack_require__(376);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mini_statement_mini_statement__ = __webpack_require__(377);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__page_page__ = __webpack_require__(37);
@@ -3828,7 +3852,7 @@ var UISercice = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_mobile_recharge_mobile_recharge__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_banking_banking__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_setting_setting__ = __webpack_require__(379);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_change_bank_change_bank__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_change_bank_change_bank__ = __webpack_require__(178);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_login_login__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_register_register__ = __webpack_require__(74);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_services_Storage_Service__ = __webpack_require__(12);
@@ -3836,7 +3860,7 @@ var UISercice = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_page_page__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_my_profile_my_profile__ = __webpack_require__(380);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_bank_branches_bank_branches__ = __webpack_require__(381);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ngx_translate_core__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ngx_translate_core__ = __webpack_require__(130);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4204,7 +4228,7 @@ var HomePage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RegisterPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__enter_otp_enter_otp__ = __webpack_require__(178);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__enter_otp_enter_otp__ = __webpack_require__(179);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__home_home__ = __webpack_require__(73);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mobile_recharge_mobile_recharge__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__banking_banking__ = __webpack_require__(46);
