@@ -3,9 +3,13 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class UIHelperService {
-     readonly rootUrl = 'https://sahakari.azurewebsites.net';
-     readonly baseUrl = 'https://sahakari.azurewebsites.net/api';
-    readonly rootUrl1 = 'https://sahakari.azurewebsites.net/token';
+    //  readonly rootUrl = 'https://sahakari.azurewebsites.net';
+    //  readonly baseUrl = 'https://sahakari.azurewebsites.net/api';
+    // readonly rootUrl1 = 'https://sahakari.azurewebsites.net/token';
+
+    readonly rootUrl = 'https://sahakariapi.azurewebsites.net';
+     readonly baseUrl = 'https://sahakariapi.azurewebsites.net/api';
+    readonly rootUrl1 = 'https://sahakariapi.azurewebsites.net/token';
 
 //    readonly rootUrl = 'http://localhost:55394';
 //    readonly baseUrl='http://localhost:55394/api';

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, LoadingController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, LoadingController, NavParams, AlertController, Events } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { MobileRechargePage } from '../mobile-recharge/mobile-recharge';
 import { BankingPage } from '../banking/banking';
@@ -10,6 +10,11 @@ import { StorageService } from '../services/Storage_Service';
 import { ToastrService } from 'ngx-toastr';
 import { UISercice } from '../services/UIService';
 import { RegisterPage } from '../register/register';
+import { GetOtpPage } from '../get-otp/get-otp';
+import { FundTransferPage } from '../fund-transfer/fund-transfer';
+import { BalanceEnquiryPage } from '../balance-enquiry/balance-enquiry';
+import { MiniStatementPage } from '../mini-statement/mini-statement';
+import { FavouritesPage } from '../favourites/favourites';
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
@@ -17,31 +22,40 @@ import { RegisterPage } from '../register/register';
 export class LoginPage implements OnInit {
   passwordMessage: string;
   formGroup: FormGroup;
+  usernameMessage: string;
 
-  constructor(private storageService:StorageService, private alertCtrl: AlertController, private uiService: UISercice, public navParams: NavParams, private toastrService: ToastrService, public loadingController: LoadingController, public formbuilder: FormBuilder, private registerService: RegisterService, public navCtrl: NavController) {
+  constructor(private events: Events, private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, public navParams: NavParams, private toastrService: ToastrService, public loadingController: LoadingController, public formbuilder: FormBuilder, private registerService: RegisterService, public navCtrl: NavController) {
     this.formGroup = formbuilder.group({
-      password: ['', [Validators.required, Validators.minLength(4)]]
+      //username:['', [Validators.required, Validators.minLength(4)]],
+      password: ['', [Validators.required, Validators.minLength(8)]]
     }); //builds the formgroup with the same formcontrolname.
+    // const usernameControl = this.formGroup.get('username');
+    // usernameControl.valueChanges.subscribe(value => this.setErrorMessage(usernameControl));
     const passwordControl = this.formGroup.get('password');
     passwordControl.valueChanges.subscribe(value => this.setErrorMessage(passwordControl));
     //call the particular method if value changes in the control.
   }
   setErrorMessage(c: AbstractControl): void {
     this.passwordMessage = ''; //To not display the error message, if there is no error.
+    this.usernameMessage = '';
     let control = this.uiService.getControlName(c);
     if ((c.touched || c.dirty) && c.errors) {
-      if (control === 'password') {
-        this.passwordMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
+      if (control === 'username') {
+        this.usernameMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
         //maps the error message from validationMessages array. 
+      }
+      else if (control === 'password') {
+        this.passwordMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
       }
     }
   }
   private validationMessages = { //used in above method.
     password_required: '*Enter Password',
-    password_minlength: 'Password cannot be less than 4 character'
+    password_minlength: 'Password cannot be less than 8 character'
   };
   ActiveBankName: string;
   ngOnInit() {
+
     if (this.storageService.GetTenant() != null) {
       this.ActiveBankName = this.storageService.GetActiveBankName();
     }
@@ -55,11 +69,16 @@ export class LoginPage implements OnInit {
       content: 'Wait for a second..'
     });
     loading.present();
+    var Login = {
+      UserName: this.storageService.GetUser().UserName,
+      Password: this.formGroup.controls['password'].value,
+      UniqueId: this.storageService.GetUser().UniqueKey,
+    }
     var OS = this.storageService.GetOS();
-    this.registerService.loginbyHttpClient(this.userName, this.formGroup.get('password').value, this.uniqueKey).subscribe((data: any) => {
-      this.registerService.userToken = data.access_token;
-      //StorageService.SetItem('userToken', data.access_token);
-      this.sendToken(data.access_token); //stores the token in service property.
+    this.registerService.loginbyHttpClient(Login).subscribe((data: any) => {
+      this.registerService.AccessToken = data.AccessToken;
+      StorageService.SetItem('refreshToken', data.RefreshToken);
+      this.sendToken(data.AccessToken); //stores the token in service property.
       if (OS == null) {
         let loading = this.loadingController.create({
           content: 'Syncing Operators and Services'
@@ -90,6 +109,7 @@ export class LoginPage implements OnInit {
         });
         loadingnew.present();
         this.callservices();  //To add tables to localstorage, for the first time login.
+        //this.navCtrl.setRoot(PagePage);
         loadingnew.dismiss();
       }
       else {
@@ -97,23 +117,24 @@ export class LoginPage implements OnInit {
       }
       loading.dismiss();
     }, (error) => {
-      //this.toastrService.error(error.error.ExceptionMessage, 'Error!');
+      this.toastrService.error(error, 'Error!');
+      loading.dismiss();
       var alert = this.alertCtrl.create({
         title: "Error Message",
-        subTitle: 'Incorrect Password',
+        subTitle: error,
         buttons: ['OK']
       });
       alert.present();
-      loading.dismiss();
-      this.navCtrl.setRoot(LoginPage);   
+      this.navCtrl.setRoot(LoginPage);
+      //this.navCtrl.setRoot(PagePage, { 'ActiveBankName': this.ActiveBankName });
     });
   }
-sendToken(token:string){
-  // this.registerService.GetToken(token).subscribe((data:any)=>{
-    
-  // });
-  this.registerService.GetToken(token);
-}
+  sendToken(token: string) {
+    // this.registerService.GetToken(token).subscribe((data:any)=>{
+
+    // });
+    this.registerService.SetToken(token);
+  }
   callservices() {
     var addBankRequest = {
       TenantId: this.storageService.GetUser().ActiveTenantId,
@@ -141,13 +162,72 @@ sendToken(token:string){
       //Stores the DigiParty table in localstorage
       this.storageService.SetSelfCareAc(JSON.stringify(data.SelfCareAcs));
       //Stores the SelfCareAc table in localstorage
-      this.navCtrl.setRoot(PagePage, { 'ActiveBankName': this.ActiveBankName });
-
+      this.registerService.SetLoginLogOut();
+      this.events.publish('REFRESH_DIGIPARTYNAME');
+      if (this.navParams.get('isFromFundTransfer') == true) {
+        var isFromLogin: boolean = true;
+        this.navCtrl.push(FundTransferPage, { 'isFromLogin': isFromLogin }).then(() => {
+          const startIndex = this.navCtrl.getActive().index - 1;
+          this.navCtrl.remove(startIndex, 1);  //removes the history of this page.
+        });
+      }
+      else if (this.navParams.get('isFromBalanceEnquiry') == true) {
+        var isFromLogin: boolean = true;
+        const startIndex = this.navCtrl.getActive().index;
+        //const startIndex = this.navCtrl.getActive().index - 1;
+        this.navCtrl.push(BalanceEnquiryPage, { 'isFromLogin': isFromLogin });
+        // .then(() => {  
+        this.navCtrl.remove(startIndex, 1);  //removes the history of this page.
+        //   const startIndex = this.navCtrl.getActive().index;
+        //   this.navCtrl.remove(0, startIndex); 
+        // });
+      }
+      else if (this.navParams.get('isFromMiniStatement') == true) {
+        var isFromLogin: boolean = true;
+        this.navCtrl.push(MiniStatementPage, { 'isFromLogin': isFromLogin }).then(() => {
+          const startIndex = this.navCtrl.getActive().index - 1;
+          this.navCtrl.remove(startIndex, 1);  //removes the history of this page.
+        });
+        // const startIndex = this.navCtrl.getActive().index;
+        // this.navCtrl.push(MiniStatementPage, { 'isFromLogin': isFromLogin });
+        // this.navCtrl.remove(startIndex, 1); 
+      }
+      else if (this.navParams.get('isFromPrepaid') == true) {
+        var isFromLogin: boolean = true;
+        this.navCtrl.push(FavouritesPage, { 'isFromLogin': isFromLogin, 'ParentId': 'S1' }).then(() => {
+          const startIndex = this.navCtrl.getActive().index - 1;
+          this.navCtrl.remove(startIndex, 1);  //removes the history of this page.
+        });
+      }
+      else if (this.navParams.get('isFromPostpaid') == true) {
+        var isFromLogin: boolean = true;
+        this.navCtrl.push(FavouritesPage, { 'isFromLogin': isFromLogin, 'ParentId': 'S2' }).then(() => {
+          const startIndex = this.navCtrl.getActive().index - 1;
+          this.navCtrl.remove(startIndex, 1);  //removes the history of this page.
+        });
+      }
+      else if (this.navParams.get('isFromDTH') == true) {
+        var isFromLogin: boolean = true;
+        this.navCtrl.push(FavouritesPage, { 'isFromLogin': isFromLogin, 'ParentId': 'S3' }).then(() => {
+          const startIndex = this.navCtrl.getActive().index - 1;
+          this.navCtrl.remove(startIndex, 1);  //removes the history of this page.
+        });
+      }
+      else if (this.navParams.get('isFromElectricity') == true) {
+        var isFromLogin: boolean = true;
+        this.navCtrl.push(FavouritesPage, { 'isFromLogin': isFromLogin, 'ParentId': 'S5' }).then(() => {
+          const startIndex = this.navCtrl.getActive().index - 1;
+          this.navCtrl.remove(startIndex, 1);  //removes the history of this page.
+        });
+      }
+      else {
+        this.navCtrl.setRoot(PagePage, { 'ActiveBankName': this.ActiveBankName });
+      }
     }, (error) => {
-      this.toastrService.error(error.error.ExceptionMessage, 'Error!');
+      this.toastrService.error(error, 'Error!');
       var alert = this.alertCtrl.create({
         title: "Error Message",
-        subTitle: error.error.ExceptionMessage,
+        subTitle: error,
         buttons: ['OK']
       });
       alert.present();
@@ -157,7 +237,7 @@ sendToken(token:string){
   isForgotten: boolean = false;
   OnForgot() { //Fires, if we click on Forgot password button
     this.isForgotten = true;
-    this.navCtrl.push(RegisterPage, { 'isForgotPassword': this.isForgotten });
+    this.navCtrl.push(GetOtpPage, { 'isForgotPassword': this.isForgotten });
   }
   goToHome(params) {
     if (!params) params = {};

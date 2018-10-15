@@ -32,13 +32,13 @@ export class BankBranchesPage implements OnInit {
       //alert(data.Balance);
       loading.dismiss();
     }, (error) => {
-      this.toastr.error(error.message, 'Error!');
+      this.toastr.error(error, 'Error!');
       var alert = this.alertCtrl.create({
         title: "Error Message",
-        subTitle: error.message,
+        subTitle: error,
         buttons: ['OK']
-      });               
-      alert.present();
+      });
+      alert.present();;
       loading.dismiss();
     });
   }

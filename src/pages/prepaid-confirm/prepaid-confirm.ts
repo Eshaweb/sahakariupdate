@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, ModalController, ModalOptions } from 'ionic-angular';
 import { StorageService } from '../services/Storage_Service';
 import { RechargeModel } from '../View Models/RechargeModel';
 import { RegisterService } from '../services/app-data.service';
 import { ToastrService } from 'ngx-toastr';
 import { TranResponse } from '../View Models/TranResponse';
 import { AlertController } from 'ionic-angular';
+import { CheckPasswordPage } from '../check-password/check-password';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { AlertController } from 'ionic-angular';
   templateUrl: 'prepaid-confirm.html',
 })
 export class PrepaidConfirmPage implements OnInit {
-  OperatorService: string;
+ OperatorService: string;
   ParentId: string;
   showTitle: boolean;
   ActiveBankName: string;
@@ -29,7 +30,7 @@ export class PrepaidConfirmPage implements OnInit {
   showRefund: boolean;
   showBlocked: boolean;
   showInit: boolean;
-  constructor(private storageService:StorageService, private alertCtrl: AlertController, private toastr: ToastrService, private registerService: RegisterService, public loadingController: LoadingController, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private modalCtrl:ModalController, private storageService:StorageService, private alertCtrl: AlertController, private toastr: ToastrService, private registerService: RegisterService, public loadingController: LoadingController, public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ngOnInit() {
@@ -53,13 +54,7 @@ export class PrepaidConfirmPage implements OnInit {
   }
   
   OnConfirm() {
-    let loading = this.loadingController.create({
-      content: 'Recharging...'
-    });
-    loading.present();
-    this.showTitle = false;
     var ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
-    
     var rechargeModel: RechargeModel = {
       TenantId: ActiveTenantId,
       DigiPartyId: this.GetDigiPartyandPartyMastID(ActiveTenantId).DigiPartyId,
@@ -74,91 +69,13 @@ export class PrepaidConfirmPage implements OnInit {
       SubscriptionId: this.navParams.get('SubscriptionId'),
       LocId: this.GetSelfCareAcByTenantID(ActiveTenantId).LocId
     }
-    this.registerService.PostRecharge(rechargeModel).subscribe((data: any) => {
-      this.tranResponse = data;
-      this.showConfirm = false;
-      switch (data.StatusCode) {
-        case 1:
-          var alert = this.alertCtrl.create({
-            title: "Message",
-            subTitle: 'Recharge is successful with Transaction ID ' + this.tranResponse.VendorExtCode,
-            buttons: ['OK']
-          });
-          alert.present();
-          this.showSuccess = true;
-          break;
-          case 2:
-          //alert("Recharge is pending with Transaction ID "+ this.tranResponse.VendorExtCode);
-          var alert = this.alertCtrl.create({
-            title: "Message",
-            subTitle: 'Recharge is pending with Transaction ID ' + this.tranResponse.VendorExtCode,
-            buttons: ['OK']
-          });
-          alert.present();
-          this.showPending=true;
-          break;
-          case 3:
-          ///alert("Recharge is initiated with Transaction ID "+ this.tranResponse.VendorExtCode);
-          var alert = this.alertCtrl.create({
-            title: "Message",
-            subTitle: 'Recharge is initiated with Transaction ID ' + this.tranResponse.VendorExtCode,
-            buttons: ['OK']
-          });
-          alert.present();
-          this.showInit = true;
-          break;
-          case 4:
-          //alert("Recharge is failure with Transaction ID "+ this.tranResponse.VendorExtCode);
-          var alert = this.alertCtrl.create({
-            title: "Error Message",
-            subTitle: 'Recharge is Unsuccessful with Transaction ID ' + this.tranResponse.VendorExtCode,
-            buttons: ['OK']
-          });
-          alert.present();
-          this.showFailure=true;
-          break;
-          case 5:
-          //alert("Recharge is refunded with Transaction ID "+ this.tranResponse.VendorExtCode);
-          var alert = this.alertCtrl.create({
-            title: "Message",
-            subTitle: 'Recharge is refunded with Transaction ID ' + this.tranResponse.VendorExtCode,
-            buttons: ['OK']
-          });
-          alert.present();
-          this.showRefund=true;
-          break;
-          case 9:
-          //alert("Recharge is blocked with Transaction ID "+ this.tranResponse.VendorExtCode);
-          var alert = this.alertCtrl.create({
-            title: "Message",
-            subTitle: 'Recharge is blocked with Transaction ID ' + this.tranResponse.VendorExtCode,
-            buttons: ['OK']
-          });
-          alert.present();
-          this.showBlocked=true;
-          break;
-          default:
-          //alert("Recharge is blocked with Transaction ID "+ this.tranResponse.VendorExtCode);
-          var alert = this.alertCtrl.create({
-            title: "Message",
-            subTitle: this.tranResponse.AISError,
-            buttons: ['OK']
-          });
-          alert.present();
-          this.showBlocked=true;
-          break;
-      }
-      loading.dismiss();
-    }, (error) => {
-      //this.toastr.error(error.message, 'Error!');
-      var alert = this.alertCtrl.create({
-        title: "Message",
-        subTitle: error.message,
-        buttons: ['OK']
-      });
-      alert.present();
-      loading.dismiss();
-    });
+    const myModalOptions: ModalOptions = {
+      enableBackdropDismiss: false,
+      cssClass : 'mymodal'
+    };
+
+    let passwordModal = this.modalCtrl.create(CheckPasswordPage, { 'RechargeModel': rechargeModel },myModalOptions);
+    passwordModal.present();
   }
   GetDigiPartyandPartyMastID(ActiveTenantId) { //Fires from above method
     var DigiParties = this.storageService.GetDigiParty();

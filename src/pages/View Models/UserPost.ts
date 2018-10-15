@@ -1,11 +1,11 @@
 export class UserPost
 {
-    DigiPartyId: string;
+    //DigiPartyId: string;
     TenantId: string;
-    PIN: string;
+    Password: string;
     //PartyMastId: string;
     UniqueId: string;
-    OTP: string;
-    OTPRef:string;
+    // OTP: string;
+    // OTPRef:string;
     MobileNo:string;
 }

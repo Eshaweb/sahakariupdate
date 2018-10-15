@@ -125,9 +125,9 @@ export class StorageService {
         localStorage.setItem("Language", param);
     }
     RemoveRecordsForLogout() {
-        localStorage.removeItem("OS");
-        localStorage.removeItem("Tenant");
-        localStorage.removeItem("DigiParty");
+        //localStorage.removeItem("OS");
+        //localStorage.removeItem("Tenant");
+        //localStorage.removeItem("DigiParty");
         StorageService.RemoveItem("SelfCareAc");
 
         //localStorage.removeItem(this.constant.favouriteBasedOnParentId.Favourite_S1);

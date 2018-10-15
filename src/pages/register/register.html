@@ -1,29 +1,21 @@
-<ion-content padding id="page13" class="back-image">
-  <form *ngIf="hidethisform" [formGroup]="formgroup1" id="register-form3" #registrationForm="ngForm" (ngSubmit)="OnGetTenants()">
-    <div class="spacer" style="width:300px;height:217px;" id="register-spacer10"></div>
-    <h5 id="register-heading1" style="color:#DEE1EE;">
-      Enter mobile number to search your bank
-    </h5>
-    <ion-list id="register-list11">
-      <ion-item id="register-input8">
-        <ion-label>
-          Phone Number
-        </ion-label>
-        <ion-input formControlName="mobilenum" type="number" placeholder=""></ion-input>
-      </ion-item>
-      <!-- <p style="color:black;" *ngIf="mobilenum.hasError('required') && mobilenum.touched">*MobileNumber is required</p> -->
-      <p style="color:darkorange">{{mobilenum_Message}}</p>
-    </ion-list>
-    <button [disabled]="registrationForm.invalid" id="register-button7" ion-button color="positive" block>
-      Search Bank
+<ion-header>
+  <ion-navbar  color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
     </button>
-  </form>
+    <ion-title>
+      Registration
+    </ion-title>
+  </ion-navbar>
+</ion-header>
 
+<ion-content padding id="page13" class="back-image">
+  
   <div *ngIf="tenant">
     <p style="color: #fff">Click on Account of your wish</p>
   </div>
   <ion-list>
-    <ion-item *ngFor="let order of tenant" (click)="OnRequestOTP(order.Id)">
+    <ion-item *ngFor="let order of tenant" (click)="OnAccountClick(order.Id)">
       <!-- <img src={{order.IconHtml}}/> -->
         <!-- <img [src]="order.IconHtml"/> -->
       <!-- <ion-thumbnail item-start>
@@ -40,24 +32,10 @@
         {{j}}
     </span>
 </div> -->
-
-<form *ngIf="isForgotPassword" [formGroup]="formgroup2" id="register-form4" #AskingMobNoForOTPForm="ngForm" (ngSubmit)="OnMobNo()">
-  <div class="spacer" style="width:300px;height:217px;" id="register-spacer10"></div>
-  <h5 id="register-heading1" style="color:#DEE1EE;">
-    Enter Registered Mobile Number
-  </h5>
-  <ion-list id="register-list11">
-    <ion-item id="register-input8">
-      <ion-label>
-        Phone Number
-      </ion-label>
-      <ion-input formControlName="mobilenumforOTP" type="number" placeholder=""></ion-input>
-    </ion-item>
-    <p style="color:darkorange">{{mobilenumforOTP_Message}}</p>
-
-  </ion-list>
-  <button [disabled]="AskingMobNoForOTPForm.invalid" id="register-button7" ion-button color="positive" block>
-    Send OTP
+<div *ngIf="tenant">
+  <button id="register-button7" ion-button color="positive" block>
+    Add Bank
   </button>
-</form>
+
+</div>
 </ion-content>

@@ -5,6 +5,7 @@ import { FavouritesPage } from '../favourites/favourites';
 import { StorageService } from '../services/Storage_Service';
 import { RechargeReportPage } from '../recharge-report/recharge-report';
 import { PagePage } from '../page/page';
+import { LoginPage } from '../login/login';
 @Component({
   selector: 'page-recharge',
   templateUrl: 'recharge.html'
@@ -36,16 +37,49 @@ export class RechargePage implements OnInit {
 
 
   OnPrepaid(){
-    this.navCtrl.push(FavouritesPage, { 'ParentId': 'S1' });
+    var isFromPrepaid: boolean = true;
+    if (this.storageService.GetSelfCareAc() == null) {
+      
+      this.navCtrl.push(LoginPage, { 'isFromPrepaid': isFromPrepaid })
+      
+    }
+    else {
+      this.navCtrl.push(FavouritesPage, { 'ParentId': 'S1' });
+    }
   }
   OnPostpaid(){
-    this.navCtrl.push(FavouritesPage, { 'ParentId': 'S2' });
+    var isFromPostpaid: boolean = true;
+    if (this.storageService.GetSelfCareAc() == null) {
+      
+      this.navCtrl.push(LoginPage, { 'isFromPostpaid': isFromPostpaid })
+      
+    }
+    else {
+      this.navCtrl.push(FavouritesPage, { 'ParentId': 'S2' });
+    }
   }
   OnDTH(){
-    this.navCtrl.push(FavouritesPage, { 'ParentId': 'S3' });
+    var isFromDTH: boolean = true;
+    if (this.storageService.GetSelfCareAc() == null) {
+      
+      this.navCtrl.push(LoginPage, { 'isFromDTH': isFromDTH })
+      
+    }
+    else {
+      this.navCtrl.push(FavouritesPage, { 'ParentId': 'S3' });
+    }
   }
   OnElectricity(){
     this.navCtrl.push(FavouritesPage, { 'ParentId': 'S5' });
+    var isFromElectricity: boolean = true;
+    if (this.storageService.GetSelfCareAc() == null) {
+      
+      this.navCtrl.push(LoginPage, { 'isFromElectricity': isFromElectricity })
+      
+    }
+    else {
+      this.navCtrl.push(FavouritesPage, { 'ParentId': 'S5' });
+    }
   }
   
   OnReports() {  //Fires, when we click on reports

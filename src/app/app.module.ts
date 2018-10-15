@@ -50,6 +50,12 @@ import { FundTransferConfirmPage } from '../pages/fund-transfer-confirm/fund-tra
 import { ModalPage } from '../pages/modal/modal';
 import { Observable } from '../../node_modules/rxjs';
 import { AuthGuard } from '../pages/auth/auth.guard';
+import { SavePasswordPage } from '../pages/save-password/save-password';
+import { GetOtpPage } from '../pages/get-otp/get-otp';
+import { CheckPasswordPage } from '../pages/check-password/check-password';
+import { PaymentSuccessPage } from '../pages/payment-success/payment-success';
+import { ContactUsPage } from '../pages/contact-us/contact-us';
+import { Container } from '@angular/compiler/src/i18n/i18n_ast';
 
 
 
@@ -77,7 +83,12 @@ import { AuthGuard } from '../pages/auth/auth.guard';
     MyProfilePage,
     BankBranchesPage,
     FundTransferConfirmPage,
-    ModalPage
+    ModalPage,
+    SavePasswordPage,
+    GetOtpPage,
+    CheckPasswordPage,
+    PaymentSuccessPage,
+    ContactUsPage
   ],
   imports: [HttpModule,HttpClientModule,BrowserAnimationsModule,
     BrowserModule,
@@ -124,7 +135,12 @@ import { AuthGuard } from '../pages/auth/auth.guard';
     MyProfilePage,
     BankBranchesPage,
     FundTransferConfirmPage,
-    ModalPage
+    ModalPage,
+    SavePasswordPage,
+    GetOtpPage,
+    CheckPasswordPage,
+    PaymentSuccessPage,
+    ContactUsPage
   ],
   providers: [AuthGuard,Toast, {
     provide : HTTP_INTERCEPTORS,

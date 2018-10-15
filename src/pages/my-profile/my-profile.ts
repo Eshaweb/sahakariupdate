@@ -8,6 +8,7 @@ import { LoginPage } from '../login/login';
 import { ToastrService } from '../../../node_modules/ngx-toastr';
 import { PagePage } from '../page/page';
 import { findReadVarNames } from '../../../node_modules/@angular/compiler/src/output/output_ast';
+import { SavePasswordPage } from '../save-password/save-password';
 
 /**
  * Generated class for the MyProfilePage page.
@@ -30,20 +31,21 @@ export class MyProfilePage implements OnInit {
   digipartyname: string;
   ngOnInit() {
     let loading = this.loadingController.create({
-      content: 'Loading the Mini Statement..'
+      content: 'Loading the My Profile..'
     });
     loading.present();
     this.digipartyname = this.storageService.GetDigipartyBasedOnActiveTenantId().Name;
     this.mobileno = this.storageService.GetUser().UserName;
     this.registerService.GetTenantsByMobile(this.mobileno).subscribe((data: any) => {
-      this.tenantList = data;  
+      this.tenantList = data;
       this.storageService.SetTenant(JSON.stringify(this.tenantList));//To update the Tenant table of localstorage
       this.tenants = this.storageService.GetTenant(); //To show bank branchs
       loading.dismiss();
     }, (error) => {
+      this.toastrService.error(error, 'Error!');
       var alert = this.alertCtrl.create({
         title: "Error Message",
-        subTitle: error.message,
+        subTitle: error,
         buttons: ['OK']
       });
       alert.present();
@@ -53,7 +55,7 @@ export class MyProfilePage implements OnInit {
 
   OnChange() {//Fires, if we click on Change bank
     var ischangePassword: boolean = true;
-    this.navCtrl.push(EnterOTPPage, { 'ischangePassword': ischangePassword });
+    this.navCtrl.push(SavePasswordPage, { 'ischangePassword': ischangePassword });
   }
   OnLogOut() {  //Fires, if we click on LogOut
     this.storageService.RemoveRecordsForLogout();
@@ -66,19 +68,18 @@ export class MyProfilePage implements OnInit {
     });
     loading.present();
     this.registerService.GetServices().subscribe((data: any) => {//To update the OS Table
-      var oS = JSON.stringify(data); 
+      var oS = JSON.stringify(data);
       this.storageService.SetOS(oS);
       loading.dismiss();
     }, (error) => {
-      this.toastrService.error(error.message, 'Error!');
-      loading.dismiss();
+      this.toastrService.error(error, 'Error!');
       var alert = this.alertCtrl.create({
         title: "Error Message",
-        subTitle: error.message,
+        subTitle: error,
         buttons: ['OK']
       });
       alert.present();
-
+      loading.dismiss();
     });
 
     let loadingnew = this.loadingController.create({
@@ -119,10 +120,10 @@ export class MyProfilePage implements OnInit {
       this.navCtrl.setRoot(PagePage, { 'ActiveBankName': ActiveBankName });
 
     }, (error) => {
-      this.toastrService.error(error.error.ExceptionMessage, 'Error!');
+      this.toastrService.error(error, 'Error!');
       var alert = this.alertCtrl.create({
         title: "Error Message",
-        subTitle: error.error.ExceptionMessage,
+        subTitle: error,
         buttons: ['OK']
       });
       alert.present();

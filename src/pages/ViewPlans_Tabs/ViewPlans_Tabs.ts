@@ -22,7 +22,7 @@ export class BasicPage implements OnInit {
   planResponse: PlanDet;
   isAndroid: boolean = false;
   isButtonEnabled: boolean = false;
-  constructor(private storageService:StorageService,private alertCtrl: AlertController, private viewCtrl: ViewController, private toastr: ToastrService, private registerService: RegisterService, public loadingController: LoadingController, public navParams: NavParams, public navCtrl: NavController, platform: Platform) {
+  constructor(private storageService: StorageService, private alertCtrl: AlertController, private viewCtrl: ViewController, private toastr: ToastrService, private registerService: RegisterService, public loadingController: LoadingController, public navParams: NavParams, public navCtrl: NavController, platform: Platform) {
     this.active_Segmant = "0";
     var FTT = "FullTalkTime";
     var LSC = "LSC";
@@ -49,15 +49,36 @@ export class BasicPage implements OnInit {
     this.registerService.GetPlans(planRequest).subscribe((data: any) => {
       this.planResponse = data;
     }, (error) => {
-      this.toastr.error(error.message, 'Error!');
-      var alert = this.alertCtrl.create({
-        title: "Error Message",
-        subTitle: error.message,
-        buttons: ['OK']
-      });
-      alert.present();
+       // this.toastr.error(error, 'Error!');
+            // var alert = this.alertCtrl.create({
+            //     title: "Error Message",
+            //     subTitle: error,
+            //     buttons: ['OK']
+            // });
+            // alert.present();     //To show alert message
+            if (error == '401') {
+              this.registerService.SetRefreshTokenNeeded();
+              this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
+                  localStorage.setItem('refreshToken',data.RefreshToken);
+                  this.registerService.SetToken(data.AccessToken);
+                  this.registerService.SetRefreshTokenNeeded();
+                  this.registerService.GetPlans(planRequest).subscribe((data: any) => {
+                    this.planResponse = data;
+                    loading.dismiss(); 
+                  });
+              });
+          }
+          else {
+              this.toastr.error(error, 'Error!');
+              var alert = this.alertCtrl.create({
+                  title: "Error Message",
+                  subTitle: error,
+                  buttons: ['OK']
+              });
+              alert.present();     //To show alert message  
+              loading.dismiss();    //To close loading panel
+          }
     });
-    loading.dismiss();
   }
 
   ActiveBankName: string;
@@ -97,14 +118,28 @@ export class BasicPage implements OnInit {
       this.planResponse = data; //To load active index data
       loading.dismiss();
     }, (error) => {
-      this.toastr.error(error.message, 'Error!');
-      var alert = this.alertCtrl.create({
-        title: "Error Message",
-        subTitle: error.message,
-        buttons: ['OK']
-      });
-      alert.present();
-      loading.dismiss();
+            if (error == '401') {
+              this.registerService.SetRefreshTokenNeeded();
+              this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
+                  localStorage.setItem('refreshToken',data.RefreshToken);
+                  this.registerService.SetToken(data.AccessToken);
+                  this.registerService.SetRefreshTokenNeeded();
+                  this.registerService.GetPlans(planRequest).subscribe((data: any) => {
+                    this.planResponse = data;
+                    loading.dismiss(); 
+                  });
+              });
+          }
+          else {
+              this.toastr.error(error, 'Error!');
+              var alert = this.alertCtrl.create({
+                  title: "Error Message",
+                  subTitle: error,
+                  buttons: ['OK']
+              });
+              alert.present();     //To show alert message  
+              loading.dismiss();    //To close loading panel
+          }
     });
   }
 

@@ -55,14 +55,29 @@ export class RechargeReportPage implements OnInit {
       this.rRResponse = data;
       loading.dismiss();
     }, (error) => {
-      this.toastr.error(error.message, 'Error!');
-      var alert = this.alertCtrl.create({
-        title: "Error Message",
-        subTitle: error.message,
-        buttons: ['OK']
-      });
-      alert.present();
-      loading.dismiss();
+            if (error == '401') {
+              this.registerService.SetRefreshTokenNeeded();
+              this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
+                  localStorage.setItem('refreshToken',data.RefreshToken);
+                  this.registerService.SetToken(data.AccessToken);
+                  this.registerService.SetRefreshTokenNeeded();
+                  this.registerService.GetRechargeReport(rRRequest).subscribe((data: any) => {
+                    this.rRResponse = data;
+                      loading.dismiss(); 
+                  });
+              });
+          }
+          else {
+              this.toastr.error(error, 'Error!');
+              var alert = this.alertCtrl.create({
+                  title: "Error Message",
+                  subTitle: error,
+                  buttons: ['OK']
+              });
+              alert.present();     //To show alert message  
+              loading.dismiss();    //To close loading panel
+          }
+          
     });
   }
   OnShowReverse(Id) {  //Fires, when we click on Show Reversal
@@ -74,7 +89,7 @@ export class RechargeReportPage implements OnInit {
     loading.present();
     const checkVoucher = {
       TenantId: ActiveTenantId,
-      DigiTranLogId: Id
+      DigiTranLogId: Id.toString()
     }
     this.registerService.GetReversedVoucher(checkVoucher).subscribe((data: any) => {
       this.checkVoucherResult = data;
@@ -82,14 +97,29 @@ export class RechargeReportPage implements OnInit {
       this.openModalWithParams();
       loading.dismiss();
     }, (error) => {
-      this.toastr.error(error.message, 'Error!');
-      var alert = this.alertCtrl.create({
-        title: "Error Message",
-        subTitle: error.message,
-        buttons: ['OK']
-      });
-      alert.present();
-      loading.dismiss();
+            if (error == '401') {
+              this.registerService.SetRefreshTokenNeeded();
+              this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
+                  localStorage.setItem('refreshToken',data.RefreshToken);
+                  this.registerService.SetToken(data.AccessToken);
+                  this.registerService.SetRefreshTokenNeeded();
+                  this.registerService.GetReversedVoucher(checkVoucher).subscribe((data: any) => {
+                    this.checkVoucherResult = data;
+                    this.openModalWithParams();
+                      loading.dismiss(); 
+                  });
+              });
+          }
+          else {
+              this.toastr.error(error, 'Error!');
+              var alert = this.alertCtrl.create({
+                  title: "Error Message",
+                  subTitle: error,
+                  buttons: ['OK']
+              });
+              alert.present();     //To show alert message  
+              loading.dismiss();    //To close loading panel
+          } 
     });
   }
   openModalWithParams() { //Fires, from above method

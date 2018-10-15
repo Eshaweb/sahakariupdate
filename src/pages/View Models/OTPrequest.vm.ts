@@ -1,5 +1,5 @@
 export class OTPRequest
 {
-    TenantId: string;
+    //TenantId: string;
     MobileNo: string;
 }

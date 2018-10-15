@@ -28,7 +28,7 @@ export class ChangeBankPage implements OnInit {
   ActiveTenantId: string;
   Active: boolean;
   // constructor(private autoLogoutService: AutoLogoutService,private regService : RegisterService,public constant:ConstantService,public navCtrl: NavController) {
-  constructor(private storageService: StorageService, public navParams: NavParams, private alertCtrl: AlertController, private toastr: ToastrService, public loadingController: LoadingController, private toastrService: ToastrService, private events: Events, private registerService: RegisterService, public navCtrl: NavController) {
+  constructor(private storageService: StorageService, public navParams: NavParams, private alertCtrl: AlertController, private toastr: ToastrService, public loadingController: LoadingController, private events: Events, private registerService: RegisterService, public navCtrl: NavController) {
 
   }
   tenant: Tenant;
@@ -40,7 +40,7 @@ export class ChangeBankPage implements OnInit {
     });
     loading.present();
     this.ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
-    var ActiveTenantId=this.storageService.GetUser().ActiveTenantId;
+    var ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
     //StorageService.SetItem('lastAction', Date.now().toString());
     let mobno = this.storageService.GetUser().UserName;
     this.tenants = this.storageService.GetTenant();  //To show multiple banks
@@ -57,8 +57,13 @@ export class ChangeBankPage implements OnInit {
       this.tenants = this.storageService.GetTenant();  //To update the tenants property.
       loading.dismiss();
     }, (error) => {
-      this.toastr.error(error.message, 'Error!');
-      alert(error.message);
+      this.toastr.error(error, 'Error!');
+      var alert = this.alertCtrl.create({
+        title: "Error Message",
+        subTitle: error,
+        buttons: ['OK']
+      });
+      alert.present();
       loading.dismiss();
     });
   }
@@ -124,13 +129,13 @@ export class ChangeBankPage implements OnInit {
       }
       this.events.publish('REFRESH_DIGIPARTYNAME');    //To rise the event and to show DigiPartyName.
     }, (error) => {
-      this.toastrService.error(error.message, 'Error!')
+      this.toastr.error(error, 'Error!');
       var alert = this.alertCtrl.create({
         title: "Error Message",
-        subTitle: error.message,
+        subTitle: error,
         buttons: ['OK']
       });
-      alert.present();   //To show the alert message with server error
+      alert.present();    //To show the alert message with server error
     });
   }
   user: User;
@@ -148,12 +153,12 @@ export class ChangeBankPage implements OnInit {
       //   this.navCtrl.remove(0, index);
       // });  
       this.navCtrl.push(FundTransferPage)
-        .then(() => {  
+        .then(() => {
           const startIndex = this.navCtrl.getActive().index - 1;
           this.navCtrl.remove(startIndex, 1);  //removes the history of this page.
         });
     }
-    else {  
+    else {
       this.navCtrl.setRoot(PagePage);
       this.events.publish('REFRESH_DIGIPARTYNAME');
     }

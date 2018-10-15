@@ -44,12 +44,12 @@ export class MobileRechargePage implements OnInit {
     });//builds the formgroup with the same formcontrolname.
 
     const subscriptionIdControl = this.formGroup.get('subscriptionId');
-    subscriptionIdControl.valueChanges.map(()=>{}).subscribe(value => this.setErrorMessage(subscriptionIdControl));
+    subscriptionIdControl.valueChanges.map(() => { }).subscribe(value => this.setErrorMessage(subscriptionIdControl));
     const amountControl = this.formGroup.get('amount');
     amountControl.valueChanges.subscribe(value => this.setErrorMessage(amountControl));
     const nicknameControl = this.formGroup.get('nickname');
     nicknameControl.valueChanges.subscribe(value => this.setErrorMessage(nicknameControl));
-  //call the particular method if value changes in the control.
+    //call the particular method if value changes in the control.
   }
   ionViewDidLoad() {
     this.navCtrl.remove(2, 1);
@@ -202,7 +202,7 @@ export class MobileRechargePage implements OnInit {
     this.amountforRecharge = this.navParams.get('Amount');
     this.osid = this.navParams.get('OperatorId');
     this.isButtonEnabled = this.navParams.get('ButtonEnabled');
-    if (this.isButtonEnabled == null) {  
+    if (this.isButtonEnabled == null) {
       this.isButtonEnabled = false;
     } else {
       this.isButtonEnabled = true;
@@ -336,17 +336,51 @@ export class MobileRechargePage implements OnInit {
           this.storageService.SetOSResponse(JSON.stringify(SetOfOSes));
         }
       }
-
       loading.dismiss();
     }, (error) => {
-      this.toastr.error(error.message, 'Error!');
-      var alert = this.alertCtrl.create({
-        title: "Error Message",
-        subTitle: error.message,
-        buttons: ['OK']
-      });
-      alert.present();
-      loading.dismiss();
+       // this.toastr.error(error, 'Error!');
+            // var alert = this.alertCtrl.create({
+            //     title: "Error Message",
+            //     subTitle: error,
+            //     buttons: ['OK']
+            // });
+            // alert.present();     //To show alert message
+            if (error == '401') {
+              this.registerService.SetRefreshTokenNeeded();
+              this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
+                  localStorage.setItem('refreshToken',data.RefreshToken);
+                  this.registerService.SetToken(data.AccessToken);
+                  this.registerService.SetRefreshTokenNeeded();
+                  this.registerService.GetOperators(oSRequest).subscribe((data: any) => {
+                    this.OSResponseNew = data;
+                    var OSResponseNew = data;
+                    this.OSResponseNew = OSResponseNew.filter(function (obj) { return obj.TenantId === ActiveTenantId; })
+                    var SetOfOSes = this.storageService.GetOSResponse();
+                    if (SetOfOSes == null) {
+                      this.storageService.SetOSResponse(JSON.stringify(this.OSResponseNew));
+                    }
+                    else {
+                      var ParentId = this.ParentId;
+                      var OSesBasedOnParentId = SetOfOSes.filter(function (obj) { return obj.ParentId === ParentId && obj.TenantId === ActiveTenantId; });
+                      if (OSesBasedOnParentId.length == 0) {
+                        SetOfOSes = SetOfOSes.concat(this.OSResponseNew);
+                        this.storageService.SetOSResponse(JSON.stringify(SetOfOSes));
+                      }
+                    }
+                  loading.dismiss(); 
+                  });
+              });
+          }
+          else {
+              this.toastr.error(error, 'Error!');
+              var alert = this.alertCtrl.create({
+                  title: "Error Message",
+                  subTitle: error,
+                  buttons: ['OK']
+              });
+              alert.present();     //To show alert message  
+              loading.dismiss();    //To close loading panel
+          }
     });
     this.rechargeitem = {
       Id: '',
@@ -479,7 +513,7 @@ export class MobileRechargePage implements OnInit {
         // this.formGroup.controls['subscriptionId'].setValidators([Validators.minLength(11), Validators.maxLength(11), Validators.pattern("0[0-9]{10}")]);
         // this.formGroup.controls['subscriptionId'].updateValueAndValidity();
         this.formGroup = new FormGroup({
-          subscriptionId: new FormControl(this.rechargeitem.SubscriptionId, [Validators.required,Validators.minLength(11), Validators.maxLength(11), Validators.pattern("0[0-9]{10}")]),
+          subscriptionId: new FormControl(this.rechargeitem.SubscriptionId, [Validators.required, Validators.minLength(11), Validators.maxLength(11), Validators.pattern("0[0-9]{10}")]),
           operatorId: new FormControl(operatorId),
           circleId: new FormControl('7'),
           amount: new FormControl(this.formGroup.controls['amount'].value, Validators.required),
@@ -494,7 +528,7 @@ export class MobileRechargePage implements OnInit {
         // this.formGroup.controls['subscriptionId'].setValidators([Validators.minLength(10), Validators.maxLength(10), Validators.pattern("1[0-9]{9}")]);
         // this.formGroup.controls['subscriptionId'].updateValueAndValidity();
         this.formGroup = new FormGroup({
-          subscriptionId: new FormControl(this.rechargeitem.SubscriptionId, [Validators.required,Validators.minLength(10), Validators.maxLength(10), Validators.pattern("1[0-9]{9}")]),
+          subscriptionId: new FormControl(this.rechargeitem.SubscriptionId, [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern("1[0-9]{9}")]),
           operatorId: new FormControl(operatorId),
           circleId: new FormControl('7'),
           amount: new FormControl(this.formGroup.controls['amount'].value, Validators.required),
@@ -654,14 +688,55 @@ export class MobileRechargePage implements OnInit {
         }
         loading.dismiss();
       }, (error) => {
-        this.toastr.error(error.message, 'Error!');
-        var alert = this.alertCtrl.create({
-          title: "Error Message",
-          subTitle: error.message,
-          buttons: ['OK']
-        });
-        alert.present();
-        loading.dismiss();
+         // this.toastr.error(error, 'Error!');
+            // var alert = this.alertCtrl.create({
+            //     title: "Error Message",
+            //     subTitle: error,
+            //     buttons: ['OK']
+            // });
+            // alert.present();     //To show alert message
+            if (error == '401') {
+              this.registerService.SetRefreshTokenNeeded();
+              this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
+                  localStorage.setItem('refreshToken',data.RefreshToken);
+                  this.registerService.SetToken(data.AccessToken);
+                  this.registerService.SetRefreshTokenNeeded();
+                  this.registerService.GetOperaterCircle(operaterCircleQuery).subscribe((data: any) => {
+                    this.operatorCircle = data;
+                    var operatorCircle = data;
+                    if (data.ResponseMessage == null) {
+                      var OsId = operatorCircle.operator;
+                      const OSResponseNew = this.OSResponseNew;
+                      this.singleosrespone = OSResponseNew.find(function (obj) { return obj.Id === OsId; });
+                      this.oid = this.singleosrespone.Id;
+                      this.rechargeitem.OperatorId = this.oid;
+                      var circle = this.operatorCircle.circle;
+                      this.statename = this.operatorCircle.circle;
+                      this.singleState = this.StatesOfIndia.find(function (obj) { return obj.Name === circle })
+                      this.sid = this.singleState.Id;
+                      this.rechargeitem.CircleId = this.sid;
+                      this.isStateEnabled = true;
+                      this.isOperatorEnabled = true;
+                      this.isMobileNoEntered = true;
+                    } else {
+                      this.isStateEnabled = false;
+                      this.isOperatorEnabled = false;
+                      this.isMobileNoEntered = true;
+                    }
+                      loading.dismiss(); 
+                  });
+              });
+          }
+          else {
+              this.toastr.error(error, 'Error!');
+              var alert = this.alertCtrl.create({
+                  title: "Error Message",
+                  subTitle: error,
+                  buttons: ['OK']
+              });
+              alert.present();     //To show alert message  
+              loading.dismiss();    //To close loading panel
+          }
       });
 
     }
@@ -688,7 +763,7 @@ export class MobileRechargePage implements OnInit {
     var k = event ? event.which : window.event;
     // var k = event.keyCode;
     if (k.keyCode == 32) return false;
-}
+  }
 
   ObjChanged(event) {
     this.ShowLabel = false;

@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController, ModalController, ModalOptions } from 'ionic-angular';
 import { ToastrService } from 'ngx-toastr';
 import { RegisterService } from '../services/app-data.service';
 import { StorageService } from '../services/Storage_Service';
 import { SelfCareAc } from '../LocalStorageTables/SelfCareAc';
 import { FundTransferDone } from '../View Models/FundTransferDone';
 import { findReadVarNames } from '../../../node_modules/@angular/compiler/src/output/output_ast';
+import { CheckPasswordPage } from '../check-password/check-password';
 
 /**
  * Generated class for the FundTransferConfirmPage page.
@@ -30,16 +31,16 @@ export class FundTransferConfirmPage implements OnInit {
   ftd: FundTransferDone;
   showConfirm: boolean;
   showFailure: boolean;
-  constructor(private storageService:StorageService, private alertCtrl: AlertController, private toastr: ToastrService, public loadingController: LoadingController, private registerService: RegisterService,public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public modalCtrl: ModalController, private storageService: StorageService, private alertCtrl: AlertController, private toastr: ToastrService, public loadingController: LoadingController, private registerService: RegisterService, public navCtrl: NavController, public navParams: NavParams) {
   }
-  
+
   ngOnInit() {
     this.navparams = this.navParams.data;
-    this.HeadName=this.navParams.get('HeadName');
-    this.AcNo=this.navParams.get('AcNo');
-    this.ToName=this.navParams.get('ToName');
-    this.ToAcNo=this.navParams.get('ToAcNo');
-    this.showConfirm = true;   
+    this.HeadName = this.navParams.get('HeadName');
+    this.AcNo = this.navParams.get('AcNo');
+    this.ToName = this.navParams.get('ToName');
+    this.ToAcNo = this.navParams.get('ToAcNo');
+    this.showConfirm = true;
   }
 
   // GetSelfCareAcByTenantID(ActiveTenantId) {
@@ -50,65 +51,88 @@ export class FundTransferConfirmPage implements OnInit {
   //   return this.selfCareAC;
 
   // }
+
+
+  // OnConfirm() {  //Fires, when clicking on Confirm button
+  //   let ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
+  //   let loading = this.loadingController.create({
+  //     content: 'Transferring the Fund..'
+  //   });
+  //   loading.present();
+  //   const doFundTransfer = {
+  //     TenantId: this.navparams.doFundTransfer.TenantId,
+  //     DigiPartyId: this.navParams.get('doFundTransfer').DigiPartyId,
+  //     FromAcMastId: this.navParams.get('doFundTransfer').FromAcMastId,
+  //     FromAcSubId: this.navParams.get('doFundTransfer').FromAcSubId,
+  //     FromLocId: this.navParams.get('doFundTransfer').FromLocId,
+  //     ToAcMastId:this.navParams.get('doFundTransfer').ToAcMastId,
+  //     ToAcSubId: this.navParams.get('doFundTransfer').ToAcSubId,
+  //     ToLocId: this.navParams.get('doFundTransfer').ToLocId,
+  //     Amount: this.navParams.get('doFundTransfer').Amount,
+  //     ToAcNo:this.navParams.get('doFundTransfer').ToAcNo  
+  //   }
+
+  //   this.registerService.FundTransfer(doFundTransfer).subscribe((data: any) => {
+  //     this.confirm = null;
+  //     this.ftd=data;
+  //     if(data.Status=="1"){
+  //       this.toastr.success('Fund Transferred with Success', 'Success!');
+  //       var alert = this.alertCtrl.create({
+  //         title: "Success Message",
+  //         subTitle: "Fund Transferred",
+  //         buttons: ['OK']
+  //       });
+  //       alert.present(); 
+  //       this.showstatus = true;
+  //       this.showConfirm = false;
+  //     }
+  //     else{
+  //       this.toastr.error(data.AISError, 'Error!');
+  //       var alert = this.alertCtrl.create({
+  //         title: "Error Message",
+  //         subTitle: data.AISError,
+  //         buttons: ['OK']
+  //       });
+  //       alert.present(); //Shows alert message of Error from server.
+  //       this.showFailure=true;
+  //       this.showConfirm = false;
+  //     }
+  //     loading.dismiss();
+  //   }, (error) => {
+  //     this.toastr.error(error.message, 'Error!');
+  //     var alert = this.alertCtrl.create({
+  //       title: "Error Message",
+  //       subTitle: error.message,
+  //       buttons: ['OK']
+  //     });
+  //     alert.present(); 
+  //     loading.dismiss();
+  //   });
+  // }
+
+
   OnConfirm() {  //Fires, when clicking on Confirm button
-    let ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
-    let loading = this.loadingController.create({
-      content: 'Transferring the Fund..'
-    });
-    loading.present();
     const doFundTransfer = {
       TenantId: this.navparams.doFundTransfer.TenantId,
       DigiPartyId: this.navParams.get('doFundTransfer').DigiPartyId,
       FromAcMastId: this.navParams.get('doFundTransfer').FromAcMastId,
       FromAcSubId: this.navParams.get('doFundTransfer').FromAcSubId,
       FromLocId: this.navParams.get('doFundTransfer').FromLocId,
-      ToAcMastId:this.navParams.get('doFundTransfer').ToAcMastId,
+      ToAcMastId: this.navParams.get('doFundTransfer').ToAcMastId,
       ToAcSubId: this.navParams.get('doFundTransfer').ToAcSubId,
       ToLocId: this.navParams.get('doFundTransfer').ToLocId,
       Amount: this.navParams.get('doFundTransfer').Amount,
-      ToAcNo:this.navParams.get('doFundTransfer').ToAcNo  
+      ToAcNo: this.navParams.get('doFundTransfer').ToAcNo
     }
-    
-    this.registerService.FundTransfer(doFundTransfer).subscribe((data: any) => {
-      this.confirm = null;
-      this.ftd=data;
-      if(data.Status=="1"){
-        this.toastr.success('Fund Transferred with Success', 'Success!');
-        var alert = this.alertCtrl.create({
-          title: "Success Message",
-          subTitle: "Fund Transferred",
-          buttons: ['OK']
-        });
-        alert.present(); 
-        this.showstatus = true;
-        this.showConfirm = false;
-      }
-      else{
-        this.toastr.error(data.AISError, 'Error!');
-        var alert = this.alertCtrl.create({
-          title: "Error Message",
-          subTitle: data.AISError,
-          buttons: ['OK']
-        });
-        alert.present(); //Shows alert message of Error from server.
-        this.showFailure=true;
-        this.showConfirm = false;
-      }
-      loading.dismiss();
-    }, (error) => {
-      this.toastr.error(error.message, 'Error!');
-      var alert = this.alertCtrl.create({
-        title: "Error Message",
-        subTitle: error.message,
-        buttons: ['OK']
-      });
-      alert.present(); 
-      loading.dismiss();
-    });
+    const myModalOptions: ModalOptions = {
+      enableBackdropDismiss: false,
+      cssClass : 'mymodal'
+    };
+    let passwordModal = this.modalCtrl.create(CheckPasswordPage, { 'DoFundTransfer': doFundTransfer }, myModalOptions);
+    passwordModal.present();
   }
-
-ionViewDidLoad() {
-  console.log('ionViewDidLoad FundTransferConfirmPage');
-}
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad FundTransferConfirmPage');
+  }
 
 }

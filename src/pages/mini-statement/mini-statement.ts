@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, LoadingController, AlertController } from 'ionic-angular';
+import { NavController, LoadingController, AlertController, NavParams } from 'ionic-angular';
 import { StorageService } from '../services/Storage_Service';
 import { StatementRequest } from '../View Models/StatementRequest';
 import { RegisterService } from '../services/app-data.service';
@@ -8,6 +8,8 @@ import { StatementItem } from '../View Models/StatementItem';
 import { SelfCareAc } from '../LocalStorageTables/SelfCareAc';
 import { ToastrService } from 'ngx-toastr';
 import { findReadVarNames } from '../../../node_modules/@angular/compiler/src/output/output_ast';
+import { PagePage } from '../page/page';
+import { BankingPage } from '../banking/banking';
 
 @Component({
   selector: 'page-mini-statement',
@@ -18,7 +20,7 @@ export class MiniStatementPage implements OnInit {
   label: string;
   showCredited: boolean;
   ShowDebited: boolean;
-  constructor(private storageService:StorageService, private alertCtrl: AlertController, private toastr: ToastrService, public loadingController: LoadingController, private registerService: RegisterService, public navCtrl: NavController) {
+  constructor(private navParams:NavParams, private storageService: StorageService, private alertCtrl: AlertController, private toastr: ToastrService, public loadingController: LoadingController, private registerService: RegisterService, public navCtrl: NavController) {
 
   }
   ActiveBankName: string;
@@ -27,11 +29,19 @@ export class MiniStatementPage implements OnInit {
   SelfCareAcsBasedOnTenantID: SelfCareAc;
   ngOnInit() {
     this.ShowHide = true; //used to show click messages.
-    this.HideMsg=true;  //used to show Accounts of the bank
-    this.ActiveBankName =this.storageService.GetActiveBankName();
-    this.SelfCareAcsBasedOnTenantID =this.storageService.GetSelfCareAcsBasedOnTenantID();
+    this.HideMsg = true;  //used to show Accounts of the bank
+    this.ActiveBankName = this.storageService.GetActiveBankName();
+    this.SelfCareAcsBasedOnTenantID = this.storageService.GetSelfCareAcsBasedOnTenantID();
   }
-
+  ionViewWillLeave() {
+    //   this.callback('param').then(()=>{
+    //     //this.navCtrl.pop();
+    // });
+    // if (this.navParams.get('isFromLogin') == true) {
+    //   this.navCtrl.popTo(BankingPage);
+    // }
+     // this.navCtrl.push(BankingPage);
+  }
   statementItem: StatementItem;
   miniStatement: MiniStatement;
   balance: string;
@@ -51,17 +61,33 @@ export class MiniStatementPage implements OnInit {
       this.statementItem = data.StatementItems;
       loading.dismiss();
     }, (error) => {
-      this.toastr.error(error.message, 'Error!');
-      var alert = this.alertCtrl.create({
-        title: "Error Message",
-        subTitle: error.message,
-        buttons: ['OK']
-      });
-      alert.present();
-      loading.dismiss();
+            if (error == '401') {
+              this.registerService.SetRefreshTokenNeeded();
+              this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
+                  localStorage.setItem('refreshToken',data.RefreshToken);
+                  this.registerService.SetToken(data.AccessToken);
+                  this.registerService.SetRefreshTokenNeeded();
+                  this.registerService.GetStatement(statementRequest).subscribe((data: any) => {
+                    this.balance = data;
+                    this.miniStatement = data;
+                    this.statementItem = data.StatementItems;
+                    loading.dismiss();
+                  });
+              });
+          }
+          else {
+              this.toastr.error(error, 'Error!');
+              var alert = this.alertCtrl.create({
+                  title: "Error Message",
+                  subTitle: error,
+                  buttons: ['OK']
+              });
+              alert.present();     //To show alert message 
+              loading.dismiss();
+          }
     });
     this.ShowHide = false;
-    this.HideMsg=false;
+    this.HideMsg = false;
   }
 
 }

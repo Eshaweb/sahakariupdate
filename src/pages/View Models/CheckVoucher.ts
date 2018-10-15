@@ -1,4 +1,4 @@
 export class CheckVoucher{
     TenantId:string;
-    DigiTranLogId:number;
+    DigiTranLogId:string;
 }

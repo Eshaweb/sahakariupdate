@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, LoadingController, AlertController } from 'ionic-angular';
+import { NavController, LoadingController, AlertController, NavParams } from 'ionic-angular';
 //import { AutoLogoutService } from '../services/AutoLogOutService';
 import { StorageService } from '../services/Storage_Service';
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
@@ -26,13 +26,14 @@ export class FundTransferPage implements OnInit {
   AcNo: string;
   ToName: string;
   ToAcNo: string;
+  showBackButton: boolean;
 
 
   // constructor(private regService : RegisterService, public formbuilder:FormBuilder,public constant:ConstantService,private autoLogoutService: AutoLogoutService,public navCtrl: NavController) {
-  constructor(private storageService:StorageService, private alertCtrl: AlertController, private uiService: UISercice, private toastr: ToastrService, public loadingController: LoadingController, private registerService: RegisterService, public formbuilder: FormBuilder, public navCtrl: NavController) {
+  constructor(public navParams: NavParams, private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, private toastr: ToastrService, public loadingController: LoadingController, private registerService: RegisterService, public formbuilder: FormBuilder, public navCtrl: NavController) {
 
     //StorageService.SetItem('lastAction', Date.now().toString());
-    this.formgroup1 = formbuilder.group({ 
+    this.formgroup1 = formbuilder.group({
       mobilenum: ['', [Validators.required, Validators.minLength(10)]]
     }); //builds the formgroup with the same formcontrolname.
     const mobileControl = this.formgroup1.get('mobilenum');
@@ -52,7 +53,7 @@ export class FundTransferPage implements OnInit {
     if ((c.touched || c.dirty) && c.errors) {
       if (control === 'mobilenum') {
         this.mobileMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
-      //maps the error message from validationMessages array. 
+        //maps the error message from validationMessages array. 
       }
       else if (control === 'amount') {
         this.amountMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
@@ -73,40 +74,46 @@ export class FundTransferPage implements OnInit {
   SelfCareACs: SelfCareAc;
   SelfCareAcBasedOnTenantID: SelfCareAc;
   ngOnInit() {
-    this.Showthis=true;
+    if (this.navParams.get('isFromLogin') == true) {
+      this.showBackButton = true;
+    }
+    else {
+      this.showBackButton = false;
+    }
+    this.Showthis = true;
     this.ShowHide = true;
     this.disablenextwithoutToAccount = true; //To disable Next button.
     var ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
     this.ActiveBankName = this.storageService.GetActiveBankName();
     var SelfCareACs = this.storageService.GetSelfCareAc();
-    var SelfCareAcBasedOnTenantID = SelfCareACs.filter(function (obj) { return obj.TenantId === ActiveTenantId && obj.AcActId == "#SB"; }); 
+    var SelfCareAcBasedOnTenantID = SelfCareACs.filter(function (obj) { return obj.TenantId === ActiveTenantId && obj.AcActId == "#SB"; });
     //To find SB Account with ActiveTenantId
-    if (SelfCareAcBasedOnTenantID.length==0) {  
+    if (SelfCareAcBasedOnTenantID.length == 0) {
       this.Showthis = false;
-      this.ShowHide=false;
+      this.ShowHide = false;
       var alert = this.alertCtrl.create({
         title: "Error Message",
         subTitle: "Fund Transfer is not Available Since there is no SB Account",
         buttons: [{
           text: 'OK',
-          handler: () => {this.navCtrl.pop();}
+          handler: () => { this.navCtrl.pop(); }
         }]
       });
       alert.present();
     }
-    else{
-      this.SelfCareAcBasedOnTenantID=SelfCareAcBasedOnTenantID; //To show SelfCare Account
-      this.HeadName=this.SelfCareAcBasedOnTenantID[0].HeadName;
-      this.AcNo=this.SelfCareAcBasedOnTenantID[0].AcNo;
+    else {
+      this.SelfCareAcBasedOnTenantID = SelfCareAcBasedOnTenantID; //To show SelfCare Account
+      this.HeadName = this.SelfCareAcBasedOnTenantID[0].HeadName;
+      this.AcNo = this.SelfCareAcBasedOnTenantID[0].AcNo;
     }
   }
-  OnBack(){
+  OnBack() {
     this.navCtrl.push(BankingPage);
   }
-  OnChangeBank(){  //Fires, when clicking change bank
-    var isFromFundTransfer:boolean=true;
+  OnChangeBank() {  //Fires, when clicking change bank
+    var isFromFundTransfer: boolean = true;
     //this.navCtrl.push(ChangeBankPage,{'isFromFundTransfer':isFromFundTransfer});
-    this.navCtrl.push(ChangeBankPage,{'isFromFundTransfer':isFromFundTransfer}).then(() => {
+    this.navCtrl.push(ChangeBankPage, { 'isFromFundTransfer': isFromFundTransfer }).then(() => {
       const startIndex = this.navCtrl.getActive().index - 1;
       this.navCtrl.remove(startIndex, 1);//removes the history of this page.
     });
@@ -123,21 +130,39 @@ export class FundTransferPage implements OnInit {
     }
     this.registerService.GetFTAccount(fundTransferRequest).subscribe((data: any) => {
       this.fundTransferResponse = data;
-      this.ToName=this.fundTransferResponse.Name;
-      this.ToAcNo=this.fundTransferResponse.AcNo;
+      this.ToName = this.fundTransferResponse.Name;
+      this.ToAcNo = this.fundTransferResponse.AcNo;
       this.disablenextwithoutToAccount = false;
       loading.dismiss();
     }, (error) => {
-      this.toastr.error(error.message, 'Error!');
-      var alert = this.alertCtrl.create({
-        title: "Error Message",
-        subTitle: error.message,
-        buttons: ['OK']
-      });
-      alert.present(); 
-      loading.dismiss();
-   });
-    
+            if (error == '401') {
+                this.registerService.SetRefreshTokenNeeded();
+                this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
+                    localStorage.setItem('refreshToken',data.RefreshToken);
+                    this.registerService.SetToken(data.AccessToken);
+                    this.registerService.SetRefreshTokenNeeded();
+                    this.registerService.GetFTAccount(fundTransferRequest).subscribe((data: any) => {
+                      this.fundTransferResponse = data;
+                      this.ToName = this.fundTransferResponse.Name;
+                      this.ToAcNo = this.fundTransferResponse.AcNo;
+                      this.disablenextwithoutToAccount = false;
+                      loading.dismiss(); 
+                    });
+                });
+            }
+            else {
+                this.toastr.error(error, 'Error!');
+                var alert = this.alertCtrl.create({
+                    title: "Error Message",
+                    subTitle: error,
+                    buttons: ['OK']
+                });
+                alert.present();     //To show alert message
+                loading.dismiss();  
+            }
+      
+    });
+
   }
 
   OnNext() {   //Fires, when clicking on Next button
@@ -154,7 +179,7 @@ export class FundTransferPage implements OnInit {
       Amount: this.formgroup2.get('amount').value,
       ToAcNo: this.fundTransferResponse.AcNo
     }
-     this.navCtrl.push(FundTransferConfirmPage,{doFundTransfer,'AcSubId':this.SelfCareAcBasedOnTenantID[0].AcSubId,'HeadName':this.HeadName,'AcNo':this.AcNo,'ToName':this.ToName,'ToAcNo':this.ToAcNo});
+    this.navCtrl.push(FundTransferConfirmPage, { doFundTransfer, 'AcSubId': this.SelfCareAcBasedOnTenantID[0].AcSubId, 'HeadName': this.HeadName, 'AcNo': this.AcNo, 'ToName': this.ToName, 'ToAcNo': this.ToAcNo });
     // this.navCtrl.push(FundTransferConfirmPage,{'doFundTransfer':doFundTransfer});
   }
   GetSelfCareAcByTenantID(ActiveTenantId) {  //Fires, from above method.

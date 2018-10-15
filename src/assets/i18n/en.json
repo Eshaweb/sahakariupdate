@@ -2,7 +2,7 @@
 	"bank.balance Enquiry": "Balace Enquiry",
 	"bank.fundtransfer": "Fund Transfer",
 	"bank.mini statement": "Mini Statement",
-	"bank.my": "My Banks",
+	"bank.my": "My Profile",
 	"bank.stopcheque": "Stop Cheque",
 	"broadband": "Broadband",
 	"change bank": "Change Bank",
@@ -27,7 +27,7 @@
 	"recharge.operator": "Operator",
 	"recharge.registered monile no": "Registred Mobile No",
 	"recharge.smartcard no": "Smartcard No",
-	"recharge.start": "",
+	"recharge.start": "Recharge",
 	"recharge.state": "State",
 	"recharge.subscriber id": "Subscriber Id",
 	"recharge.view plans": "View Plans",
@@ -37,3 +37,5 @@
 	"settings": "Settings",
 	"water bill": "Water Bill"
 }
+
+

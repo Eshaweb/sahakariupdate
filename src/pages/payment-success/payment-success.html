@@ -1,0 +1,51 @@
+<!--
+  Generated template for the PaymentSuccessPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color='primary'>
+    <ion-title *ngIf="showstatus">Fund Transfered </ion-title>
+    <ion-title *ngIf="showFailureFT">Fund Transfer Failured</ion-title>
+    <ion-title *ngIf="showSuccess||showPending||showInit||showFailure||showRefund||showBlocked">
+      <!-- <ion-title *ngIf="showSuccess"> -->
+      {{OperatorService}} Recharge -{{ActiveBankName}}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <div *ngIf="showstatus">
+    <h1>Fund transferred with Success</h1>
+  </div>
+  <div *ngIf="showFailureFT">
+    <h1>Fund transfer failed</h1>
+  </div>
+  <div *ngIf="showSuccess">
+    <h1 style="color: green;">Recharge is Successful...</h1>
+    <p>Transaction ID: {{tranResponse.VendorExtCode}}</p>
+  </div>
+  <div *ngIf="showPending">
+    <h1 style="color: darkorange;">Recharge is Pending...</h1>
+    <p>Transaction ID: {{tranResponse.VendorExtCode}}</p>
+    <p>You will notified through message, After recharge Successful</p>
+  </div>
+  <div *ngIf="showInit">
+    <h1>Recharge is Initiated...Please wait for a minute..</h1>
+    <p>Transaction ID: {{tranResponse.VendorExtCode}}</p>
+  </div>
+  <div *ngIf="showFailure">
+    <h1 style="color: red;">Sorry, Recharge is Unsuccessful...</h1>
+    <p>Transaction ID: {{tranResponse.VendorExtCode}}</p>
+  </div>
+  <div *ngIf="showRefund">
+    <h1>Recharge is Refunded due to some issues...</h1>
+    <p>Transaction ID: {{tranResponse.VendorExtCode}}</p>
+  </div>
+  <div *ngIf="showBlocked">
+    <h1>Recharge is Blocked due to some issues...</h1>
+  </div>
+</ion-content>
