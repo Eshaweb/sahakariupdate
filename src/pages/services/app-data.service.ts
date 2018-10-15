@@ -246,7 +246,7 @@ export class RegisterService {
                 //     }
                 // }
                 
-                if(err.error==""){
+                if(typeof err.error==='string'){
                     errorMessage =err.error;
                 }
                 else if(err.error instanceof ErrorFromServer){

@@ -53,6 +53,7 @@ export class ChangeBankPage implements OnInit {
         for (var i = 0; i < tenantList.length; i++) { //To check, whether the localstorage tenant records are lesser than server 
           this.OnAddBankSelection(tenantList[i].Id);  //To add records from server to localstorage Digiparty and SelfCare.
         }
+        // loading.dismiss();
       }
       this.tenants = this.storageService.GetTenant();  //To update the tenants property.
       loading.dismiss();
@@ -73,6 +74,10 @@ export class ChangeBankPage implements OnInit {
   //   return this.tenantList.filter(e => e.Id == ActiveTenantId);
   // }
   OnAddBankSelection(Id) {
+    let loading = this.loadingController.create({
+      content: 'Please wait till we get the Registered Banks'
+    });
+    loading.present();
     const addBankRequest = {
       TenantId: Id,
       MobileNo: this.storageService.GetUser().UserName
@@ -128,6 +133,7 @@ export class ChangeBankPage implements OnInit {
         this.storageService.SetSelfCareAc(JSON.stringify(existingSelfCareAcs));
       }
       this.events.publish('REFRESH_DIGIPARTYNAME');    //To rise the event and to show DigiPartyName.
+      loading.dismiss();
     }, (error) => {
       this.toastr.error(error, 'Error!');
       var alert = this.alertCtrl.create({
@@ -136,6 +142,7 @@ export class ChangeBankPage implements OnInit {
         buttons: ['OK']
       });
       alert.present();    //To show the alert message with server error
+      loading.dismiss();
     });
   }
   user: User;

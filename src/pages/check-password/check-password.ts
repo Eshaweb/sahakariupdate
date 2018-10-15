@@ -59,7 +59,7 @@ export class CheckPasswordPage {
 
   onSubmit() {
     let loading = this.loadingController.create({
-      content: 'Transferring the Fund..'
+      content: 'Your Request is Processing..'
     });
     loading.present();
     const loginModel = {
@@ -73,6 +73,7 @@ export class CheckPasswordPage {
           this.ftd = data;
           this.navCtrl.push(PaymentSuccessPage, { 'FTD': data });
           this.viewCtrl.dismiss();
+          loading.dismiss();
         });
       }
       else if (data == true && this.navParams.get('RechargeModel') != null) {
@@ -80,10 +81,12 @@ export class CheckPasswordPage {
           this.tranResponse = data;
           this.navCtrl.push(PaymentSuccessPage, { 'TranResponse': data });
           this.viewCtrl.dismiss();
+          loading.dismiss();
         });
       }
       else {
         this.viewCtrl.dismiss();
+        loading.dismiss();
         var alert = this.alertCtrl.create({
           title: "Error Message",
           subTitle: 'Password is Invalid',
@@ -91,7 +94,6 @@ export class CheckPasswordPage {
         });
         alert.present();
       }
-      loading.dismiss();
     }, (error) => {
       if (error == '401') {
         this.registerService.SetRefreshTokenNeeded();
@@ -105,6 +107,7 @@ export class CheckPasswordPage {
                 this.ftd = data;
                 this.navCtrl.push(PaymentSuccessPage, { 'FTD': data });
                 this.viewCtrl.dismiss();
+                loading.dismiss();
               });
             }
             else if (data == true && this.navParams.get('RechargeModel') != null) {
@@ -112,10 +115,12 @@ export class CheckPasswordPage {
                 this.tranResponse = data;
                 this.navCtrl.push(PaymentSuccessPage, { 'TranResponse': data });
                 this.viewCtrl.dismiss();
+                loading.dismiss();
               });
             }
             else {
               this.viewCtrl.dismiss();
+              loading.dismiss();
               var alert = this.alertCtrl.create({
                 title: "Error Message",
                 subTitle: 'Password is Invalid',
@@ -134,11 +139,9 @@ export class CheckPasswordPage {
           buttons: ['OK']
         });
         alert.present();     //To show alert message  
+        loading.dismiss();
       }
       this.viewCtrl.dismiss();
-      loading.dismiss();
     });
-
-
   }
 }
