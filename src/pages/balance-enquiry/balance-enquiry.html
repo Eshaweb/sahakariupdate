@@ -10,16 +10,16 @@
   </ion-header>
   <ion-content padding id="page3">
       <span style="color: blue" *ngIf="HideMsg">Click on Account of your wish</span>  
-    <div  *ngIf="ShowHide">   
+    <div>   
       <div *ngFor="let order of SelfCareAcsBasedOnTenantID" (click)="OnGetAccountBalance(order.AcHeadId,order.AcSubId)" style="background-color:#ddd;border: 1px solid lightgrey; padding: 15px; margin: 5px 0;">
         <span>Name: {{order.HeadName}}</span> 
         <br/>
         <span>Account No: {{order.AcNo}}</span> 
     </div> 
       </div>
-    <div *ngIf="balance">
+      <ion-card *ngIf="balance">
         <span>Balance Amount : {{ balance.Balance|currency:'INR' }}</span>
-    </div>
+  </ion-card>
   </ion-content>
 
   <ion-footer color="primary">

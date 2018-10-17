@@ -151,6 +151,7 @@ export class FundTransferPage implements OnInit {
                 });
             }
             else {
+              this.fundTransferResponse =null;
                 this.toastr.error(error, 'Error!');
                 var alert = this.alertCtrl.create({
                     title: "Error Message",
@@ -164,24 +165,38 @@ export class FundTransferPage implements OnInit {
     });
 
   }
-
+  OnMobileNo(event){
+    this.fundTransferResponse=null;
+  }
   OnNext() {   //Fires, when clicking on Next button
     var ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
-    const doFundTransfer = {
-      TenantId: ActiveTenantId,
-      DigiPartyId: this.storageService.GetDigipartyBasedOnActiveTenantId().DigiPartyId,
-      FromAcMastId: this.GetSelfCareAcByTenantID(ActiveTenantId).AcHeadId,
-      FromAcSubId: this.GetSelfCareAcByTenantID(ActiveTenantId).AcSubId,
-      FromLocId: this.GetSelfCareAcByTenantID(ActiveTenantId).LocId,
-      ToAcMastId: this.fundTransferResponse.AcHeadId,
-      ToAcSubId: this.fundTransferResponse.AcSubId,
-      ToLocId: this.fundTransferResponse.LocId,
-      Amount: this.formgroup2.get('amount').value,
-      ToAcNo: this.fundTransferResponse.AcNo
+    if(this.fundTransferResponse==null){
+      this.toastr.error('Please Click on Search button of Above Field', 'Error!');
+      var alert = this.alertCtrl.create({
+          title: "Error Message",
+          subTitle: 'Please Click on Search button of Above Field',
+          buttons: ['OK']
+      });
+      alert.present(); 
     }
-    this.navCtrl.push(FundTransferConfirmPage, { doFundTransfer, 'AcSubId': this.SelfCareAcBasedOnTenantID[0].AcSubId, 'HeadName': this.HeadName, 'AcNo': this.AcNo, 'ToName': this.ToName, 'ToAcNo': this.ToAcNo });
-    // this.navCtrl.push(FundTransferConfirmPage,{'doFundTransfer':doFundTransfer});
+    else{
+      const doFundTransfer = {
+        TenantId: ActiveTenantId,
+        DigiPartyId: this.storageService.GetDigipartyBasedOnActiveTenantId().DigiPartyId,
+        FromAcMastId: this.GetSelfCareAcByTenantID(ActiveTenantId).AcHeadId,
+        FromAcSubId: this.GetSelfCareAcByTenantID(ActiveTenantId).AcSubId,
+        FromLocId: this.GetSelfCareAcByTenantID(ActiveTenantId).LocId,
+        ToAcMastId: this.fundTransferResponse.AcHeadId,
+        ToAcSubId: this.fundTransferResponse.AcSubId,
+        ToLocId: this.fundTransferResponse.LocId,
+        Amount: this.formgroup2.get('amount').value,
+        ToAcNo: this.fundTransferResponse.AcNo
+      }
+      this.navCtrl.push(FundTransferConfirmPage, { doFundTransfer, 'AcSubId': this.SelfCareAcBasedOnTenantID[0].AcSubId, 'HeadName': this.HeadName, 'AcNo': this.AcNo, 'ToName': this.ToName, 'ToAcNo': this.ToAcNo });
+      // this.navCtrl.push(FundTransferConfirmPage,{'doFundTransfer':doFundTransfer});
+    }
   }
+  
   GetSelfCareAcByTenantID(ActiveTenantId) {  //Fires, from above method.
     var AcSubId = this.SelfCareAcBasedOnTenantID[0].AcSubId;
     var SelfCareACs = this.storageService.GetSelfCareAc();
