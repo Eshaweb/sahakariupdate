@@ -50,13 +50,22 @@
     </ion-list>
   </ion-card>
   <ion-card id="home-card27">
-    <ion-list>
+    <ion-list *ngIf='!isLogOut'>
       <div style="width:100%;background-color:#e8ebef;text-align:center;">
         <i class="icon ion-image" style="font-size:64px;color:#888;vertical-align:middle;"></i>
       </div>
       <ion-item color="assertive" id="home-list-item23">
         <ion-icon name="log-out" item-left></ion-icon>
         <a style="color:darkorange;" (click)="OnLogOut()">Log out</a>
+      </ion-item>
+    </ion-list>
+    <ion-list *ngIf='isLogOut'>
+      <div style="width:100%;background-color:#e8ebef;text-align:center;">
+        <i class="icon ion-image" style="font-size:64px;color:#888;vertical-align:middle;"></i>
+      </div>
+      <ion-item color="assertive" id="home-list-item23">
+        <ion-icon name="log-in" item-left></ion-icon>
+        <a style="color:darkorange;" (click)="OnLogin()">Login</a>
       </ion-item>
     </ion-list>
   </ion-card>

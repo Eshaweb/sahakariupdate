@@ -75,7 +75,7 @@ export class LoginPage implements OnInit {
       UniqueId: this.storageService.GetUser().UniqueKey,
     }
     var OS = this.storageService.GetOS();
-    this.registerService.loginbyHttpClient(Login).subscribe((data: any) => {
+    this.registerService.Login(Login).subscribe((data: any) => {
       this.registerService.AccessToken = data.AccessToken;
       StorageService.SetItem('refreshToken', data.RefreshToken);
       this.sendToken(data.AccessToken); //stores the token in service property.
@@ -117,14 +117,44 @@ export class LoginPage implements OnInit {
       }
       loading.dismiss();
     }, (error) => {
-      this.toastrService.error(error, 'Error!');
-      loading.dismiss();
-      var alert = this.alertCtrl.create({
-        title: "Error Message",
-        subTitle: error,
-        buttons: ['OK']
-      });
-      alert.present();
+      // this.toastrService.error(error.message, 'Error!');
+      // loading.dismiss();
+      // var alert = this.alertCtrl.create({
+      //   title: "Error Message",
+      //   subTitle: error.message,
+      //   buttons: ['OK']
+      // });
+      // alert.present();
+
+      this.passwordMessage = '';
+      const controls = this.formGroup.controls;
+      //const ErrorProperties = error.error;
+      const ErrorProperties = error;
+      for (const property in ErrorProperties) {
+        for (const name in controls) {
+          if (name == property) {
+            ErrorProperties[property].forEach((value: string) => {
+              this.passwordMessage = value;
+              loading.dismiss();
+            });
+          }
+          else if (property == 'Errors') {
+            // for (var i = 0; i < error.error.Errors.length; i++) {
+            //   var errorMessage = error.error.Errors[i].ErrorString;
+            for (var i = 0; i < error.Errors.length; i++) {
+              var errorMessage = error.Errors[i].ErrorString;
+              this.toastrService.error(errorMessage, 'Error!');
+              loading.dismiss();
+              var alert = this.alertCtrl.create({
+                title: "Error Message",
+                subTitle: errorMessage,
+                buttons: ['OK']
+              });
+              alert.present();
+            }
+          }
+        }
+      }
       this.navCtrl.setRoot(LoginPage);
       //this.navCtrl.setRoot(PagePage, { 'ActiveBankName': this.ActiveBankName });
     });

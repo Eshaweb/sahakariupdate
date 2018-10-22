@@ -74,18 +74,17 @@ export class RegisterService {
         this.TenantId = Id;
         return "true";
     }
-   SetRefreshTokenNeeded(){
-        if(this.refreshTokenNeeded==true)
-        {
-            this.refreshTokenNeeded=false;
+    SetRefreshTokenNeeded() {
+        if (this.refreshTokenNeeded == true) {
+            this.refreshTokenNeeded = false;
         }
-        else{
-            this.refreshTokenNeeded=true;
+        else {
+            this.refreshTokenNeeded = true;
         }
     }
-    SetLoginLogOut(){
-        this.isLogOut=true;
-        
+    SetLoginLogOut() {
+        this.isLogOut = true;
+
     }
     RequestOTP(oTPRequest: OTPRequest) {
 
@@ -94,8 +93,9 @@ export class RegisterService {
         }
         this.MobileNo = oTPRequest.MobileNo;
         //this.TenantId = oTPRequest.TenantId;
-        //return this.httpclient.post<DigiCustWithOTPRefNo>(this.uIHelperService.CallWebAPIUrlNew("/User/RequestOTP"), body).catch(this.handleError);
-        return this.httpclient.post<DigiCustWithOTPRefNo>(this.uIHelperService.CallWebAPIUrlNew("/User/RequestOTP"), body);
+        return this.httpclient.post<DigiCustWithOTPRefNo>(this.uIHelperService.CallWebAPIUrlNew("/User/RequestOTP"), body).catch(this.handleCustomError);
+        // return this.httpclient.post<DigiCustWithOTPRefNo>(this.uIHelperService.CallWebAPIUrlNew("/User/RequestOTP"), body).catch(this.handleSpecialError);
+        //return this.httpclient.post<DigiCustWithOTPRefNo>(this.uIHelperService.CallWebAPIUrlNew("/User/RequestOTP"), body);
 
     }
     GetTenantsByMobile(mobno: any) {
@@ -116,8 +116,9 @@ export class RegisterService {
         return this.httpclient.post<ChangePasswordResult>(this.uIHelperService.CallWebAPIUrlNew("/User/ChangePassword"), changePassword).catch(this.handleError);
     }
 
-    loginbyHttpClient(login: Login): Observable<TokenParams> {
-        return this.httpclient.post<TokenParams>(this.uIHelperService.CallWebAPIUrlNew("/User/Login"), login).catch(this.handleError);
+    Login(login: Login): Observable<TokenParams> {
+        // return this.httpclient.post<TokenParams>(this.uIHelperService.CallWebAPIUrlNew("/User/Login"), login).catch(this.handleSpecialError);
+        return this.httpclient.post<TokenParams>(this.uIHelperService.CallWebAPIUrlNew("/User/Login"), login).catch(this.handleCustomError);
     }
 
     GetServices(): Observable<OS[]> {
@@ -140,8 +141,8 @@ export class RegisterService {
         var data = "RefreshToken=" + refreshToken;
         var url = this.uIHelperService.CallWebAPIUrlNew("/User/GetToken") + "?" + data;
         return this.httpclient.get<Tenant>(url).pipe(tap((data: any) => {
-            this.RefreshToken =data.RefreshToken;
-            this.AccessToken=data.AccessToken;
+            this.RefreshToken = data.RefreshToken;
+            this.AccessToken = data.AccessToken;
         })).catch(this.handleError);
     }
     GetPlans(planRequest: PlanRequest) {
@@ -157,9 +158,9 @@ export class RegisterService {
     }
 
     GetFTAccount(fundTransferRequest: FundTransferRequest) {
-
-        return this.httpclient.post<FundTransferResponse>(this.uIHelperService.CallWebAPIUrlNew("/Banking/GetFTAccount"), fundTransferRequest).catch(this.handleError);
-
+        return this.httpclient.post<FundTransferResponse>(this.uIHelperService.CallWebAPIUrlNew("/Banking/GetFTAccount"), fundTransferRequest).catch(this.handleCustomError);
+        //return this.httpclient.post<FundTransferResponse>(this.uIHelperService.CallWebAPIUrlNew("/Banking/GetFTAccount"), fundTransferRequest).catch(this.handleError);
+        
     }
 
     FundTransfer(doFundTransfer: DoFundTransfer) {
@@ -167,7 +168,7 @@ export class RegisterService {
         return this.httpclient.post<TranResponse>(this.uIHelperService.CallWebAPIUrlNew("/Banking/FundTransfer"), doFundTransfer).catch(this.handleError);
 
     }
-    
+
     CheckPassword(login: Login) {
         return this.httpclient.post<TokenParams>(this.uIHelperService.CallWebAPIUrlNew("/User/CheckPassword"), login).catch(this.handleError);
     }
@@ -215,7 +216,7 @@ export class RegisterService {
         // in a real world app, we may send the server to some remote logging infrastructure
         // instead of just logging it to the console
         let errorMessage = '';
-        if(err.status==401){
+        if (err.status == 401) {
             errorMessage = '401';
             // this.SetRefreshTokenNeeded();
             // var RefreshToken=localStorage.getItem('refreshToken');
@@ -225,14 +226,14 @@ export class RegisterService {
             //     StorageService.SetItem('refreshToken', this.RefreshToken);
             // });
         }
-        else if(err.status==0){
+        else if (err.status == 0) {
             errorMessage = 'Unknown Error';
         }
         else if (err.error instanceof Error) {
             // A client-side or network error occurred. Handle it accordingly.
             errorMessage = `An error occurred: ${err.error}`;
-        } 
-        else if(err==null||err==undefined){
+        }
+        else if (err == null || err == undefined) {
             errorMessage = 'Network Error';
         }
 
@@ -248,18 +249,19 @@ export class RegisterService {
                 //         errorMessage = err.error.Errors[i].ErrorString;
                 //     }
                 // }
-                
-                if(typeof err.error==='string'){
-                    errorMessage =err.error;
+
+                if (typeof err.error === 'string') {
+                    errorMessage = err.error;
                 }
-                else if(err.error instanceof ErrorFromServer){
+                else if (err.error instanceof ErrorFromServer) {
                     //err.error.find(x => x.username == '2');
                 }
-                else{
-                for (var i = 0; i < err.error.Errors.length; i++) {
-                    errorMessage = err.error.Errors[i].ErrorString;
+                else {
+                    for (var i = 0; i < err.error.Errors.length; i++) {
+                        errorMessage = err.error.Errors[i].ErrorString;
+                    }
+                    //errorMessage = err.error;
                 }
-            }
             }
             else {
                 errorMessage = 'Network Error';
@@ -273,9 +275,94 @@ export class RegisterService {
         // alert.present();
 
         console.log(errorMessage);
-        return Observable.throw(errorMessage);
+        if (errorMessage != '') {
+            return Observable.throw(errorMessage);
+        } else {
+            return Observable.throw(err);
+        }
     }
-    
+
+
+    private handleSpecialError(err: HttpErrorResponse) {
+        // in a real world app, we may send the server to some remote logging infrastructure
+        // instead of just logging it to the console
+        let errorMessage = '';
+        if (err.status == 401) {
+            errorMessage = '401';
+        }
+        else if (err.status == 0) {
+            errorMessage = 'Unknown Error';
+        }
+        else if (err.error instanceof Error) {
+            // A client-side or network error occurred. Handle it accordingly.
+            errorMessage = `An error occurred: ${err.error}`;
+        }
+        else if (err == null || err == undefined) {
+            errorMessage = 'Network Error';
+        }
+
+        else {
+            if (err.error != null) {
+                if (typeof err.error === 'string') {
+                    errorMessage = err.error;
+                }
+                else if (err.error instanceof ErrorFromServer) {
+
+                }
+                else {
+
+                }
+            }
+            else {
+                errorMessage = 'Network Error';
+            }
+        }
+        console.log(errorMessage);
+        if (errorMessage != '') {
+            return Observable.throw(errorMessage);
+        } else {
+            return Observable.throw(err);
+        }
+    }
+
+    private handleCustomError(err: HttpErrorResponse) {
+        let errorMessage = '';
+        if (err.status == 401) {
+            errorMessage = '401';
+        }
+        else if (err.status == 0) {
+            errorMessage = 'Unknown Error';
+        }
+        else if (err.error instanceof Error) {
+            errorMessage = `An error occurred: ${err.error}`;
+        }
+        else if (err == null || err == undefined) {
+            errorMessage = 'Network Error';
+        }
+
+        else {
+            if (err.error != null) {
+                if (typeof err.error === 'string') {
+                    errorMessage = err.error;
+                }
+                else {
+                    // for (var i = 0; i < err.error.Errors.length; i++) {
+                    //     errorMessage = err.error.Errors[i].ErrorString;
+                    // }
+                    errorMessage = err.error;
+                }
+            }
+            else {
+                errorMessage = 'Network Error';
+            }
+        }
+        console.log(errorMessage);
+        if (errorMessage != '') {
+            return Observable.throw(errorMessage);
+        } else {
+            return Observable.throw(err);
+        }
+    }
     private ExtractData(res: Response) {
 
         let body = res.json();

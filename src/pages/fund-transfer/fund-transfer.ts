@@ -144,51 +144,67 @@ export class FundTransferPage implements OnInit {
       this.disablenextwithoutToAccount = false;
       loading.dismiss();
     }, (error) => {
-            if (error == '401') {
-                this.registerService.SetRefreshTokenNeeded();
-                this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
-                    localStorage.setItem('refreshToken',data.RefreshToken);
-                    this.registerService.SetToken(data.AccessToken);
-                    this.registerService.SetRefreshTokenNeeded();
-                    this.registerService.GetFTAccount(fundTransferRequest).subscribe((data: any) => {
-                      console.clear();
-                      this.fundTransferResponse = data;
-                      this.ToName = this.fundTransferResponse.Name;
-                      this.ToAcNo = this.fundTransferResponse.AcNo;
-                      this.disablenextwithoutToAccount = false;
-                      loading.dismiss(); 
-                    });
-                });
-            }
-            else {
-              this.fundTransferResponse =null;
-                this.toastr.error(error, 'Error!');
-                var alert = this.alertCtrl.create({
-                    title: "Error Message",
-                    subTitle: error,
-                    buttons: ['OK']
-                });
-                alert.present();     //To show alert message
-                loading.dismiss();  
-            }
-      
+      if (error == '401') {
+        this.registerService.SetRefreshTokenNeeded();
+        this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
+          localStorage.setItem('refreshToken', data.RefreshToken);
+          this.registerService.SetToken(data.AccessToken);
+          this.registerService.SetRefreshTokenNeeded();
+          this.registerService.GetFTAccount(fundTransferRequest).subscribe((data: any) => {
+            console.clear();
+            this.fundTransferResponse = data;
+            this.ToName = this.fundTransferResponse.Name;
+            this.ToAcNo = this.fundTransferResponse.AcNo;
+            this.disablenextwithoutToAccount = false;
+            loading.dismiss();
+          });
+        });
+      }
+      else {
+        this.fundTransferResponse = null;
+        // for (var i = 0; i < error.error.Errors.length; i++) {
+            //   var errorMessage = error.error.Errors[i].ErrorString;
+        for (var i = 0; i < error.Errors.length; i++) {
+          var errorMessage = error.Errors[i].ErrorString;
+        }
+        this.toastr.error(errorMessage, 'Error!');
+        var alert = this.alertCtrl.create({
+          title: "Error Message",
+          subTitle: errorMessage,
+          buttons: ['OK']
+        });
+        alert.present();
+        loading.dismiss();
+      }
+      //   else {
+      //     this.fundTransferResponse=null;
+      //     this.toastr.error(error, 'Error!');
+      //     var alert = this.alertCtrl.create({
+      //         title: "Error Message",
+      //         subTitle: error,
+      //         buttons: ['OK']
+      //     });
+      //     alert.present();     //To show alert message  
+      //     loading.dismiss();    //To close loading panel
+      // }
+
     });
   }
-  OnMobileNo(event){
-    this.fundTransferResponse=null;
+  OnMobileNo(event) {
+    this.fundTransferResponse = null;
   }
   OnNext() {   //Fires, when clicking on Next button
     var ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
-    if(this.fundTransferResponse==null){
+    if (this.fundTransferResponse == null) {
       this.toastr.error('Please Click on Search button of Above Field', 'Error!');
       var alert = this.alertCtrl.create({
-          title: "Error Message",
-          subTitle: 'Please Click on Search button of Above Field',
-          buttons: ['OK']
+        title: "Error Message",
+        subTitle: 'Please Click on Search button of Above Field',
+        buttons: ['OK']
       });
-      alert.present(); 
+      alert.present();
     }
-    else{
+    else {
       const doFundTransfer = {
         TenantId: ActiveTenantId,
         DigiPartyId: this.storageService.GetDigipartyBasedOnActiveTenantId().DigiPartyId,
@@ -205,7 +221,7 @@ export class FundTransferPage implements OnInit {
       // this.navCtrl.push(FundTransferConfirmPage,{'doFundTransfer':doFundTransfer});
     }
   }
-  
+
   GetSelfCareAcByTenantID(ActiveTenantId) {  //Fires, from above method.
     var AcSubId = this.SelfCareAcBasedOnTenantID[0].AcSubId;
     var SelfCareACs = this.storageService.GetSelfCareAc();

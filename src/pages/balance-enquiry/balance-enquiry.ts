@@ -92,6 +92,19 @@ export class BalanceEnquiryPage implements OnInit {
                     });
                 });
             }
+            // else {
+            //     for (var i = 0; i < error.Errors.length; i++) {
+            //             var errorMessage = error.Errors[i].ErrorString;
+            //         }
+            //     this.toastr.error(errorMessage, 'Error!');
+            //     var alert = this.alertCtrl.create({
+            //         title: "Error Message",
+            //         subTitle: errorMessage,
+            //         buttons: ['OK']
+            //     });
+            //     alert.present();     
+            //     loading.dismiss();   
+            // }
             else {
                 this.toastr.error(error, 'Error!');
                 var alert = this.alertCtrl.create({

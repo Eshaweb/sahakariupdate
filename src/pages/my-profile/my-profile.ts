@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, Events } from 'ionic-angular';
 import { StorageService } from '../services/Storage_Service';
 import { Tenant } from '../LocalStorageTables/Tenant';
 import { EnterOTPPage } from '../enter-otp/enter-otp';
@@ -22,7 +22,8 @@ import { SavePasswordPage } from '../save-password/save-password';
   templateUrl: 'my-profile.html',
 })
 export class MyProfilePage implements OnInit {
-  constructor(private toastrService: ToastrService, public loadingController: LoadingController, private alertCtrl: AlertController, private storageService: StorageService, private registerService: RegisterService, public navCtrl: NavController, public navParams: NavParams) {
+  isLogOut: boolean;
+  constructor(private event: Events, private toastrService: ToastrService, public loadingController: LoadingController, private alertCtrl: AlertController, private storageService: StorageService, private registerService: RegisterService, public navCtrl: NavController, public navParams: NavParams) {
   }
   addedTenantRecord: Tenant;
   tenantList: Tenant;
@@ -51,6 +52,20 @@ export class MyProfilePage implements OnInit {
       alert.present();
       loading.dismiss();
     });
+    if (this.storageService.GetSelfCareAc() == null || this.registerService.isLogOut == false) {
+      this.isLogOut = true;
+    }
+    else if(this.registerService.isLogOut == true){
+      this.isLogOut = false;
+    }
+    this.event.subscribe('REFRESH_isLogOutSetFalse', () => {
+      this.isLogOut =false;
+      this.registerService.isLogOut=false;
+    });
+    this.event.subscribe('REFRESH_isLogOutSetTrue', () => {
+      this.isLogOut =true;
+      this.registerService.isLogOut=true;
+    });
   }
 
   OnChange() {//Fires, if we click on Change bank
@@ -58,7 +73,33 @@ export class MyProfilePage implements OnInit {
     this.navCtrl.push(SavePasswordPage, { 'ischangePassword': ischangePassword });
   }
   OnLogOut() {  //Fires, if we click on LogOut
+    var alert = this.alertCtrl.create({
+      title: "Alert",
+      subTitle: 'Are you sure to LogOut?',
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+            this.isLogOut = false;
+            this.event.publish('REFRESH_isLogOutSetFalse');
+          }
+        },
+        {
+          text: 'OK',
+          handler: () => {
+            this.onOK();
+            this.event.publish('REFRESH_isLogOutSetTrue');
+          }
+        }
+      ]
+    });
+  alert.present(); 
+  }
+  onOK(){
     this.storageService.RemoveRecordsForLogout();
+    this.isLogOut=true;
+  }
+  OnLogin(){
     this.navCtrl.push(LoginPage);
   }
   OnSync() {  //Fires, if we click on Sync Accounts

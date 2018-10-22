@@ -115,23 +115,44 @@ export class ChangeBankPage implements OnInit {
       }
 
       var existingSelfCareAcs = this.storageService.GetSelfCareAc();  //To get records from SelfCare table of localstorage. 
-
-      let singleSelfCareAC = existingSelfCareAcs.filter(function (obj) { return obj.TenantId === TenantId; }); //To find records from localstorage SelfCare table with the particular tenantId.
-      if (singleSelfCareAC.length == 0) {  //If there is no SelfCare record in localstorage with particular TenantId,
-        for (var j = 0; j < data.SelfCareAcs.length; j++) {
-          const singleSelfCareAC = {
-            AcActId: data.SelfCareAcs[j].AcActId,
-            AcHeadId: data.SelfCareAcs[j].AcHeadId,
-            AcNo: data.SelfCareAcs[j].AcNo,
-            AcSubId: data.SelfCareAcs[j].AcSubId,
-            HeadName: data.SelfCareAcs[j].HeadName,
-            LocId: data.SelfCareAcs[j].LocId,
-            TenantId: data.SelfCareAcs[j].TenantId
-          }
-          existingSelfCareAcs.push(singleSelfCareAC);  //Add each record from server to localstorge SelCare.
-        }
-        this.storageService.SetSelfCareAc(JSON.stringify(existingSelfCareAcs));
+      if (existingSelfCareAcs == null) {
+       
       }
+      else{
+        let singleSelfCareAC = existingSelfCareAcs.filter(function (obj) { return obj.TenantId === TenantId; }); //To find records from localstorage SelfCare table with the particular tenantId.
+        if (singleSelfCareAC.length == 0) {  //If there is no SelfCare record in localstorage with particular TenantId,
+          for (var j = 0; j < data.SelfCareAcs.length; j++) {
+            const singleSelfCareAC = {
+              AcActId: data.SelfCareAcs[j].AcActId,
+              AcHeadId: data.SelfCareAcs[j].AcHeadId,
+              AcNo: data.SelfCareAcs[j].AcNo,
+              AcSubId: data.SelfCareAcs[j].AcSubId,
+              HeadName: data.SelfCareAcs[j].HeadName,
+              LocId: data.SelfCareAcs[j].LocId,
+              TenantId: data.SelfCareAcs[j].TenantId
+            }
+            existingSelfCareAcs.push(singleSelfCareAC);  //Add each record from server to localstorge SelCare.
+          }
+          this.storageService.SetSelfCareAc(JSON.stringify(existingSelfCareAcs));
+        }
+      }
+      
+      //   let singleSelfCareAC = existingSelfCareAcs.filter(function (obj) { return obj.TenantId === TenantId; }); //To find records from localstorage SelfCare table with the particular tenantId.
+      //   if (singleSelfCareAC.length == 0) {  //If there is no SelfCare record in localstorage with particular TenantId,
+      //     for (var j = 0; j < data.SelfCareAcs.length; j++) {
+      //       const singleSelfCareAC = {
+      //         AcActId: data.SelfCareAcs[j].AcActId,
+      //         AcHeadId: data.SelfCareAcs[j].AcHeadId,
+      //         AcNo: data.SelfCareAcs[j].AcNo,
+      //         AcSubId: data.SelfCareAcs[j].AcSubId,
+      //         HeadName: data.SelfCareAcs[j].HeadName,
+      //         LocId: data.SelfCareAcs[j].LocId,
+      //         TenantId: data.SelfCareAcs[j].TenantId
+      //       }
+      //       existingSelfCareAcs.push(singleSelfCareAC);  //Add each record from server to localstorge SelCare.
+      //     }
+      //     this.storageService.SetSelfCareAc(JSON.stringify(existingSelfCareAcs));
+      // }
       this.events.publish('REFRESH_DIGIPARTYNAME');    //To rise the event and to show DigiPartyName.
       loading.dismiss();
     }, (error) => {
@@ -147,28 +168,39 @@ export class ChangeBankPage implements OnInit {
   }
   user: User;
   OnSelect(order) {  //Fires while clicking Set as Default button.
-    var user = this.storageService.GetUser();  //Get the record from User table of localstorage.
-    user.ActiveTenantId = order.Id;    //Change the ActiveTenantId of User Table with the selected Tenant Id.
-    this.storageService.SetUser(JSON.stringify(user));  //Save the new, changed User table in localstorage.
-    //var ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
-    //this.Active = +ActiveTenantId;
-    this.ActiveBankName = this.storageService.GetActiveBankName();
-    if (this.navParams.get('isFromFundTransfer') == true) {  //check whether the request is from FundTransfer page.
-      this.events.publish('REFRESH_DIGIPARTYNAME');
-      //  this.navCtrl.push(FundTransferPage).then(() => {
-      //   const index = this.navCtrl.getActive().index;
-      //   this.navCtrl.remove(0, index);
-      // });  
-      this.navCtrl.push(FundTransferPage)
-        .then(() => {
-          const startIndex = this.navCtrl.getActive().index - 1;
-          this.navCtrl.remove(startIndex, 1);  //removes the history of this page.
-        });
+    var existingSelfCareAcs = this.storageService.GetSelfCareAc();  //To get records from SelfCare table of localstorage. 
+    if (existingSelfCareAcs == null) {
+      var alert = this.alertCtrl.create({
+        title: "Error Message",
+        subTitle: 'You need to Login First',
+        buttons: ['OK']
+      });
+      alert.present();
+      this.navCtrl.setRoot(ChangeBankPage);
     }
     else {
-      this.navCtrl.setRoot(PagePage);
-      this.events.publish('REFRESH_DIGIPARTYNAME');
+      var user = this.storageService.GetUser();  //Get the record from User table of localstorage.
+      user.ActiveTenantId = order.Id;    //Change the ActiveTenantId of User Table with the selected Tenant Id.
+      this.storageService.SetUser(JSON.stringify(user));  //Save the new, changed User table in localstorage.
+      //var ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
+      //this.Active = +ActiveTenantId;
+      this.ActiveBankName = this.storageService.GetActiveBankName();
+      if (this.navParams.get('isFromFundTransfer') == true) {  //check whether the request is from FundTransfer page.
+        this.events.publish('REFRESH_DIGIPARTYNAME');
+        //  this.navCtrl.push(FundTransferPage).then(() => {
+        //   const index = this.navCtrl.getActive().index;
+        //   this.navCtrl.remove(0, index);
+        // });  
+        this.navCtrl.push(FundTransferPage)
+          .then(() => {
+            const startIndex = this.navCtrl.getActive().index - 1;
+            this.navCtrl.remove(startIndex, 1);  //removes the history of this page.
+          });
+      }
+      else {
+        this.navCtrl.setRoot(PagePage);
+        this.events.publish('REFRESH_DIGIPARTYNAME');
+      }
     }
-
   }
 }
