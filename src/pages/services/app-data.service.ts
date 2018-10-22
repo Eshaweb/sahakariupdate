@@ -94,8 +94,8 @@ export class RegisterService {
         }
         this.MobileNo = oTPRequest.MobileNo;
         //this.TenantId = oTPRequest.TenantId;
-        return this.httpclient.post<DigiCustWithOTPRefNo>(this.uIHelperService.CallWebAPIUrlNew("/User/RequestOTP"), body).catch(this.handleError);
-        //return this.httpclient.post<DigiCustWithOTPRefNo>(this.uIHelperService.CallWebAPIUrlNew("/User/RequestOTP"), body);
+        //return this.httpclient.post<DigiCustWithOTPRefNo>(this.uIHelperService.CallWebAPIUrlNew("/User/RequestOTP"), body).catch(this.handleError);
+        return this.httpclient.post<DigiCustWithOTPRefNo>(this.uIHelperService.CallWebAPIUrlNew("/User/RequestOTP"), body);
 
     }
     GetTenantsByMobile(mobno: any) {
@@ -224,6 +224,9 @@ export class RegisterService {
             //     this.RefreshToken = data.RefreshToken;
             //     StorageService.SetItem('refreshToken', this.RefreshToken);
             // });
+        }
+        else if(err.status==0){
+            errorMessage = 'Unknown Error';
         }
         else if (err.error instanceof Error) {
             // A client-side or network error occurred. Handle it accordingly.

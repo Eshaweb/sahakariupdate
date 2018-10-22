@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NavController, NavParams, Navbar } from 'ionic-angular';
 //import { AutoLogoutService } from '../services/AutoLogOutService';
 import { StorageService } from '../services/Storage_Service';
 import { FundTransferPage } from '../fund-transfer/fund-transfer';
@@ -13,6 +13,7 @@ import { LoginPage } from '../login/login';
   templateUrl: 'banking.html'
 })
 export class BankingPage implements OnInit {
+  @ViewChild(Navbar) navBar: Navbar;
   ActiveBankName: string;
   callback: any;
   // constructor(private autoLogoutService: AutoLogoutService,public navCtrl: NavController) {
@@ -57,7 +58,7 @@ export class BankingPage implements OnInit {
     }
   }
   ionViewDidEnter(){
-    console.log('uu');
+    
   }
   ionViewWillLeave() {
     //   this.callback('param').then(()=>{
@@ -73,6 +74,14 @@ export class BankingPage implements OnInit {
     // if (this.navParams.get('isFromLogin') == true) {
 
     // }
+  }
+  ionViewDidLoad() {
+    this.setBackButtonAction()
+  }
+  setBackButtonAction() {  //Fires for Backbutton click
+    this.navBar.backButtonClick = () => {
+      this.navCtrl.setRoot(PagePage);
+    }
   }
   OnMiniStatement() {   //Fires, when clicking on Mini Statement.
     var isFromMiniStatement: boolean = true;

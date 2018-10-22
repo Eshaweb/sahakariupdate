@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NavController, LoadingController, AlertController, NavParams } from 'ionic-angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NavController, LoadingController, AlertController, NavParams, Navbar } from 'ionic-angular';
 import { StorageService } from '../services/Storage_Service';
 import { StatementRequest } from '../View Models/StatementRequest';
 import { RegisterService } from '../services/app-data.service';
@@ -16,11 +16,12 @@ import { BankingPage } from '../banking/banking';
   templateUrl: 'mini-statement.html'
 })
 export class MiniStatementPage implements OnInit {
+  @ViewChild(Navbar) navBar: Navbar;
   ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
   label: string;
   showCredited: boolean;
   ShowDebited: boolean;
-  constructor(private navParams:NavParams, private storageService: StorageService, private alertCtrl: AlertController, private toastr: ToastrService, public loadingController: LoadingController, private registerService: RegisterService, public navCtrl: NavController) {
+  constructor(private navParams: NavParams, private storageService: StorageService, private alertCtrl: AlertController, private toastr: ToastrService, public loadingController: LoadingController, private registerService: RegisterService, public navCtrl: NavController) {
 
   }
   ActiveBankName: string;
@@ -33,6 +34,14 @@ export class MiniStatementPage implements OnInit {
     this.ActiveBankName = this.storageService.GetActiveBankName();
     this.SelfCareAcsBasedOnTenantID = this.storageService.GetSelfCareAcsBasedOnTenantID();
   }
+  ionViewDidLoad() {
+    this.setBackButtonAction();
+  }
+  setBackButtonAction() {  //Fires for Backbutton click
+    this.navBar.backButtonClick = () => {
+      this.navCtrl.push(BankingPage);
+    }
+  }
   ionViewWillLeave() {
     //   this.callback('param').then(()=>{
     //     //this.navCtrl.pop();
@@ -40,7 +49,7 @@ export class MiniStatementPage implements OnInit {
     // if (this.navParams.get('isFromLogin') == true) {
     //   this.navCtrl.popTo(BankingPage);
     // }
-     // this.navCtrl.push(BankingPage);
+    // this.navCtrl.push(BankingPage);
   }
   statementItem: StatementItem;
   miniStatement: MiniStatement;
@@ -61,30 +70,31 @@ export class MiniStatementPage implements OnInit {
       this.statementItem = data.StatementItems;
       loading.dismiss();
     }, (error) => {
-            if (error == '401') {
-              this.registerService.SetRefreshTokenNeeded();
-              this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
-                  localStorage.setItem('refreshToken',data.RefreshToken);
-                  this.registerService.SetToken(data.AccessToken);
-                  this.registerService.SetRefreshTokenNeeded();
-                  this.registerService.GetStatement(statementRequest).subscribe((data: any) => {
-                    this.balance = data;
-                    this.miniStatement = data;
-                    this.statementItem = data.StatementItems;
-                    loading.dismiss();
-                  });
-              });
-          }
-          else {
-              this.toastr.error(error, 'Error!');
-              var alert = this.alertCtrl.create({
-                  title: "Error Message",
-                  subTitle: error,
-                  buttons: ['OK']
-              });
-              alert.present();     //To show alert message 
-              loading.dismiss();
-          }
+      if (error == '401') {
+        this.registerService.SetRefreshTokenNeeded();
+        this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
+          localStorage.setItem('refreshToken', data.RefreshToken);
+          this.registerService.SetToken(data.AccessToken);
+          this.registerService.SetRefreshTokenNeeded();
+          this.registerService.GetStatement(statementRequest).subscribe((data: any) => {
+            console.clear();
+            this.balance = data;
+            this.miniStatement = data;
+            this.statementItem = data.StatementItems;
+            loading.dismiss();
+          });
+        });
+      }
+      else {
+        this.toastr.error(error, 'Error!');
+        var alert = this.alertCtrl.create({
+          title: "Error Message",
+          subTitle: error,
+          buttons: ['OK']
+        });
+        alert.present();     //To show alert message 
+        loading.dismiss();
+      }
     });
     this.ShowHide = false;
     this.HideMsg = false;

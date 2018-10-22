@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NavController, LoadingController, AlertController, NavParams } from 'ionic-angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NavController, LoadingController, AlertController, NavParams, Navbar } from 'ionic-angular';
 import { StorageService } from '../services/Storage_Service';
 import { RegisterService } from '../services/app-data.service';
 import { SelfCareAc } from '../LocalStorageTables/SelfCareAc';
@@ -14,7 +14,7 @@ import { BankingPage } from '../banking/banking';
 export class BalanceEnquiryPage implements OnInit {
     showBackButton: boolean;
     refreshToken: any;
-
+    @ViewChild(Navbar) navBar: Navbar;
     constructor(public navParams: NavParams, private storageService: StorageService, private alertCtrl: AlertController, private toastr: ToastrService, public loadingController: LoadingController, private registerService: RegisterService, public navCtrl: NavController) {
     }
     ActiveBankName: string;
@@ -24,6 +24,14 @@ export class BalanceEnquiryPage implements OnInit {
     countDown;
     counter = 270;
     tick = 1000;
+    ionViewDidLoad() {
+        this.setBackButtonAction();
+    }
+    setBackButtonAction() {  //Fires for Backbutton click
+        this.navBar.backButtonClick = () => {
+          this.navCtrl.push(BankingPage);
+        }
+      }
     ngOnInit() {
         this.HideMsg = true;   //used to show click messages.
         this.ShowHide = true;  //used to show Accounts of the bank
@@ -78,6 +86,7 @@ export class BalanceEnquiryPage implements OnInit {
                     this.registerService.SetToken(data.AccessToken);
                     this.registerService.SetRefreshTokenNeeded();
                     this.registerService.GetAccountBalance(statementRequest).subscribe((data: any) => {
+                        console.clear();
                         this.balance = data;
                         loading.dismiss(); 
                     });

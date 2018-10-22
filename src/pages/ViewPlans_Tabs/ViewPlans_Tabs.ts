@@ -48,6 +48,7 @@ export class BasicPage implements OnInit {
     }
     this.registerService.GetPlans(planRequest).subscribe((data: any) => {
       this.planResponse = data;
+      loading.dismiss(); 
     }, (error) => {
        // this.toastr.error(error, 'Error!');
             // var alert = this.alertCtrl.create({
@@ -63,6 +64,7 @@ export class BasicPage implements OnInit {
                   this.registerService.SetToken(data.AccessToken);
                   this.registerService.SetRefreshTokenNeeded();
                   this.registerService.GetPlans(planRequest).subscribe((data: any) => {
+                    console.clear();
                     this.planResponse = data;
                     loading.dismiss(); 
                   });
@@ -125,6 +127,7 @@ export class BasicPage implements OnInit {
                   this.registerService.SetToken(data.AccessToken);
                   this.registerService.SetRefreshTokenNeeded();
                   this.registerService.GetPlans(planRequest).subscribe((data: any) => {
+                    console.clear();
                     this.planResponse = data;
                     loading.dismiss(); 
                   });

@@ -32,19 +32,34 @@ export class BankBranchesPage implements OnInit {
       //alert(data.Balance);
       loading.dismiss();
     }, (error) => {
-      this.toastr.error(error, 'Error!');
-      var alert = this.alertCtrl.create({
-        title: "Error Message",
-        subTitle: error,
-        buttons: ['OK']
-      });
-      alert.present();;
-      loading.dismiss();
+      if (error == '401') {
+        this.registerService.SetRefreshTokenNeeded();
+        this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
+          localStorage.setItem('refreshToken', data.RefreshToken);
+          this.registerService.SetToken(data.AccessToken);
+          this.registerService.SetRefreshTokenNeeded();
+          this.registerService.GetLocations(ActiveTenantId).subscribe((data: any) => {
+            console.clear();
+            this.bankBranch = data;
+            loading.dismiss();
+          });
+        });
+      }
+      else {
+        this.toastr.error(error, 'Error!');
+        var alert = this.alertCtrl.create({
+          title: "Error Message",
+          subTitle: error,
+          buttons: ['OK']
+        });
+        alert.present();     //To show alert message  
+        loading.dismiss();    //To close loading panel
+      }
     });
-  }
+}
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad BankBranchesPage');
-  }
+ionViewDidLoad() {
+  console.log('ionViewDidLoad BankBranchesPage');
+}
 
 }

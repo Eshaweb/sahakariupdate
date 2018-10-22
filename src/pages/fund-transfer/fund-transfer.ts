@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NavController, LoadingController, AlertController, NavParams } from 'ionic-angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NavController, LoadingController, AlertController, NavParams, Navbar } from 'ionic-angular';
 //import { AutoLogoutService } from '../services/AutoLogOutService';
 import { StorageService } from '../services/Storage_Service';
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
@@ -17,6 +17,7 @@ import { FundTransferConfirmPage } from '../fund-transfer-confirm/fund-transfer-
   templateUrl: 'fund-transfer.html'
 })
 export class FundTransferPage implements OnInit {
+  @ViewChild(Navbar) navBar: Navbar;
   amountMessage: string;
   mobileMessage: string;
   formgroup2: FormGroup;
@@ -107,6 +108,14 @@ export class FundTransferPage implements OnInit {
       this.AcNo = this.SelfCareAcBasedOnTenantID[0].AcNo;
     }
   }
+  ionViewDidLoad() {
+    this.setBackButtonAction();
+  }
+  setBackButtonAction() {  //Fires for Backbutton click
+    this.navBar.backButtonClick = () => {
+      this.navCtrl.push(BankingPage);
+    }
+  }
   OnBack() {
     this.navCtrl.push(BankingPage);
   }
@@ -142,6 +151,7 @@ export class FundTransferPage implements OnInit {
                     this.registerService.SetToken(data.AccessToken);
                     this.registerService.SetRefreshTokenNeeded();
                     this.registerService.GetFTAccount(fundTransferRequest).subscribe((data: any) => {
+                      console.clear();
                       this.fundTransferResponse = data;
                       this.ToName = this.fundTransferResponse.Name;
                       this.ToAcNo = this.fundTransferResponse.AcNo;
@@ -163,7 +173,6 @@ export class FundTransferPage implements OnInit {
             }
       
     });
-
   }
   OnMobileNo(event){
     this.fundTransferResponse=null;

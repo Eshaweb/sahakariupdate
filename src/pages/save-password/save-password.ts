@@ -219,6 +219,7 @@ export class SavePasswordPage implements OnInit {
                   this.registerService.SetToken(data.AccessToken);
                   this.registerService.SetRefreshTokenNeeded();
                   this.registerService.ChangePassword(changePassword).subscribe((data: any) => {
+                    console.clear();
                     if (data.IsValid == false) {
                       this.toastrService.error('SOME ERROR', 'Error!');
                     }

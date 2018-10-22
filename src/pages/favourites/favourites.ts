@@ -9,7 +9,7 @@ import { RechargePage } from '../recharge/recharge';
   selector: 'page-favourites',
   templateUrl: 'favourites.html'
 })
-export class FavouritesPage implements OnInit {
+export class FavouritesPage {
   title: string;
   @ViewChild(Navbar) navBar: Navbar;
 
@@ -17,22 +17,19 @@ export class FavouritesPage implements OnInit {
 
   }
   ionViewDidLoad() {
+    var ParentId=this.navCtrl.getPrevious().data.ParentId;
     this.setBackButtonAction();
-  }
-
-  setBackButtonAction() {  //Fires for Backbutton click
-    this.navBar.backButtonClick = () => {
-      this.navCtrl.push(RechargePage);
+    // this.ParentId = this.navParams.get('ParentId');
+    if(ParentId==undefined){
+      this.ParentId = this.navParams.get('ParentId');
+      this.ActiveBankName = this.storageService.GetActiveBankName();
+      ParentId=this.ParentId;
     }
-  }
-  ActiveBankName: string;
-  ParentId: string;
-  favourites: Favourites;
-
-  ngOnInit() {
-    this.ParentId = this.navParams.get('ParentId');
-    this.ActiveBankName = this.storageService.GetActiveBankName();
-    var ParentId=this.ParentId;
+    else{
+      this.ActiveBankName = this.storageService.GetActiveBankName();
+      this.ParentId=ParentId;
+    }
+    
     switch (this.ParentId) { 
       case "S1":
         this.title = "Recharge";
@@ -58,8 +55,32 @@ export class FavouritesPage implements OnInit {
       //To filter the localstorage Favourite table record, based on ParentId 
     }
   }
+
+  setBackButtonAction() {  //Fires for Backbutton click
+    this.navBar.backButtonClick = () => {
+      this.navCtrl.push(RechargePage);
+    }
+  }
+  ActiveBankName: string;
+  ParentId: string;
+  favourites: Favourites;
+
+  
+  // myCallbackFunction(): any {
+  //   return new Promise((resolve, reject) => {
+  //           this.ParentId;
+  //           resolve();
+  //       });
+  //     }
+  // myCallbackFunction = (_params) => {
+  //   return new Promise((resolve, reject) => {
+  //       this.ParentId = _params;
+  //       resolve();
+  //   });
+  //  }
   OnNewRecharge() {  //Fires, if we click on New Recharge
-    this.navCtrl.push(MobileRechargePage, { 'ParentId': this.ParentId });
+    //this.navCtrl.push(MobileRechargePage, { 'ParentId': this.ParentId, callback: this.myCallbackFunction() });
+    this.navCtrl.push(MobileRechargePage, { 'ParentId': this.ParentId});
   }
 
   OnNickName(order) {  //Fires, if we click on NickName

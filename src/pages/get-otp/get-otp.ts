@@ -10,13 +10,15 @@ import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from
 import { Tenant } from '../LocalStorageTables/Tenant';
 import { UISercice } from '../services/UIService';
 import { StorageService } from '../services/Storage_Service';
+import { isArray } from 'ionic-angular/umd/util/util';
+import { BankBranch } from '../View Models/BankBranch';
 
 @Component({
   selector: 'page-get-otp',
   templateUrl: 'get-otp.html'
 })
 export class GetOtpPage implements OnInit {
-  mobilenum_Message: string;
+  MobileNo_Message: string;
   mobilenumforOTP_Message: string;
   formgroup2: FormGroup;
   isForgotPassword: boolean;
@@ -24,15 +26,15 @@ export class GetOtpPage implements OnInit {
   MobileNo: string;
   constructor(private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, public navParams: NavParams, public loadingController: LoadingController, public formbuilder: FormBuilder, private toastrService: ToastrService, private regService: RegisterService, public navCtrl: NavController) {
     this.formgroup1 = formbuilder.group({
-      mobilenum: ['', [Validators.required, Validators.minLength(10)]]
+      MobileNo: ['', [Validators.required, Validators.minLength(10)]]
     });  //builds the formgroup with the same formcontrolname.
-    this.formgroup1.controls['mobilenum']
+    this.formgroup1.controls['MobileNo']
       .valueChanges
       .debounceTime(500)
       .distinctUntilChanged()
       .subscribe(val => {
         if (val && val.length < 10) {
-          this.formgroup1.controls['mobilenum'].setErrors({ minlength: true });
+          this.formgroup1.controls['MobileNo'].setErrors({ minlength: true });
         }
       });
     // let loader = this.loadingController.create({
@@ -43,8 +45,8 @@ export class GetOtpPage implements OnInit {
     //   loader.dismiss();
     // }, 2000); 
 
-    const mobilenumControl = this.formgroup1.get('mobilenum');
-    mobilenumControl.valueChanges.subscribe(value => this.setErrorMessage(mobilenumControl));
+    const MobileNoControl = this.formgroup1.get('MobileNo');
+    MobileNoControl.valueChanges.subscribe(value => this.setErrorMessage(MobileNoControl));
     //call the particular method if value changes in the control.
     this.formgroup2 = formbuilder.group({
       mobilenumforOTP: ['', [Validators.required, Validators.minLength(10)]]
@@ -54,13 +56,13 @@ export class GetOtpPage implements OnInit {
   }
   hidethisform: boolean;
   setErrorMessage(c: AbstractControl): void {
-    this.mobilenum_Message = '';//To not display the error message, if there is no error.
+    this.MobileNo_Message = '';//To not display the error message, if there is no error.
     this.mobilenumforOTP_Message = '';
 
     let control = this.uiService.getControlName(c);//gives the control name property from particular service.
     if ((c.touched || c.dirty) && c.errors) {
-      if (control === 'mobilenum') {
-        this.mobilenum_Message = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
+      if (control === 'MobileNo') {
+        this.MobileNo_Message = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
         //maps the error message from validationMessages array. 
       }
       else if (control === 'mobilenumforOTP') {
@@ -69,8 +71,8 @@ export class GetOtpPage implements OnInit {
     }
   }
   private validationMessages = {  //used in above method.
-    mobilenum_required: '*Enter mobile number',
-    mobilenum_minlength: 'invalid mobile number',
+    MobileNo_required: '*Enter mobile number',
+    MobileNo_minlength: 'invalid mobile number',
 
     mobilenumforOTP_required: '*Enter mobile number',
     mobilenumforOTP_minlength: 'invalid mobile number'
@@ -89,9 +91,9 @@ export class GetOtpPage implements OnInit {
 
   tenant: Tenant;
 
-  
+
   OnRequestOTP() { //Fires, when we request for OTP.
-    var mobilenum = this.formgroup1.get('mobilenum')
+    var mobilenum = this.formgroup1.get('MobileNo')
     let loading = this.loadingController.create({
       content: 'Please wait till you receive OTP'
     });
@@ -131,7 +133,29 @@ export class GetOtpPage implements OnInit {
       //     buttons: ['OK']
       //   });
       // }
+      const invalid = [];
+      const controls = this.formgroup1.controls;
+      const ErrorProperties = error.error;
+      for (const property in ErrorProperties) {
+        for (const name in controls) {
+          // if (controls[name] == ErrorProperties[property]) {
+            if (name == property) {
+              //this.MobileNo_Message =ErrorProperties[property];
+              ErrorProperties[property].forEach(function (value) {
+                // this.MobileNo_Message =value;
+              });
+              for (var i = 0; i < ErrorProperties.length; i++) { 
+                this.MobileNo_Message =ErrorProperties[i]; 
+              }
+          }
+          else if (controls[name].invalid) {
+            invalid.push(name);
+          }
+        }
+      }
+      // var kk = error.error.filter(function (obj) { return obj === 'MobileNo' });
 
+      var ii = Array.isArray(error.error.formgroup1.value['MobileNo']);
       this.toastrService.error(error, 'Error!');
       var alert = this.alertCtrl.create({
         title: "Error Message",

@@ -30,6 +30,7 @@ export class MobileRechargePage implements OnInit {
   formGroup: FormGroup;
   ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
   subscriptionIdInfo: string;
+  callback: any;
 
 
   constructor(private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, public viewCtrl: ViewController, private toastr: ToastrService, private registerService: RegisterService, public loadingController: LoadingController, public navParams: NavParams, public navCtrl: NavController, public formbuilder: FormBuilder) {
@@ -173,7 +174,7 @@ export class MobileRechargePage implements OnInit {
     }
   }
   Id: string;
-  ParentId: string;
+  ParentId: any;
   amountforRecharge: string;
   osid: string;
   favouriteNewOfDTH: string;
@@ -199,6 +200,7 @@ export class MobileRechargePage implements OnInit {
     this.ActiveBankName = this.storageService.GetActiveBankName();
     this.Id = this.navParams.get('Id');
     this.ParentId = this.navParams.get('ParentId');
+    //this.callback = this.navParams.get('ParentId');
     this.amountforRecharge = this.navParams.get('Amount');
     this.osid = this.navParams.get('OperatorId');
     this.isButtonEnabled = this.navParams.get('ButtonEnabled');
@@ -352,6 +354,7 @@ export class MobileRechargePage implements OnInit {
                   this.registerService.SetToken(data.AccessToken);
                   this.registerService.SetRefreshTokenNeeded();
                   this.registerService.GetOperators(oSRequest).subscribe((data: any) => {
+                    console.clear();
                     this.OSResponseNew = data;
                     var OSResponseNew = data;
                     this.OSResponseNew = OSResponseNew.filter(function (obj) { return obj.TenantId === ActiveTenantId; })
@@ -392,6 +395,12 @@ export class MobileRechargePage implements OnInit {
       CircleId: this.navParams.get('CircleId')
 
     }
+  }
+  ionViewWillLeave() {
+    //this.ParentId='S1';
+      //  this.callback('param').then(()=>{
+      //       //this.navCtrl.pop();
+      //   });
   }
 
   showConfirm: boolean;
@@ -641,7 +650,7 @@ export class MobileRechargePage implements OnInit {
   statename: string;
   sid: string;
   singleState: SingleState;
-
+  
   OnMobileNo(id) {  //Fires for keyup event of MobileNo field
     if (id.length < 10) {  //checks for mobileno length
       this.isMobileNoEntered = false;
@@ -697,11 +706,12 @@ export class MobileRechargePage implements OnInit {
             // alert.present();     //To show alert message
             if (error == '401') {
               this.registerService.SetRefreshTokenNeeded();
-              this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
-                  localStorage.setItem('refreshToken',data.RefreshToken);
+              this.registerService.GetToken(StorageService.GetItem('refreshToken')).subscribe((data: any) => {
+                  StorageService.SetItem('refreshToken',data.RefreshToken);
                   this.registerService.SetToken(data.AccessToken);
                   this.registerService.SetRefreshTokenNeeded();
                   this.registerService.GetOperaterCircle(operaterCircleQuery).subscribe((data: any) => {
+                    console.clear();
                     this.operatorCircle = data;
                     var operatorCircle = data;
                     if (data.ResponseMessage == null) {

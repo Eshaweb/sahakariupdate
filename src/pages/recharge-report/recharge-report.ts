@@ -62,6 +62,7 @@ export class RechargeReportPage implements OnInit {
                   this.registerService.SetToken(data.AccessToken);
                   this.registerService.SetRefreshTokenNeeded();
                   this.registerService.GetRechargeReport(rRRequest).subscribe((data: any) => {
+                    console.clear();
                     this.rRResponse = data;
                       loading.dismiss(); 
                   });
@@ -104,6 +105,7 @@ export class RechargeReportPage implements OnInit {
                   this.registerService.SetToken(data.AccessToken);
                   this.registerService.SetRefreshTokenNeeded();
                   this.registerService.GetReversedVoucher(checkVoucher).subscribe((data: any) => {
+                    console.clear();
                     this.checkVoucherResult = data;
                     this.openModalWithParams();
                       loading.dismiss(); 

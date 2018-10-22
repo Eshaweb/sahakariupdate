@@ -15,15 +15,17 @@
 
 
 <ion-content padding>
-  <div [hidden]="!myParam">
-    <p>Reversal Transaction ID: {{VendorExtCode}}</p>
-    <p>Amount: {{Amount|currency:'INR'}}</p>
-    <p>Date: {{Date|date:'dd/MM/yyyy'}}</p>
-    <p>Remarks: {{Remarks}}</p>
-  </div>
+  <ion-card [hidden]="!myParam">
+    <ion-card-content>
+    <p ion-text color='danger'>Reversal Transaction ID: {{VendorExtCode}}</p>
+    <p ion-text color='danger'>Amount: {{Amount|currency:'INR'}}</p>
+    <p ion-text color='danger'>Date: {{Date|date:'dd/MM/yyyy'}}</p>
+    <p ion-text color='danger'>Remarks: {{Remarks}}</p>
+  </ion-card-content>
+  </ion-card>
   <div [hidden]="myParam">
     <p>No parameters passed.</p>
   </div>
-  <button ion-button color="danger" full (click)="dismiss()">Close</button>
+  <!-- <button ion-button color="danger" (click)="dismiss()">Close</button> -->
 
 </ion-content>

@@ -48,8 +48,7 @@ export class CheckPasswordPage {
     }
   }
   private validationMessages = {
-    password_required: 'Enter Password',
-    password_minlength: 'Minimum length is 8',
+    password_required: 'Enter Password'
   };
 
   dismiss() {
@@ -102,6 +101,7 @@ export class CheckPasswordPage {
           this.registerService.SetToken(data.AccessToken);
           this.registerService.SetRefreshTokenNeeded();
           this.registerService.CheckPassword(loginModel).subscribe((data: any) => {
+            console.clear();
             if (data == true && this.navParams.get('DoFundTransfer') != null) {
               this.registerService.FundTransfer(this.navParams.get('DoFundTransfer')).subscribe((data: any) => {
                 this.ftd = data;
