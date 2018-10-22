@@ -7,6 +7,7 @@ import { StorageService } from '../services/Storage_Service';
 import { tap } from 'rxjs/operators'
 import { NavController, Events } from "ionic-angular";
 import { RegisterService } from "../services/app-data.service";
+import { LoginPage } from "../login/login";
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor, OnInit {
     refreshTokenNeeded: boolean;
@@ -111,7 +112,10 @@ export class AuthInterceptor implements HttpInterceptor, OnInit {
                     // StorageService.SetItem('refreshToken', data.RefreshToken);
                     // this.registerService.SetRefreshTokenNeeded();
                 }, error => {
-                    console.error('NICE ERROR', error)
+                    console.error('NICE ERROR', error);
+                    // this.navCtrl.setRoot(LoginPage);
+                    //this.router.navigateByUrl('/login');
+                    //StorageService.RemoveItem('refreshToken');
                   })
                     // .do(
                     //     succ => {
@@ -189,7 +193,10 @@ export class AuthInterceptor implements HttpInterceptor, OnInit {
                     // StorageService.SetItem('refreshToken', data.RefreshToken);
                     // this.registerService.SetRefreshTokenNeeded();
                 }, error => {
-                    console.error('NICE ERROR', error)
+                    console.error('NICE ERROR', error);
+                    // this.navCtrl.setRoot(LoginPage);
+                    //this.router.navigateByUrl('/login');
+                    StorageService.RemoveItem('refreshToken');
                   })
                     // .do(
                     //     succ => {
@@ -257,7 +264,7 @@ export class AuthInterceptor implements HttpInterceptor, OnInit {
                         succ => { },
                         err => {
                             if (err.status === 401)
-                                //this.router.navigateByUrl('/login');
+                                // this.router.navigateByUrl('/login');
                                 // this.navCtrl.push(LoginPage);  
                                 this.event.publish('UNAUTHORIZED');
                             this.refreshToken = localStorage.getItem('refreshToken');

@@ -5693,6 +5693,9 @@ var AuthInterceptor = /** @class */ (function () {
                     // this.registerService.SetRefreshTokenNeeded();
                 }, function (error) {
                     console.error('NICE ERROR', error);
+                    // this.navCtrl.setRoot(LoginPage);
+                    //this.router.navigateByUrl('/login');
+                    //StorageService.RemoveItem('refreshToken');
                 })
                 // .do(
                 //     succ => {
@@ -5759,6 +5762,9 @@ var AuthInterceptor = /** @class */ (function () {
                     // this.registerService.SetRefreshTokenNeeded();
                 }, function (error) {
                     console.error('NICE ERROR', error);
+                    // this.navCtrl.setRoot(LoginPage);
+                    //this.router.navigateByUrl('/login');
+                    __WEBPACK_IMPORTED_MODULE_5__services_Storage_Service__["a" /* StorageService */].RemoveItem('refreshToken');
                 })
                 // .do(
                 //     succ => {
@@ -5817,7 +5823,7 @@ var AuthInterceptor = /** @class */ (function () {
                 return next.handle(clonedreq)
                     .do(function (succ) { }, function (err) {
                     if (err.status === 401)
-                        //this.router.navigateByUrl('/login');
+                        // this.router.navigateByUrl('/login');
                         // this.navCtrl.push(LoginPage);  
                         _this.event.publish('UNAUTHORIZED');
                     _this.refreshToken = localStorage.getItem('refreshToken');
@@ -5836,9 +5842,10 @@ var AuthInterceptor = /** @class */ (function () {
     };
     AuthInterceptor = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_3__angular_core__["B" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_8__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_5__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_7_ionic_angular__["c" /* Events */], __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* Router */], __WEBPACK_IMPORTED_MODULE_5__services_Storage_Service__["a" /* StorageService */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_8__services_app_data_service__["a" /* RegisterService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__services_app_data_service__["a" /* RegisterService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_5__services_Storage_Service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_Storage_Service__["a" /* StorageService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_7_ionic_angular__["c" /* Events */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7_ionic_angular__["c" /* Events */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* Router */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_5__services_Storage_Service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_Storage_Service__["a" /* StorageService */]) === "function" && _e || Object])
     ], AuthInterceptor);
     return AuthInterceptor;
+    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=auth.interceptor.js.map
