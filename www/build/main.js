@@ -1472,6 +1472,7 @@ var GetOtpPage = /** @class */ (function () {
     GetOtpPage.prototype.OnRequestOTP = function () {
         var _this = this;
         var mobilenum = this.formgroup1.get('MobileNo');
+        //if(mobilenum.length)
         var loading = this.loadingController.create({
             content: 'Please wait till you receive OTP'
         });
@@ -1479,70 +1480,123 @@ var GetOtpPage = /** @class */ (function () {
         var oTPRequest = {
             MobileNo: mobilenum.value
         };
-        this.regService.RequestOTP(oTPRequest).subscribe(function (data) {
-            //ADDED toastr.css in the path "node_modules/ngx-toastr/toastr.css" from https://github.com/scttcper/ngx-toastr/blob/master/src/lib/toastr.css
-            _this.toastrService.success('OTP Sent to ' + mobilenum.value + ' with Reference No. ' + data.OTPRef, 'Success!');
-            loading.dismiss();
-            _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__enter_otp_enter_otp__["a" /* EnterOTPPage */], { 'OTPRefNo': data.OTPRef, 'MobileNo': mobilenum.value });
-        }, function (error) {
-            // if(error.error.Errors.length==undefined){
-            //   this.toastrService.error(error.error.ExceptionMessage, 'Error!');
-            //   var alert = this.alertCtrl.create({
-            //     title: "Error Message",
-            //     subTitle: error.error.ExceptionMessage,
-            //     buttons: ['OK']
-            //   });
-            // }
-            // else if(error.error!=null){
-            //   for (var i = 0; i < error.error.Errors.length; i++) {
-            //   this.toastrService.error(error.error.Errors[i].ErrorString, 'Error!');
-            //   var alert = this.alertCtrl.create({
-            //     title: "Error Message",
-            //     subTitle: error.error.Errors[i].ErrorString,
-            //     buttons: ['OK']
-            //   });
-            // }
-            // }
-            // else{
-            //   this.toastrService.error('There is a Error. Please contact your Bank', 'Error!');
-            //   var alert = this.alertCtrl.create({
-            //     title: "Error Message",
-            //     subTitle: 'Network Error.',
-            //     buttons: ['OK']
-            //   });
-            // }
-            var invalid = [];
-            var controls = _this.formgroup1.controls;
-            var ErrorProperties = error.error;
-            for (var property in ErrorProperties) {
-                for (var name_1 in controls) {
-                    // if (controls[name] == ErrorProperties[property]) {
-                    if (name_1 == property) {
-                        //this.MobileNo_Message =ErrorProperties[property];
-                        ErrorProperties[property].forEach(function (value) {
-                            // this.MobileNo_Message =value;
-                        });
-                        for (var i = 0; i < ErrorProperties.length; i++) {
-                            _this.MobileNo_Message = ErrorProperties[i];
+        if (oTPRequest.MobileNo.length == 10) {
+            this.regService.RequestOTP(oTPRequest).subscribe(function (data) {
+                //ADDED toastr.css in the path "node_modules/ngx-toastr/toastr.css" from https://github.com/scttcper/ngx-toastr/blob/master/src/lib/toastr.css
+                _this.toastrService.success('OTP Sent to ' + mobilenum.value + ' with Reference No. ' + data.OTPRef, 'Success!');
+                loading.dismiss();
+                _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__enter_otp_enter_otp__["a" /* EnterOTPPage */], { 'OTPRefNo': data.OTPRef, 'MobileNo': mobilenum.value });
+            }, function (error) {
+                // if(error.error.Errors.length==undefined){
+                //   this.toastrService.error(error.error.ExceptionMessage, 'Error!');
+                //   var alert = this.alertCtrl.create({
+                //     title: "Error Message",
+                //     subTitle: error.error.ExceptionMessage,
+                //     buttons: ['OK']
+                //   });
+                // }
+                // else if(error.error!=null){
+                //   for (var i = 0; i < error.error.Errors.length; i++) {
+                //   this.toastrService.error(error.error.Errors[i].ErrorString, 'Error!');
+                //   var alert = this.alertCtrl.create({
+                //     title: "Error Message",
+                //     subTitle: error.error.Errors[i].ErrorString,
+                //     buttons: ['OK']
+                //   });
+                // }
+                // }
+                // else{
+                //   this.toastrService.error('There is a Error. Please contact your Bank', 'Error!');
+                //   var alert = this.alertCtrl.create({
+                //     title: "Error Message",
+                //     subTitle: 'Network Error.',
+                //     buttons: ['OK']
+                //   });
+                // }
+                var invalid = [];
+                var controls = _this.formgroup1.controls;
+                var ErrorProperties = error.error;
+                for (var property in ErrorProperties) {
+                    for (var name in controls) {
+                        // if (controls[name] == ErrorProperties[property]) {
+                        if (name == property) {
+                            //this.MobileNo_Message =ErrorProperties[property];
+                            ErrorProperties[property].forEach(function (value) {
+                                // this.MobileNo_Message =value;
+                            });
+                            for (var i = 0; i < ErrorProperties.length; i++) {
+                                _this.MobileNo_Message = ErrorProperties[i];
+                            }
+                        }
+                        else if (controls[name].invalid) {
+                            invalid.push(name);
                         }
                     }
-                    else if (controls[name_1].invalid) {
-                        invalid.push(name_1);
-                    }
                 }
-            }
-            // var kk = error.error.filter(function (obj) { return obj === 'MobileNo' });
-            var ii = Array.isArray(error.error.formgroup1.value['MobileNo']);
-            _this.toastrService.error(error, 'Error!');
-            var alert = _this.alertCtrl.create({
-                title: "Error Message",
-                subTitle: error,
-                buttons: ['OK']
+                // var kk = error.error.filter(function (obj) { return obj === 'MobileNo' });
+                var ii = Array.isArray(error.error.formgroup1.value['MobileNo']);
+                _this.toastrService.error(error, 'Error!');
+                var alert = _this.alertCtrl.create({
+                    title: "Error Message",
+                    subTitle: error,
+                    buttons: ['OK']
+                });
+                alert.present();
+                loading.dismiss();
             });
-            alert.present();
+        }
+        else {
             loading.dismiss();
-        });
+            this.MobileNo_Message = 'Please Enter only 10 Digits of Mobile Number';
+        }
     };
+    // OnRequestOTP() { //Fires, when we request for OTP.
+    //   var mobilenum = this.formgroup1.get('MobileNo')
+    //   let loading = this.loadingController.create({
+    //     content: 'Please wait till you receive OTP'
+    //   });
+    //   loading.present();
+    //   var oTPRequest = {
+    //     MobileNo: mobilenum.value
+    //   }
+    //   this.regService.RequestOTP(oTPRequest).subscribe((data: any) => {
+    //     //ADDED toastr.css in the path "node_modules/ngx-toastr/toastr.css" from https://github.com/scttcper/ngx-toastr/blob/master/src/lib/toastr.css
+    //     this.toastrService.success('OTP Sent to ' + mobilenum.value + ' with Reference No. ' + data.OTPRef, 'Success!');
+    //     loading.dismiss();
+    //     this.navCtrl.push(EnterOTPPage, { 'OTPRefNo': data.OTPRef, 'MobileNo': mobilenum.value });
+    //   }, (error) => {
+    //     const invalid = [];
+    //     const controls = this.formgroup1.controls;
+    //     const ErrorProperties = error.error;
+    //     for (const property in ErrorProperties) {
+    //       for (const name in controls) {
+    //         // if (controls[name] == ErrorProperties[property]) {
+    //         if (name == property) {
+    //           //this.MobileNo_Message =ErrorProperties[property];
+    //           ErrorProperties[property].forEach(function (value) {
+    //             // this.MobileNo_Message =value;
+    //           });
+    //           for (var i = 0; i < ErrorProperties.length; i++) {
+    //             this.MobileNo_Message = ErrorProperties[i];
+    //           }
+    //         }
+    //         else if (controls[name].invalid) {
+    //           invalid.push(name);
+    //         }
+    //       }
+    //     }
+    //     // var kk = error.error.filter(function (obj) { return obj === 'MobileNo' });
+    //     var ii = Array.isArray(error.error.formgroup1.value['MobileNo']);
+    //     this.toastrService.error(error, 'Error!');
+    //     var alert = this.alertCtrl.create({
+    //       title: "Error Message",
+    //       subTitle: error,
+    //       buttons: ['OK']
+    //     });
+    //     alert.present();
+    //     loading.dismiss();
+    //   });
+    // }
     GetOtpPage.prototype.OnMobNo = function () {
         var _this = this;
         var mobilenumforOTP = this.formgroup2.get('mobilenumforOTP');
@@ -1599,9 +1653,10 @@ var GetOtpPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'page-get-otp',template:/*ion-inline-start:"D:\shailesh_bhat\Angular2Projects\ionic_sahakari\sahakariupdate\src\pages\get-otp\get-otp.html"*/'<ion-content padding id="page13" class="back-image">\n  <form *ngIf="hidethisform" [formGroup]="formgroup1" id="register-form3" #registrationForm="ngForm" (ngSubmit)="OnRequestOTP()">\n    <div class="spacer" style="width:300px;height:217px;" id="register-spacer10"></div>\n    <h5 id="register-heading1" style="color:#DEE1EE;">\n      Please Enter your Mobile No.\n    </h5>\n    <ion-list id="register-list11">\n      <ion-item id="register-input8">\n        <ion-label>\n          Phone Number\n        </ion-label>\n        <ion-input formControlName="MobileNo" type="number" placeholder=""></ion-input>\n      </ion-item>\n      <!-- <p style="color:black;" *ngIf="mobilenum.hasError(\'required\') && mobilenum.touched">*MobileNumber is required</p> -->\n      <p style="color:darkorange">{{MobileNo_Message}}</p>\n    </ion-list>\n    <button [disabled]="registrationForm.invalid" id="register-button7" ion-button color="positive" block>\n      Get OTP\n    </button>\n  </form>\n\n\n<form *ngIf="isForgotPassword" [formGroup]="formgroup2" id="register-form4" #AskingMobNoForOTPForm="ngForm" (ngSubmit)="OnMobNo()">\n  <div class="spacer" style="width:300px;height:217px;" id="register-spacer10"></div>\n  <h5 id="register-heading1" style="color:#DEE1EE;">\n    Enter Registered Mobile Number\n  </h5>\n  <ion-list id="register-list11">\n    <ion-item id="register-input8">\n      <ion-label>\n        Phone Number\n      </ion-label>\n      <ion-input [(ngModel)]="MobileNo" formControlName="mobilenumforOTP" type="number" placeholder="Registered Mobile No."></ion-input>\n    </ion-item>\n    <p style="color:darkorange">{{mobilenumforOTP_Message}}</p>\n\n  </ion-list>\n  <button [disabled]="AskingMobNoForOTPForm.invalid" id="register-button7" ion-button color="positive" block>\n    Confirm to Send OTP\n  </button>\n</form>\n</ion-content>'/*ion-inline-end:"D:\shailesh_bhat\Angular2Projects\ionic_sahakari\sahakariupdate\src\pages\get-otp\get-otp.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_10__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_9__services_UIService__["a" /* UISercice */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_8__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_7_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_6__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_10__services_Storage_Service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_10__services_Storage_Service__["a" /* StorageService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_9__services_UIService__["a" /* UISercice */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_9__services_UIService__["a" /* UISercice */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_8__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__angular_forms__["a" /* FormBuilder */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_7_ngx_toastr__["b" /* ToastrService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7_ngx_toastr__["b" /* ToastrService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_6__services_app_data_service__["a" /* RegisterService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__services_app_data_service__["a" /* RegisterService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]) === "function" && _j || Object])
     ], GetOtpPage);
     return GetOtpPage;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
 }());
 
 //# sourceMappingURL=get-otp.js.map
