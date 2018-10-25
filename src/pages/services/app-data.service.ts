@@ -92,54 +92,50 @@ export class RegisterService {
             MobileNo: oTPRequest.MobileNo
         }
         this.MobileNo = oTPRequest.MobileNo;
-        //this.TenantId = oTPRequest.TenantId;
-        return this.httpclient.post<DigiCustWithOTPRefNo>(this.uIHelperService.CallWebAPIUrlNew("/User/RequestOTP"), body).catch(this.handleCustomError);
-        // return this.httpclient.post<DigiCustWithOTPRefNo>(this.uIHelperService.CallWebAPIUrlNew("/User/RequestOTP"), body).catch(this.handleSpecialError);
-        //return this.httpclient.post<DigiCustWithOTPRefNo>(this.uIHelperService.CallWebAPIUrlNew("/User/RequestOTP"), body);
+        return this.httpclient.post<DigiCustWithOTPRefNo>(this.uIHelperService.CallWebAPIUrl("/User/RequestOTP"), body).catch(this.handleError);
 
     }
     GetTenantsByMobile(mobno: any) {
         this.MobileNo = mobno;
         var data = "MobileNo=" + mobno;
-        var url = this.uIHelperService.CallWebAPIUrlNew("/Tenant/GetTenantsByMobile") + "?" + data;
+        var url = this.uIHelperService.CallWebAPIUrl("/Tenant/GetTenantsByMobile") + "?" + data;
         return this.httpclient.get<Tenant>(url).catch(this.handleError);
     }
     ValidateOTP(postOPT: PostOPT) {
-        return this.httpclient.post(this.uIHelperService.CallWebAPIUrlNew("/User/ValidateOTP"), postOPT).catch(this.handleError);
+        return this.httpclient.post(this.uIHelperService.CallWebAPIUrl("/User/ValidateOTP"), postOPT).catch(this.handleError);
     }
 
     CreateUser(userPost: UserPost) {
-        return this.httpclient.post<UserResult>(this.uIHelperService.CallWebAPIUrlNew("/User/CreateUser"), userPost).catch(this.handleError);
+        return this.httpclient.post<UserResult>(this.uIHelperService.CallWebAPIUrl("/User/CreateUser"), userPost).catch(this.handleError);
     }
 
     ChangePassword(changePassword: ChangePassword) {
-        return this.httpclient.post<ChangePasswordResult>(this.uIHelperService.CallWebAPIUrlNew("/User/ChangePassword"), changePassword).catch(this.handleError);
+        return this.httpclient.post<ChangePasswordResult>(this.uIHelperService.CallWebAPIUrl("/User/ChangePassword"), changePassword).catch(this.handleError);
     }
 
     Login(login: Login): Observable<TokenParams> {
-        // return this.httpclient.post<TokenParams>(this.uIHelperService.CallWebAPIUrlNew("/User/Login"), login).catch(this.handleSpecialError);
-        return this.httpclient.post<TokenParams>(this.uIHelperService.CallWebAPIUrlNew("/User/Login"), login).catch(this.handleCustomError);
+        return this.httpclient.post<TokenParams>(this.uIHelperService.CallWebAPIUrl("/User/Login"), login).catch(this.handleError);
     }
 
     GetServices(): Observable<OS[]> {
-        return this.httpclient.get<OS[]>(this.uIHelperService.CallWebAPIUrlNew("/Operator/GetServices")).catch(this.handleError);
+        return this.httpclient.get<OS[]>(this.uIHelperService.CallWebAPIUrl("/Operator/GetServices")).catch(this.handleError);
     }
 
     GetAccounts(sCRequest: SCRequest) {
-        return this.httpclient.post<TokenParams>(this.uIHelperService.CallWebAPIUrlNew("/Banking/GetAccounts"), sCRequest).catch(this.handleError);
+        return this.httpclient.post<TokenParams>(this.uIHelperService.CallWebAPIUrl("/Banking/GetAccounts"), sCRequest).catch(this.handleError);
     }
 
     AddBank(addBankRequest: AddBankRequest) {
-        return this.httpclient.post<AddBankResponse>(this.uIHelperService.CallWebAPIUrlNew("/Banking/AddBank"), addBankRequest).catch(this.handleError);
+        return this.httpclient.post<AddBankResponse>(this.uIHelperService.CallWebAPIUrl("/Banking/AddBank"), addBankRequest).catch(this.handleError);
     }
     GetOperators(oSRequest: OSRequest) {
-        return this.httpclient.post<OSResponse>(this.uIHelperService.CallWebAPIUrlNew("/Operator/GetOperators"), oSRequest).catch(this.handleError);
+        return this.httpclient.post<OSResponse>(this.uIHelperService.CallWebAPIUrl("/Operator/GetOperators"), oSRequest).catch(this.handleError);
 
     }
     GetToken(refreshToken: string) {
         this.RefreshToken = refreshToken;
         var data = "RefreshToken=" + refreshToken;
-        var url = this.uIHelperService.CallWebAPIUrlNew("/User/GetToken") + "?" + data;
+        var url = this.uIHelperService.CallWebAPIUrl("/User/GetToken") + "?" + data;
         return this.httpclient.get<Tenant>(url).pipe(tap((data: any) => {
             this.RefreshToken = data.RefreshToken;
             this.AccessToken = data.AccessToken;
@@ -147,60 +143,56 @@ export class RegisterService {
     }
     GetPlans(planRequest: PlanRequest) {
 
-        return this.httpclient.post<PlanResponse>(this.uIHelperService.CallWebAPIUrlNew("/Operator/GetPlans"), planRequest).catch(this.handleError);
+        return this.httpclient.post<PlanResponse>(this.uIHelperService.CallWebAPIUrl("/Operator/GetPlans"), planRequest).catch(this.handleError);
         // return this.httpclient.post<PlanResponse>(this.uIHelperService.CallWebAPIUrlNew("/Operator/GetPlans"), body);
 
     }
     PostRecharge(rechargeModel: RechargeModel) {
 
-        return this.httpclient.post<TranResponse>(this.uIHelperService.CallWebAPIUrlNew("/Recharge/PostRecharge"), rechargeModel).catch(this.handleError).catch(this.handleError);
+        return this.httpclient.post<TranResponse>(this.uIHelperService.CallWebAPIUrl("/Recharge/PostRecharge"), rechargeModel).catch(this.handleError).catch(this.handleError);
 
     }
 
     GetFTAccount(fundTransferRequest: FundTransferRequest) {
-        return this.httpclient.post<FundTransferResponse>(this.uIHelperService.CallWebAPIUrlNew("/Banking/GetFTAccount"), fundTransferRequest).catch(this.handleCustomError);
-        //return this.httpclient.post<FundTransferResponse>(this.uIHelperService.CallWebAPIUrlNew("/Banking/GetFTAccount"), fundTransferRequest).catch(this.handleError);
-        
+        return this.httpclient.post<FundTransferResponse>(this.uIHelperService.CallWebAPIUrl("/Banking/GetFTAccount"), fundTransferRequest).catch(this.handleError);
+
     }
 
     FundTransfer(doFundTransfer: DoFundTransfer) {
 
-        return this.httpclient.post<TranResponse>(this.uIHelperService.CallWebAPIUrlNew("/Banking/FundTransfer"), doFundTransfer).catch(this.handleError);
+        return this.httpclient.post<TranResponse>(this.uIHelperService.CallWebAPIUrl("/Banking/FundTransfer"), doFundTransfer).catch(this.handleError);
 
     }
 
     CheckPassword(login: Login) {
-        return this.httpclient.post<TokenParams>(this.uIHelperService.CallWebAPIUrlNew("/User/CheckPassword"), login).catch(this.handleError);
+        return this.httpclient.post<TokenParams>(this.uIHelperService.CallWebAPIUrl("/User/CheckPassword"), login).catch(this.handleError);
     }
 
     GetAccountBalance(statementRequest: StatementRequest) {
 
-        return this.httpclient.post<StatementRequest>(this.uIHelperService.CallWebAPIUrlNew("/Banking/GetAccountBalance"), statementRequest).catch(this.handleError);
+        return this.httpclient.post<StatementRequest>(this.uIHelperService.CallWebAPIUrl("/Banking/GetAccountBalance"), statementRequest).catch(this.handleError);
     }
 
     GetStatement(statementRequest: StatementRequest) {
 
-        return this.httpclient.post<StatementRequest>(this.uIHelperService.CallWebAPIUrlNew("/Banking/GetStatement"), statementRequest).catch(this.handleError);
+        return this.httpclient.post<StatementRequest>(this.uIHelperService.CallWebAPIUrl("/Banking/GetStatement"), statementRequest).catch(this.handleError);
     }
 
     GetOperaterCircle(operaterCircleQuery: OperaterCircleQuery) {
 
-        return this.httpclient.post<OperaterCircleQuery>(this.uIHelperService.CallWebAPIUrlNew("/Operator/GetOperaterCircle"), operaterCircleQuery).catch(this.handleError);
+        return this.httpclient.post<OperaterCircleQuery>(this.uIHelperService.CallWebAPIUrl("/Operator/GetOperaterCircle"), operaterCircleQuery).catch(this.handleError);
 
     }
     GetRechargeReport(rRRequest: RRRequest) {
 
-        return this.httpclient.post<StatementRequest>(this.uIHelperService.CallWebAPIUrlNew("/Recharge/GetRechargeReport"), rRRequest).catch(this.handleError);
+        return this.httpclient.post<StatementRequest>(this.uIHelperService.CallWebAPIUrl("/Recharge/GetRechargeReport"), rRRequest).catch(this.handleError);
     }
     GetLocations(TenantId) {
-        // var data = "MobileNo=" + mobno;
-        // var url = this.uIHelperService.CallWebAPIUrlNew("/Tenant/GetTenantsByMobile") + "?" + data;
-        // return this.httpclient.get<Tenant>(url);
-        return this.httpclient.get<BankBranch>(this.uIHelperService.CallWebAPIUrlNew("/Banking/GetLocations?TenantId=" + TenantId)).catch(this.handleError);
+        return this.httpclient.get<BankBranch>(this.uIHelperService.CallWebAPIUrl("/Banking/GetLocations?TenantId=" + TenantId)).catch(this.handleError);
     }
     GetReversedVoucher(checkVoucher: CheckVoucher) {
 
-        return this.httpclient.post<StatementRequest>(this.uIHelperService.CallWebAPIUrlNew("/Recharge/GetReversedVoucher"), checkVoucher).catch(this.handleError);
+        return this.httpclient.post<StatementRequest>(this.uIHelperService.CallWebAPIUrl("/Recharge/GetReversedVoucher"), checkVoucher).catch(this.handleError);
     }
     // countDown;
     // //counter = 30*60;
@@ -215,9 +207,9 @@ export class RegisterService {
     private handleError(err: HttpErrorResponse) {
         // in a real world app, we may send the server to some remote logging infrastructure
         // instead of just logging it to the console
-        let errorMessage = '';
+        let errorMessage = null;
         if (err.status == 401) {
-            errorMessage = '401';
+            errorMessage = 401;
             // this.SetRefreshTokenNeeded();
             // var RefreshToken=localStorage.getItem('refreshToken');
             // this.GetToken(RefreshToken).subscribe((data: any) => {
@@ -227,7 +219,8 @@ export class RegisterService {
             // });
         }
         else if (err.status == 0) {
-            errorMessage = 'Unknown Error';
+            errorMessage = 'Internal Server Error';
+            console.clear();
         }
         else if (err.error instanceof Error) {
             // A client-side or network error occurred. Handle it accordingly.
@@ -236,119 +229,20 @@ export class RegisterService {
         else if (err == null || err == undefined) {
             errorMessage = 'Network Error';
         }
-
         else {
             if (err.error != null) {
-                // if(err.error.find(x => x.Type)){
-                //     for (var i = 0; i < err.error.Errors.length; i++) {
-                //         errorMessage = err.error.Errors[i].ErrorString;
-                //     }
-                // };
-                // if(err.error.find(c=>c.Errors)){
-                //     for (var i = 0; i < err.error.Errors.length; i++) {
-                //         errorMessage = err.error.Errors[i].ErrorString;
-                //     }
-                // }
-
                 if (typeof err.error === 'string') {
                     errorMessage = err.error;
                 }
                 else if (err.error instanceof ErrorFromServer) {
                     //err.error.find(x => x.username == '2');
                 }
-                else {
+                else if (err.error.Errors != undefined) {
                     for (var i = 0; i < err.error.Errors.length; i++) {
                         errorMessage = err.error.Errors[i].ErrorString;
                     }
-                    //errorMessage = err.error;
                 }
-            }
-            else {
-                errorMessage = 'Network Error';
-            }
-        }
-        // var alert = this.alertCtrl.create({
-        //     title: "Error Message",
-        //     subTitle: errorMessage,
-        //     buttons: ['OK']
-        // });
-        // alert.present();
-
-        console.log(errorMessage);
-        if (errorMessage != '') {
-            return Observable.throw(errorMessage);
-        } else {
-            return Observable.throw(err);
-        }
-    }
-
-
-    private handleSpecialError(err: HttpErrorResponse) {
-        // in a real world app, we may send the server to some remote logging infrastructure
-        // instead of just logging it to the console
-        let errorMessage = '';
-        if (err.status == 401) {
-            errorMessage = '401';
-        }
-        else if (err.status == 0) {
-            errorMessage = 'Unknown Error';
-        }
-        else if (err.error instanceof Error) {
-            // A client-side or network error occurred. Handle it accordingly.
-            errorMessage = `An error occurred: ${err.error}`;
-        }
-        else if (err == null || err == undefined) {
-            errorMessage = 'Network Error';
-        }
-
-        else {
-            if (err.error != null) {
-                if (typeof err.error === 'string') {
-                    errorMessage = err.error;
-                }
-                else if (err.error instanceof ErrorFromServer) {
-
-                }
-                else {
-
-                }
-            }
-            else {
-                errorMessage = 'Network Error';
-            }
-        }
-        console.log(errorMessage);
-        if (errorMessage != '') {
-            return Observable.throw(errorMessage);
-        } else {
-            return Observable.throw(err);
-        }
-    }
-
-    private handleCustomError(err: HttpErrorResponse) {
-        let errorMessage = '';
-        if (err.status == 401) {
-            errorMessage = '401';
-        }
-        else if (err.status == 0) {
-            errorMessage = 'Unknown Error';
-        }
-        else if (err.error instanceof Error) {
-            errorMessage = `An error occurred: ${err.error}`;
-        }
-        else if (err == null || err == undefined) {
-            errorMessage = 'Network Error';
-        }
-
-        else {
-            if (err.error != null) {
-                if (typeof err.error === 'string') {
-                    errorMessage = err.error;
-                }
-                else {
-                    // for (var i = 0; i < err.error.Errors.length; i++) {
-                    //     errorMessage = err.error.Errors[i].ErrorString;
-                    // }
+                else {  
                     errorMessage = err.error;
                 }
             }
@@ -356,28 +250,14 @@ export class RegisterService {
                 errorMessage = 'Network Error';
             }
         }
+        
         console.log(errorMessage);
-        if (errorMessage != '') {
+        // if (errorMessage != '') {
+        if (errorMessage != null) {
             return Observable.throw(errorMessage);
         } else {
             return Observable.throw(err);
         }
     }
-    private ExtractData(res: Response) {
-
-        let body = res.json();
-        return body || [];
-
-    }
-
 }
 
-// export function SetRefreshTokenNeeded(){
-//     if(this.refreshTokenNeeded==true)
-//     {
-//         this.refreshTokenNeeded=false;
-//     }
-//     else{
-//         this.refreshTokenNeeded=true;
-//     }
-// }

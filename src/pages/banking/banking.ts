@@ -60,21 +60,7 @@ export class BankingPage implements OnInit {
   ionViewDidEnter(){
     
   }
-  ionViewWillLeave() {
-    //   this.callback('param').then(()=>{
-    //     //this.navCtrl.pop();
-    // });
-    // if (this.navParams.get('isFromLogin') == true) {
-    //   this.navCtrl.setRoot(PagePage);
-    // }
-    //this.navCtrl.setRoot(PagePage);
-  }
-  ionViewWillEnter() {
-    // this.callback = this.navParams.get("callback");
-    // if (this.navParams.get('isFromLogin') == true) {
-
-    // }
-  }
+  
   ionViewDidLoad() {
     this.setBackButtonAction()
   }

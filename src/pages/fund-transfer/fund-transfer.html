@@ -62,12 +62,11 @@
                   <ion-label floating>
                     Enter Phone Number/Account Number
                   </ion-label>
-                  <ion-input formControlName="mobilenum" type="number" (keyup)="OnMobileNo($event.target.value)"></ion-input>
+                  <ion-input formControlName="MobileNo" type="number" (keyup)="OnMobileNo($event.target.value)"></ion-input>
                   <!-- <ion-input type="text" placeholder="" name="MobileNo" #MobileNo="ngModel" [(ngModel)]="rechargeitem.MobileNo"></ion-input> -->
                 </ion-item>
                 <!-- <p style="color:red;" *ngIf="mobilenum.hasError('required') && mobilenum.touched"> *MobileNumber is required</p> -->
-                <p style="color:darkorange;">{{mobileMessage}}</p>
-              </ion-list> 
+                <p style="color:darkorange" id='err_MobileNo'></p>              </ion-list> 
               <button [disabled]="fundtransferForm1.invalid" id="register-button7" ion-button color="positive" block>
                   Search
                 </button>
@@ -94,7 +93,7 @@
                 </ion-label>
                 <ion-input formControlName="amount" type="number" placeholder=""></ion-input>
               </ion-item>
-              <p style="color:darkorange;">{{amountMessage}}</p>
+              <p style="color:darkorange" id='err_amount'></p> 
             </ion-list>
             <button [disabled]="fundtransferForm2.invalid || disablenextwithoutToAccount" id="register-button8" ion-button color="positive" block>
                 Next

@@ -65,19 +65,6 @@ export class FavouritesPage {
   ParentId: string;
   favourites: Favourites;
 
-  
-  // myCallbackFunction(): any {
-  //   return new Promise((resolve, reject) => {
-  //           this.ParentId;
-  //           resolve();
-  //       });
-  //     }
-  // myCallbackFunction = (_params) => {
-  //   return new Promise((resolve, reject) => {
-  //       this.ParentId = _params;
-  //       resolve();
-  //   });
-  //  }
   OnNewRecharge() {  //Fires, if we click on New Recharge
     //this.navCtrl.push(MobileRechargePage, { 'ParentId': this.ParentId, callback: this.myCallbackFunction() });
     this.navCtrl.push(MobileRechargePage, { 'ParentId': this.ParentId});

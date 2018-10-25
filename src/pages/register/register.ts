@@ -17,38 +17,12 @@ import { SavePasswordPage } from '../save-password/save-password';
   templateUrl: 'register.html'
 })
 export class RegisterPage implements OnInit {
-  mobilenum_Message: string;
-  mobilenumforOTP_Message: string;
-  formgroup2: FormGroup;
   isForgotPassword: boolean;
-  formgroup1: FormGroup;
   constructor(private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, public navParams: NavParams, public loadingController: LoadingController, public formbuilder: FormBuilder, private toastrService: ToastrService, private registerService: RegisterService, public navCtrl: NavController) {
 
     this.OnGetTenants();
   }
   hidethisform: boolean;
-  setErrorMessage(c: AbstractControl): void {
-    this.mobilenum_Message = '';//To not display the error message, if there is no error.
-    this.mobilenumforOTP_Message = '';
-
-    let control = this.uiService.getControlName(c);//gives the control name property from particular service.
-    if ((c.touched || c.dirty) && c.errors) {
-      if (control === 'mobilenum') {
-        this.mobilenum_Message = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
-        //maps the error message from validationMessages array. 
-      }
-      else if (control === 'mobilenumforOTP') {
-        this.mobilenumforOTP_Message = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
-      }
-    }
-  }
-  private validationMessages = {  //used in above method.
-    mobilenum_required: '*Enter mobile number',
-    mobilenum_minlength: 'invalid mobile number',
-
-    mobilenumforOTP_required: '*Enter mobile number',
-    mobilenumforOTP_minlength: 'invalid mobile number'
-  };
 
   ngOnInit() {
 
@@ -73,15 +47,6 @@ export class RegisterPage implements OnInit {
       }
       loading.dismiss();
     }, (error) => {
-      // this.toastrService.error(error.error.ExceptionMessage, 'Error!');
-      // var alert = this.alertCtrl.create({
-      //   title: "Error Message",
-      //   subTitle: error.error.ExceptionMessage,
-      //   buttons: ['OK']
-      // });
-      // alert.present();
-      // loading.dismiss();
-
       this.toastrService.error(error, 'Error!');
       var alert = this.alertCtrl.create({
         title: "Error Message",

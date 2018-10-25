@@ -12,7 +12,7 @@
         <ion-input formControlName="MobileNo" type="number" placeholder=""></ion-input>
       </ion-item>
       <!-- <p style="color:black;" *ngIf="mobilenum.hasError('required') && mobilenum.touched">*MobileNumber is required</p> -->
-      <p style="color:darkorange">{{MobileNo_Message}}</p>
+      <p style="color:darkorange" id='err_MobileNo'></p>
     </ion-list>
     <button [disabled]="registrationForm.invalid" id="register-button7" ion-button color="positive" block>
       Get OTP
@@ -32,8 +32,8 @@
       </ion-label>
       <ion-input [(ngModel)]="MobileNo" formControlName="mobilenumforOTP" type="number" placeholder="Registered Mobile No."></ion-input>
     </ion-item>
-    <p style="color:darkorange">{{mobilenumforOTP_Message}}</p>
-
+    <!-- <p style="color:darkorange">{{mobilenumforOTP_Message}}</p> -->
+    <p style="color:darkorange" id='err_mobilenumforOTP'></p>
   </ion-list>
   <button [disabled]="AskingMobNoForOTPForm.invalid" id="register-button7" ion-button color="positive" block>
     Confirm to Send OTP

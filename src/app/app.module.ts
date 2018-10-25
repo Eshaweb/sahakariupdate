@@ -56,6 +56,7 @@ import { CheckPasswordPage } from '../pages/check-password/check-password';
 import { PaymentSuccessPage } from '../pages/payment-success/payment-success';
 import { ContactUsPage } from '../pages/contact-us/contact-us';
 import { Container } from '@angular/compiler/src/i18n/i18n_ast';
+import { ErrorHandlingService } from '../pages/services/ErrorHandlingService';
 
 
 
@@ -151,6 +152,7 @@ import { Container } from '@angular/compiler/src/i18n/i18n_ast';
     UIHelperService,
     StorageService,
     AutoLogoutService,
+    ErrorHandlingService,
     UISercice,
     StatusBar,
     SplashScreen,

@@ -14,6 +14,7 @@ import { RegisterPage } from '../register/register';
 import { Observable } from '../../../node_modules/rxjs';
 import { Tenant } from '../LocalStorageTables/Tenant';
 import { SavePasswordPage } from '../save-password/save-password';
+import { ErrorHandlingService } from '../services/ErrorHandlingService';
 @Component({
   selector: 'page-enter-otp',
   templateUrl: 'enter-otp.html'
@@ -21,41 +22,34 @@ import { SavePasswordPage } from '../save-password/save-password';
 export class EnterOTPPage implements OnInit {
   tenant: Tenant;
   confirmpasswordMessage: string;
-  passwordMessage: string;
   SavePasswordForm: FormGroup;
   formgroup: FormGroup;
-  userMessage: string;
   ShowOldPassword: boolean;
   ChangePasswordForm: FormGroup;
-  mobilenoMessage: string;
-  oldPasswordMessage: string;
   isForgotten: boolean;
   isResendOTP: boolean = false;
   OTPRef: string;
   OTPRefNo: string;
   TenantId: any;
-  constructor(private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, private toastrService: ToastrService, public navParams: NavParams, public loadingController: LoadingController, private fb: FormBuilder, public navCtrl: NavController, private registerService: RegisterService) {
+  constructor(private errorHandlingService:ErrorHandlingService, private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, private toastrService: ToastrService, public navParams: NavParams, public loadingController: LoadingController, private fb: FormBuilder, public navCtrl: NavController, private registerService: RegisterService) {
     this.formgroup = this.fb.group({
-      otp: ['', [Validators.required, Validators.minLength(4)]]
+      OTP: ['', [Validators.required, Validators.minLength(4)]]
     });  //builds the formgroup with same formcontrolname.
-    const otpControl = this.formgroup.get('otp');
-    otpControl.valueChanges.subscribe(value => this.setErrorMessageForOTPField(otpControl));  //call the particular method if value changes in the control.
+    const OTPControl = this.formgroup.get('OTP');
+    OTPControl.valueChanges.subscribe(value => this.setErrorMessageForOTPField(OTPControl));  //call the particular method if value changes in the control.
 
   }
   setErrorMessageForOTPField(c: AbstractControl): void {
-    this.userMessage = '';
     let control = this.uiService.getControlName(c);  //gives the control name property from particular service.
+    document.getElementById('err_' + control).innerHTML='';
     if ((c.touched || c.dirty) && c.errors) {  //checks for error in particular control.
-      if (control === 'otp') {
-        this.userMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
-        //maps the error message from validationMessages array.
-      }
+      document.getElementById('err_' + control).innerHTML = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
     }
   }
  
   private validationMessages = { //used in above method.
-    otp_required: '*Enter OTP Number',
-    otp_minlength: 'Enter 4 digits',
+    OTP_required: '*Enter OTP Number',
+    OTP_minlength: 'Enter 4 digits',
   };
 
   countDown;
@@ -106,7 +100,7 @@ export class EnterOTPPage implements OnInit {
       //TenantId: this.registerService.TenantId,  //ActiveTenantId
       MobileNo: this.registerService.MobileNo,
       OTPRef: this.OTPRefNo,
-      OTP: this.formgroup.get('otp').value
+      OTP: this.formgroup.get('OTP').value
     }
     this.registerService.ValidateOTP(postOPT).subscribe((data: any) => {
       this.storeboolean = data;
@@ -128,14 +122,22 @@ export class EnterOTPPage implements OnInit {
       }
       loading.dismiss();
     }, (error) => {
-      this.toastrService.error(error, 'Error!');
-      var alert = this.alertCtrl.create({
-        title: "Error Message",
-        subTitle: error,
-        buttons: ['OK']
-      });
-      alert.present();
-      loading.dismiss();
+      if (typeof error === 'string') {
+        this.toastrService.error(error, 'Error!');
+        var alert = this.alertCtrl.create({
+          title: "Error Message",
+          subTitle: error,
+          buttons: ['OK']
+        });
+        alert.present();
+        loading.dismiss();
+      }
+      else {
+        const controls = this.formgroup.controls;
+        const ErrorProperties = error;
+        this.errorHandlingService.ErrorHandler(controls,ErrorProperties);
+        loading.dismiss();
+      }
     });
   }
 
@@ -159,14 +161,22 @@ export class EnterOTPPage implements OnInit {
       this.OTPRef = data.OTPRef;
       loading.dismiss();
     }, (error) => {
-      this.toastrService.error(error, 'Error!');
-      var alert = this.alertCtrl.create({
-        title: "Error Message",
-        subTitle: error,
-        buttons: ['OK']
-      });
-      alert.present();
-      loading.dismiss();
+      if (typeof error === 'string') {
+        this.toastrService.error(error, 'Error!');
+        var alert = this.alertCtrl.create({
+          title: "Error Message",
+          subTitle: error,
+          buttons: ['OK']
+        });
+        alert.present();
+        loading.dismiss();
+      }
+      else {
+        const controls = this.formgroup.controls;
+        const ErrorProperties = error;
+        this.errorHandlingService.ErrorHandler(controls,ErrorProperties);
+        loading.dismiss();
+      }
     });
   }
 

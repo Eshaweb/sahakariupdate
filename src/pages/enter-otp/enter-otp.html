@@ -15,11 +15,11 @@
         <ion-label floating>
           OTP
         </ion-label>
-        <ion-input formControlName="otp" type="number" placeholder=""></ion-input>
+        <ion-input formControlName="OTP" type="number" placeholder=""></ion-input>
       </ion-item>
       <!-- <p style="color:darkorange;" *ngIf="otp.hasError('required') && otp.touched"> *OTP is required</p> -->
-      <p style="color:darkorange;">{{userMessage}}</p>
-    </ion-list>
+      <p style="color:darkorange" id='err_OTP'></p>
+        </ion-list>
     <div class="spacer" style="height:40px;" id="enterOTP-spacer8"></div>
     <button [disabled]="enterOTPForm.invalid" id="enterOTP-button8" ion-button color="positive" block>
       Submit

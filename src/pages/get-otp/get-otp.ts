@@ -12,6 +12,7 @@ import { UISercice } from '../services/UIService';
 import { StorageService } from '../services/Storage_Service';
 import { isArray } from 'ionic-angular/umd/util/util';
 import { BankBranch } from '../View Models/BankBranch';
+import { ErrorHandlingService } from '../services/ErrorHandlingService';
 
 @Component({
   selector: 'page-get-otp',
@@ -24,7 +25,7 @@ export class GetOtpPage implements OnInit {
   isForgotPassword: boolean;
   formgroup1: FormGroup;
   MobileNo: string;
-  constructor(private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, public navParams: NavParams, public loadingController: LoadingController, public formbuilder: FormBuilder, private toastrService: ToastrService, private regService: RegisterService, public navCtrl: NavController) {
+  constructor(private errorHandlingService:ErrorHandlingService,private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, public navParams: NavParams, public loadingController: LoadingController, public formbuilder: FormBuilder, private toastrService: ToastrService, private regService: RegisterService, public navCtrl: NavController) {
     this.formgroup1 = formbuilder.group({
       MobileNo: ['', [Validators.required, Validators.minLength(10)]]
     });  //builds the formgroup with the same formcontrolname.
@@ -60,22 +61,25 @@ export class GetOtpPage implements OnInit {
     this.mobilenumforOTP_Message = '';
 
     let control = this.uiService.getControlName(c);//gives the control name property from particular service.
+    document.getElementById('err_' + control).innerHTML='';
     if ((c.touched || c.dirty) && c.errors) {
-      if (control === 'MobileNo') {
-        this.MobileNo_Message = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
-        //maps the error message from validationMessages array. 
-      }
-      else if (control === 'mobilenumforOTP') {
-        this.mobilenumforOTP_Message = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
-      }
+      // if (control === 'MobileNo') {
+      //   //this.MobileNo_Message = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
+      //   document.getElementById('err_' + control).innerHTML = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
+      //   //maps the error message from validationMessages array. 
+      // }
+      // else if (control === 'mobilenumforOTP') {
+      //   document.getElementById('err_' + control).innerHTML = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
+      // }
+      document.getElementById('err_' + control).innerHTML = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
     }
   }
   private validationMessages = {  //used in above method.
     MobileNo_required: '*Enter mobile number',
-    MobileNo_minlength: 'invalid mobile number',
+    MobileNo_minlength: 'Minimum length is 10 digits',
 
     mobilenumforOTP_required: '*Enter mobile number',
-    mobilenumforOTP_minlength: 'invalid mobile number'
+    mobilenumforOTP_minlength: 'Minimum length is 10 digits'
   };
 
   ngOnInit() {
@@ -90,90 +94,6 @@ export class GetOtpPage implements OnInit {
   }
 
   tenant: Tenant;
-  // OnRequestOTP() { //Fires, when we request for OTP.
-  //   var mobilenum = this.formgroup1.get('MobileNo');
-  //   //if(mobilenum.length)
-  //   let loading = this.loadingController.create({
-  //     content: 'Please wait till you receive OTP'
-  //   });
-  //   loading.present();
-  //   var oTPRequest = {
-  //     MobileNo: mobilenum.value
-  //   }
-  //   if(oTPRequest.MobileNo.length==10){
-  //     this.regService.RequestOTP(oTPRequest).subscribe((data: any) => {
-  //       //ADDED toastr.css in the path "node_modules/ngx-toastr/toastr.css" from https://github.com/scttcper/ngx-toastr/blob/master/src/lib/toastr.css
-  //       this.toastrService.success('OTP Sent to ' + mobilenum.value + ' with Reference No. ' + data.OTPRef, 'Success!');
-  //       loading.dismiss();
-  //       this.navCtrl.push(EnterOTPPage, { 'OTPRefNo': data.OTPRef, 'MobileNo': mobilenum.value });
-  //     }, (error) => {
-  //       // if(error.error.Errors.length==undefined){
-  //       //   this.toastrService.error(error.error.ExceptionMessage, 'Error!');
-  //       //   var alert = this.alertCtrl.create({
-  //       //     title: "Error Message",
-  //       //     subTitle: error.error.ExceptionMessage,
-  //       //     buttons: ['OK']
-  //       //   });
-  //       // }
-  //       // else if(error.error!=null){
-  //       //   for (var i = 0; i < error.error.Errors.length; i++) {
-  //       //   this.toastrService.error(error.error.Errors[i].ErrorString, 'Error!');
-  //       //   var alert = this.alertCtrl.create({
-  //       //     title: "Error Message",
-  //       //     subTitle: error.error.Errors[i].ErrorString,
-  //       //     buttons: ['OK']
-  //       //   });
-  //       // }
-  //       // }
-  //       // else{
-  //       //   this.toastrService.error('There is a Error. Please contact your Bank', 'Error!');
-  //       //   var alert = this.alertCtrl.create({
-  //       //     title: "Error Message",
-  //       //     subTitle: 'Network Error.',
-  //       //     buttons: ['OK']
-  //       //   });
-  //       // }
-  //       const invalid = [];
-  //       const controls = this.formgroup1.controls;
-  //       const ErrorProperties = error.error;
-  //       for (const property in ErrorProperties) {
-  //         for (const name in controls) {
-  //           // if (controls[name] == ErrorProperties[property]) {
-  //             if (name == property) {
-  //               //this.MobileNo_Message =ErrorProperties[property];
-  //               ErrorProperties[property].forEach(function (value) {
-  //                 // this.MobileNo_Message =value;
-  //               });
-  //               for (var i = 0; i < ErrorProperties.length; i++) { 
-  //                 this.MobileNo_Message =ErrorProperties[i]; 
-  //               }
-  //           }
-  //           else if (controls[name].invalid) {
-  //             invalid.push(name);
-  //           }
-  //         }
-  //       }
-  //       // var kk = error.error.filter(function (obj) { return obj === 'MobileNo' });
-  
-  //       var ii = Array.isArray(error.error.formgroup1.value['MobileNo']);
-  //       this.toastrService.error(error, 'Error!');
-  //       var alert = this.alertCtrl.create({
-  //         title: "Error Message",
-  //         subTitle: error,
-  //         buttons: ['OK']
-  //       });
-  //       alert.present();
-  //       loading.dismiss();
-  //     });
-  
-  //   }
-  //   else{
-  //     loading.dismiss();
-  //     this.MobileNo_Message = 'Please Enter only 10 Digits of Mobile Number';
-  //   }
-    
-  // }
-
   OnRequestOTP() { //Fires, when we request for OTP.
     var mobilenum = this.formgroup1.get('MobileNo')
     let loading = this.loadingController.create({
@@ -189,43 +109,22 @@ export class GetOtpPage implements OnInit {
       loading.dismiss();
       this.navCtrl.push(EnterOTPPage, { 'OTPRefNo': data.OTPRef, 'MobileNo': mobilenum.value });
     }, (error) => {
-      this.MobileNo_Message ='';
-      const controls = this.formgroup1.controls;
-       //const ErrorProperties = error.error;
-      const ErrorProperties = error;
-      for (const property in ErrorProperties) {
-        for (const name in controls) {
-          // if (controls[name] == ErrorProperties[property]) {
-          if (name == property) {
-            //this.MobileNo_Message =ErrorProperties[property];
-            ErrorProperties[property].forEach((value:string)=> {
-              this.MobileNo_Message = value;
-               loading.dismiss();
-            });
-          }
-          else if (property == 'Errors') {
-            for (var i = 0; i < error.error.Errors.length; i++) {
-              var errorMessage = error.error.Errors[i].ErrorString;
-              this.toastrService.error(errorMessage, 'Error!');
-              loading.dismiss();
-              var alert = this.alertCtrl.create({
-                title: "Error Message",
-                subTitle: errorMessage,
-                buttons: ['OK']
-              });
-              alert.present();
-            }
-          }
-        }
+      if (typeof error === 'string') {
+        this.toastrService.error(error, 'Error!');
+        var alert = this.alertCtrl.create({
+          title: "Error Message",
+          subTitle: error,
+          buttons: ['OK']
+        });
+        alert.present();
+        loading.dismiss();
       }
-      // this.toastrService.error(error, 'Error!');
-      // var alert = this.alertCtrl.create({
-      //   title: "Error Message",
-      //   subTitle: error,
-      //   buttons: ['OK']
-      // });
-      // alert.present();
-      // loading.dismiss();
+      else {
+        const controls = this.formgroup1.controls;
+        const ErrorProperties = error;
+        this.errorHandlingService.ErrorHandler(controls,ErrorProperties);
+        loading.dismiss();
+      }
     });
 
   }
@@ -247,14 +146,22 @@ export class GetOtpPage implements OnInit {
       loading.dismiss();
 
     }, (error) => {
-      this.toastrService.error(error, 'Error!');
-      var alert = this.alertCtrl.create({
-        title: "Error Message",
-        subTitle: error,
-        buttons: ['OK']
-      });
-      alert.present();
-      loading.dismiss();
+      if (typeof error === 'string') {
+        this.toastrService.error(error, 'Error!');
+        var alert = this.alertCtrl.create({
+          title: "Error Message",
+          subTitle: error,
+          buttons: ['OK']
+        });
+        alert.present();
+        loading.dismiss();
+      }
+      else {
+        const controls = this.formgroup1.controls;
+        const ErrorProperties = error;
+        this.errorHandlingService.ErrorHandler(controls,ErrorProperties);
+        loading.dismiss();
+      }
     });
 
   }

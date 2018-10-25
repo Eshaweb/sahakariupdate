@@ -47,16 +47,7 @@ export class BalanceEnquiryPage implements OnInit {
             this.showBackButton = true;
         }
     }
-    ionViewWillLeave() {
-        //   this.callback('param').then(()=>{
-        //     //this.navCtrl.pop();
-        // });
-        // if (this.navParams.get('isFromLogin') == true) {
-        //   this.navCtrl.popTo(BankingPage);
-        // }
-        //this.navCtrl.pop();
-        // this.navCtrl.popTo(this.navCtrl.getByIndex(1));
-    }
+    
     balance: string;
     OnGetAccountBalance(AcHeadId, AcSubId) {   //Fires when user clicks on Accounts
         let loading = this.loadingController.create({
@@ -72,17 +63,10 @@ export class BalanceEnquiryPage implements OnInit {
             this.balance = data;
             loading.dismiss();
         }, (error) => {
-            // this.toastr.error(error, 'Error!');
-            // var alert = this.alertCtrl.create({
-            //     title: "Error Message",
-            //     subTitle: error,
-            //     buttons: ['OK']
-            // });
-            // alert.present();     //To show alert message
-            if (error == '401') {
+            if (error == 401) {
                 this.registerService.SetRefreshTokenNeeded();
-                this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
-                    localStorage.setItem('refreshToken',data.RefreshToken);
+                this.registerService.GetToken(StorageService.GetItem('refreshToken')).subscribe((data: any) => {
+                    StorageService.SetItem('refreshToken',data.RefreshToken);
                     this.registerService.SetToken(data.AccessToken);
                     this.registerService.SetRefreshTokenNeeded();
                     this.registerService.GetAccountBalance(statementRequest).subscribe((data: any) => {
@@ -92,19 +76,6 @@ export class BalanceEnquiryPage implements OnInit {
                     });
                 });
             }
-            // else {
-            //     for (var i = 0; i < error.Errors.length; i++) {
-            //             var errorMessage = error.Errors[i].ErrorString;
-            //         }
-            //     this.toastr.error(errorMessage, 'Error!');
-            //     var alert = this.alertCtrl.create({
-            //         title: "Error Message",
-            //         subTitle: errorMessage,
-            //         buttons: ['OK']
-            //     });
-            //     alert.present();     
-            //     loading.dismiss();   
-            // }
             else {
                 this.toastr.error(error, 'Error!');
                 var alert = this.alertCtrl.create({

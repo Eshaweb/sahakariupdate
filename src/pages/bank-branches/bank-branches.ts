@@ -23,7 +23,7 @@ export class BankBranchesPage implements OnInit {
   }
   ngOnInit() {
     let loading = this.loadingController.create({
-      content: 'Loading the Account Balance..'
+      content: 'Loading the Branches of the Bank..'
     });
     loading.present();
     var ActiveTenantId = this.storageService.GetUser().ActiveTenantId;
@@ -32,10 +32,10 @@ export class BankBranchesPage implements OnInit {
       //alert(data.Balance);
       loading.dismiss();
     }, (error) => {
-      if (error == '401') {
+      if (error == 401) {
         this.registerService.SetRefreshTokenNeeded();
-        this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
-          localStorage.setItem('refreshToken', data.RefreshToken);
+        this.registerService.GetToken(StorageService.GetItem('refreshToken')).subscribe((data: any) => {
+          StorageService.SetItem('refreshToken',data.RefreshToken);
           this.registerService.SetToken(data.AccessToken);
           this.registerService.SetRefreshTokenNeeded();
           this.registerService.GetLocations(ActiveTenantId).subscribe((data: any) => {

@@ -15,43 +15,34 @@ import { FundTransferPage } from '../fund-transfer/fund-transfer';
 import { BalanceEnquiryPage } from '../balance-enquiry/balance-enquiry';
 import { MiniStatementPage } from '../mini-statement/mini-statement';
 import { FavouritesPage } from '../favourites/favourites';
+import { ErrorHandlingService } from '../services/ErrorHandlingService';
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
 export class LoginPage implements OnInit {
-  passwordMessage: string;
   formGroup: FormGroup;
-  usernameMessage: string;
-
-  constructor(private events: Events, private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, public navParams: NavParams, private toastrService: ToastrService, public loadingController: LoadingController, public formbuilder: FormBuilder, private registerService: RegisterService, public navCtrl: NavController) {
+  constructor(private errorHandlingService: ErrorHandlingService, private events: Events, private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, public navParams: NavParams, private toastrService: ToastrService, public loadingController: LoadingController, public formbuilder: FormBuilder, private registerService: RegisterService, public navCtrl: NavController) {
     this.formGroup = formbuilder.group({
       //username:['', [Validators.required, Validators.minLength(4)]],
-      password: ['', [Validators.required, Validators.minLength(8)]]
+      Password: ['', [Validators.required, Validators.minLength(8)]]
     }); //builds the formgroup with the same formcontrolname.
     // const usernameControl = this.formGroup.get('username');
     // usernameControl.valueChanges.subscribe(value => this.setErrorMessage(usernameControl));
-    const passwordControl = this.formGroup.get('password');
-    passwordControl.valueChanges.subscribe(value => this.setErrorMessage(passwordControl));
+    const PasswordControl = this.formGroup.get('Password');
+    PasswordControl.valueChanges.subscribe(value => this.setErrorMessage(PasswordControl));
     //call the particular method if value changes in the control.
   }
   setErrorMessage(c: AbstractControl): void {
-    this.passwordMessage = ''; //To not display the error message, if there is no error.
-    this.usernameMessage = '';
     let control = this.uiService.getControlName(c);
+    document.getElementById('err_' + control).innerHTML='';//To not display the error message, if there is no error.
     if ((c.touched || c.dirty) && c.errors) {
-      if (control === 'username') {
-        this.usernameMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
-        //maps the error message from validationMessages array. 
-      }
-      else if (control === 'password') {
-        this.passwordMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
-      }
+      document.getElementById('err_' + control).innerHTML = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
     }
   }
   private validationMessages = { //used in above method.
-    password_required: '*Enter Password',
-    password_minlength: 'Password cannot be less than 8 character'
+    Password_required: '*Enter Password',
+    Password_minlength: 'Password cannot be less than 8 character'
   };
   ActiveBankName: string;
   ngOnInit() {
@@ -71,7 +62,7 @@ export class LoginPage implements OnInit {
     loading.present();
     var Login = {
       UserName: this.storageService.GetUser().UserName,
-      Password: this.formGroup.controls['password'].value,
+      Password: this.formGroup.controls['Password'].value,
       UniqueId: this.storageService.GetUser().UniqueKey,
     }
     var OS = this.storageService.GetOS();
@@ -89,14 +80,14 @@ export class LoginPage implements OnInit {
           this.storageService.SetOS(oS);  //To store the OS table in localstorage.
           loading.dismiss();
         }, (error) => {
-          this.toastrService.error(error.message, 'Error!');
-          loading.dismiss();
-          var alert = this.alertCtrl.create({
-            title: "Error Message",
-            subTitle: error.message,
-            buttons: ['OK']
-          });
-          alert.present();
+            this.toastrService.error(error, 'Error!');
+            var alert = this.alertCtrl.create({
+              title: "Error Message",
+              subTitle: error,
+              buttons: ['OK']
+            });
+            alert.present();
+            loading.dismiss();
         });
       }
 
@@ -117,43 +108,21 @@ export class LoginPage implements OnInit {
       }
       loading.dismiss();
     }, (error) => {
-      // this.toastrService.error(error.message, 'Error!');
-      // loading.dismiss();
-      // var alert = this.alertCtrl.create({
-      //   title: "Error Message",
-      //   subTitle: error.message,
-      //   buttons: ['OK']
-      // });
-      // alert.present();
-
-      this.passwordMessage = '';
-      const controls = this.formGroup.controls;
-      //const ErrorProperties = error.error;
-      const ErrorProperties = error;
-      for (const property in ErrorProperties) {
-        for (const name in controls) {
-          if (name == property) {
-            ErrorProperties[property].forEach((value: string) => {
-              this.passwordMessage = value;
-              loading.dismiss();
-            });
-          }
-          else if (property == 'Errors') {
-            // for (var i = 0; i < error.error.Errors.length; i++) {
-            //   var errorMessage = error.error.Errors[i].ErrorString;
-            for (var i = 0; i < error.Errors.length; i++) {
-              var errorMessage = error.Errors[i].ErrorString;
-              this.toastrService.error(errorMessage, 'Error!');
-              loading.dismiss();
-              var alert = this.alertCtrl.create({
-                title: "Error Message",
-                subTitle: errorMessage,
-                buttons: ['OK']
-              });
-              alert.present();
-            }
-          }
-        }
+      if (typeof error === 'string') {
+        this.toastrService.error(error, 'Error!');
+        var alert = this.alertCtrl.create({
+          title: "Error Message",
+          subTitle: error,
+          buttons: ['OK']
+        });
+        alert.present();
+        loading.dismiss();
+      }
+      else {
+        const controls = this.formGroup.controls;
+        const ErrorProperties = error;
+        this.errorHandlingService.ErrorHandler(controls,ErrorProperties);
+        loading.dismiss();
       }
       this.navCtrl.setRoot(LoginPage);
       //this.navCtrl.setRoot(PagePage, { 'ActiveBankName': this.ActiveBankName });

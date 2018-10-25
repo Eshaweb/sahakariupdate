@@ -136,23 +136,6 @@ export class ChangeBankPage implements OnInit {
           this.storageService.SetSelfCareAc(JSON.stringify(existingSelfCareAcs));
         }
       }
-      
-      //   let singleSelfCareAC = existingSelfCareAcs.filter(function (obj) { return obj.TenantId === TenantId; }); //To find records from localstorage SelfCare table with the particular tenantId.
-      //   if (singleSelfCareAC.length == 0) {  //If there is no SelfCare record in localstorage with particular TenantId,
-      //     for (var j = 0; j < data.SelfCareAcs.length; j++) {
-      //       const singleSelfCareAC = {
-      //         AcActId: data.SelfCareAcs[j].AcActId,
-      //         AcHeadId: data.SelfCareAcs[j].AcHeadId,
-      //         AcNo: data.SelfCareAcs[j].AcNo,
-      //         AcSubId: data.SelfCareAcs[j].AcSubId,
-      //         HeadName: data.SelfCareAcs[j].HeadName,
-      //         LocId: data.SelfCareAcs[j].LocId,
-      //         TenantId: data.SelfCareAcs[j].TenantId
-      //       }
-      //       existingSelfCareAcs.push(singleSelfCareAC);  //Add each record from server to localstorge SelCare.
-      //     }
-      //     this.storageService.SetSelfCareAc(JSON.stringify(existingSelfCareAcs));
-      // }
       this.events.publish('REFRESH_DIGIPARTYNAME');    //To rise the event and to show DigiPartyName.
       loading.dismiss();
     }, (error) => {

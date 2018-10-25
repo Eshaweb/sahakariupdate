@@ -7,21 +7,10 @@ export class UIHelperService {
     //  readonly baseUrl = 'https://sahakari.azurewebsites.net/api';
     // readonly rootUrl1 = 'https://sahakari.azurewebsites.net/token';
 
-    readonly rootUrl = 'https://sahakariapi.azurewebsites.net';
      readonly baseUrl = 'https://sahakariapi.azurewebsites.net/api';
-    readonly rootUrl1 = 'https://sahakariapi.azurewebsites.net/token';
 
-//    readonly rootUrl = 'http://localhost:55394';
-//    readonly baseUrl='http://localhost:55394/api';
-//    readonly rootUrl1 = 'http://localhost:55394/token';
-
-    CallWebAPIUrl(api_action_name: any) {
-        return this.rootUrl + api_action_name;
-    }
-    CallWebAPIUrlNew(api_action: any) {
+    CallWebAPIUrl(api_action: any) {
         return this.baseUrl + api_action;
     }
-    CallWebAPIUrl1() {
-        return this.rootUrl;
-    }
+    
 }

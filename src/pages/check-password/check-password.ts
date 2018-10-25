@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { RegisterService } from '../services/app-data.service';
 import { UISercice } from '../services/UIService';
 import { PaymentSuccessPage } from '../payment-success/payment-success';
+import { ErrorHandlingService } from '../services/ErrorHandlingService';
 
 /**
  * Generated class for the CheckPasswordPage page.
@@ -21,13 +22,12 @@ import { PaymentSuccessPage } from '../payment-success/payment-success';
 })
 export class CheckPasswordPage {
   checkPasswordForm: FormGroup;
-  passwordMessage: string;
   doFundTransfer: any;
   ftd: any;
   RechargeModel: any;
   tranResponse: any;
 
-  constructor(public viewCtrl: ViewController, private uiService: UISercice, private formbuilder: FormBuilder, private storageService: StorageService, public navParams: NavParams, private alertCtrl: AlertController, private toastr: ToastrService, public loadingController: LoadingController, private events: Events, private registerService: RegisterService, public navCtrl: NavController) {
+  constructor(private errorHandlingService:ErrorHandlingService, public viewCtrl: ViewController, private uiService: UISercice, private formbuilder: FormBuilder, private storageService: StorageService, public navParams: NavParams, private alertCtrl: AlertController, private toastr: ToastrService, public loadingController: LoadingController, private events: Events, private registerService: RegisterService, public navCtrl: NavController) {
     this.doFundTransfer = navParams.get('DoFundTransfer');
     this.RechargeModel = navParams.get('RechargeModel');
     this.checkPasswordForm = this.formbuilder.group({
@@ -39,12 +39,10 @@ export class CheckPasswordPage {
   }
 
   setErrorMessage(c: AbstractControl): void {
-    this.passwordMessage = '';
     let control = this.uiService.getControlName(c);
+    document.getElementById('err_' + control).innerHTML='';
     if ((c.touched || c.dirty) && c.errors) {
-      if (control === 'password') {
-        this.passwordMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
-      }
+      document.getElementById('err_' + control).innerHTML = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
     }
   }
   private validationMessages = {
@@ -94,10 +92,10 @@ export class CheckPasswordPage {
         alert.present();
       }
     }, (error) => {
-      if (error == '401') {
+      if (error == 401) {
         this.registerService.SetRefreshTokenNeeded();
-        this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
-          localStorage.setItem('refreshToken', data.RefreshToken);
+        this.registerService.GetToken(StorageService.GetItem('refreshToken')).subscribe((data: any) => {
+          StorageService.SetItem('refreshToken',data.RefreshToken);
           this.registerService.SetToken(data.AccessToken);
           this.registerService.SetRefreshTokenNeeded();
           this.registerService.CheckPassword(loginModel).subscribe((data: any) => {
@@ -131,14 +129,20 @@ export class CheckPasswordPage {
           });
         });
       }
-      else {
+      else if (typeof error === 'string') {
         this.toastr.error(error, 'Error!');
         var alert = this.alertCtrl.create({
           title: "Error Message",
           subTitle: error,
           buttons: ['OK']
         });
-        alert.present();     //To show alert message  
+        alert.present();
+        loading.dismiss();
+      }
+      else {
+        const controls = this.checkPasswordForm.controls;
+        const ErrorProperties = error;
+        this.errorHandlingService.ErrorHandler(controls,ErrorProperties);
         loading.dismiss();
       }
       this.viewCtrl.dismiss();

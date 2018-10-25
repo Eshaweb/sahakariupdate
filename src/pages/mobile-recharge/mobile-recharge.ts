@@ -15,14 +15,12 @@ import { FavouritesPage } from '../favourites/favourites';
 import { PrepaidConfirmPage } from '../prepaid-confirm/prepaid-confirm';
 import { PagePage } from '../page/page';
 import { UISercice } from '../services/UIService';
+import { ErrorHandlingService } from '../services/ErrorHandlingService';
 @Component({
   selector: 'page-mobile-recharge',
   templateUrl: 'mobile-recharge.html'
 })
 export class MobileRechargePage implements OnInit {
-  amountMessage: string;
-  nicknameMessage: string;
-  subscriptionIdMessage: string;
   title: string;
   @ViewChild(Navbar) navBar: Navbar;
   //showNavbar: boolean;
@@ -33,7 +31,7 @@ export class MobileRechargePage implements OnInit {
   callback: any;
 
 
-  constructor(private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, public viewCtrl: ViewController, private toastr: ToastrService, private registerService: RegisterService, public loadingController: LoadingController, public navParams: NavParams, public navCtrl: NavController, public formbuilder: FormBuilder) {
+  constructor(private errorHandlingService:ErrorHandlingService, private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, public viewCtrl: ViewController, private toastr: ToastrService, private registerService: RegisterService, public loadingController: LoadingController, public navParams: NavParams, public navCtrl: NavController, public formbuilder: FormBuilder) {
     this.formGroup = formbuilder.group({
       subscriptionId: ['', [Validators.required, Validators.minLength(10)]],
       // operatorId: ['', [Validators.required]],
@@ -61,57 +59,52 @@ export class MobileRechargePage implements OnInit {
     let subscriptionId = this.formGroup.controls['subscriptionId'];
     let amount = this.formGroup.controls['amount'];
     let nickname = this.formGroup.controls['nickname'];
-    this.subscriptionIdMessage = '';//To not display the error message, if there is no error.
-    this.nicknameMessage = '';
-    this.amountMessage = '';
     let control = this.uiService.getControlName(c);
+    document.getElementById('err_' + control).innerHTML='';//To not display the error message, if there is no error.
     if ((c.touched || c.dirty) && c.errors) {
       if (control === 'subscriptionId' && subscriptionId.value != null && (this.ParentId == "S3" || this.ParentId == "S5")) {
         // if(c.errors.minlength['requiredLength'].value==9){
         if (c.errors.minlength) {
           if (c.errors.minlength.requiredLength == 9) {
-            this.subscriptionIdMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key + '_9']).join(' ');
-            //maps the error message from validationMessages array. 
-            this.subscriptionIdInfo = '';
-          }
-          else if (c.errors.minlength.requiredLength == 9) {
-            this.subscriptionIdMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key + '_9']).join(' ');
+           // this.subscriptionIdMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key + '_9']).join(' ');
+            //maps the error message from validationMessages array.
+            document.getElementById('err_' + control).innerHTML = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key + '_9']).join(' '); 
             this.subscriptionIdInfo = '';
           }
           else if (c.errors.minlength.requiredLength == 10) {
-            this.subscriptionIdMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key + '_10']).join(' ');
+            document.getElementById('err_' + control).innerHTML = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key + '_10']).join(' ');
             this.subscriptionIdInfo = '';
           }
           else if (c.errors.minlength.requiredLength == 11) {
-            this.subscriptionIdMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key + '_11']).join(' ');
+            document.getElementById('err_' + control).innerHTML = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key + '_11']).join(' ');
             this.subscriptionIdInfo = '';
           }
           else if (c.errors.minlength.requiredLength == 12) {
-            this.subscriptionIdMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key + '_12']).join(' ');
+            document.getElementById('err_' + control).innerHTML = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key + '_12']).join(' ');
             this.subscriptionIdInfo = '';
           }
         }
         else if (c.errors.maxlength) {
           if (c.errors.maxlength.actualLength > 9) {
-            this.subscriptionIdMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
+            document.getElementById('err_' + control).innerHTML = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
             this.subscriptionIdInfo = '';
           }
         }
         else if (c.errors.pattern) {
           if (c.errors.pattern.requiredPattern == "^0[0-9]{10}$") {
-            this.subscriptionIdMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key + '_0']).join(' ');
+            document.getElementById('err_' + control).innerHTML = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key + '_0']).join(' ');
             this.subscriptionIdInfo = '';
           }
           else if (c.errors.pattern.requiredPattern == "^1[0-9]{9}$") {
-            this.subscriptionIdMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key + '_1']).join(' ');
+            document.getElementById('err_' + control).innerHTML = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key + '_1']).join(' ');
             this.subscriptionIdInfo = '';
           }
           else if (c.errors.pattern.requiredPattern == "^2[0-9]{11}$") {
-            this.subscriptionIdMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key + '_2']).join(' ');
+            document.getElementById('err_' + control).innerHTML = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key + '_2']).join(' ');
             this.subscriptionIdInfo = '';
           }
           else if (c.errors.pattern.requiredPattern == "^3[0-9]{9}$") {
-            this.subscriptionIdMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key + '_3']).join(' ');
+            document.getElementById('err_' + control).innerHTML = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key + '_3']).join(' ');
             this.subscriptionIdInfo = '';
           }
         }
@@ -122,15 +115,15 @@ export class MobileRechargePage implements OnInit {
         }
       }
       else if (control === 'subscriptionId' && subscriptionId.value != null) {
-        this.subscriptionIdMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
+        document.getElementById('err_' + control).innerHTML = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
         this.OnMobileNo(subscriptionId.value);
       }
       else if (control === 'nickname' && nickname.value != null) {
-        this.nicknameMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
+        document.getElementById('err_' + control).innerHTML = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
         this.onNickName(nickname.value);
       }
       else if (control === 'amount') {
-        this.amountMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
+        document.getElementById('err_' + control).innerHTML = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
       }
     }
     else {
@@ -340,17 +333,10 @@ export class MobileRechargePage implements OnInit {
       }
       loading.dismiss();
     }, (error) => {
-       // this.toastr.error(error, 'Error!');
-            // var alert = this.alertCtrl.create({
-            //     title: "Error Message",
-            //     subTitle: error,
-            //     buttons: ['OK']
-            // });
-            // alert.present();     //To show alert message
-            if (error == '401') {
+            if (error == 401) {
               this.registerService.SetRefreshTokenNeeded();
-              this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
-                  localStorage.setItem('refreshToken',data.RefreshToken);
+              this.registerService.GetToken(StorageService.GetItem('refreshToken')).subscribe((data: any) => {
+                StorageService.SetItem('refreshToken',data.RefreshToken);
                   this.registerService.SetToken(data.AccessToken);
                   this.registerService.SetRefreshTokenNeeded();
                   this.registerService.GetOperators(oSRequest).subscribe((data: any) => {
@@ -656,7 +642,7 @@ export class MobileRechargePage implements OnInit {
       this.isMobileNoEntered = false;
       return this.showerrortext = true;
     }
-    else {
+    else if(id.length==10||id.length==11){
       let loading = this.loadingController.create({
         content: 'Loading the Operator and Circle..'
       });
@@ -697,14 +683,7 @@ export class MobileRechargePage implements OnInit {
         }
         loading.dismiss();
       }, (error) => {
-         // this.toastr.error(error, 'Error!');
-            // var alert = this.alertCtrl.create({
-            //     title: "Error Message",
-            //     subTitle: error,
-            //     buttons: ['OK']
-            // });
-            // alert.present();     //To show alert message
-            if (error == '401') {
+            if (error ==401) {
               this.registerService.SetRefreshTokenNeeded();
               this.registerService.GetToken(StorageService.GetItem('refreshToken')).subscribe((data: any) => {
                   StorageService.SetItem('refreshToken',data.RefreshToken);
@@ -737,18 +716,33 @@ export class MobileRechargePage implements OnInit {
                   });
               });
           }
+          else if (typeof error === 'string') {
+            this.toastr.error(error, 'Error!');
+            var alert = this.alertCtrl.create({
+              title: "Error Message",
+              subTitle: error,
+              buttons: ['OK']
+            });
+            alert.present();
+            loading.dismiss();
+          }
           else {
-              this.toastr.error(error, 'Error!');
-              var alert = this.alertCtrl.create({
-                  title: "Error Message",
-                  subTitle: error,
-                  buttons: ['OK']
-              });
-              alert.present();     //To show alert message  
-              loading.dismiss();    //To close loading panel
+            const controls = this.formGroup.controls;
+            const ErrorProperties = error;
+            this.errorHandlingService.ErrorHandler(controls,ErrorProperties);
+            loading.dismiss();
           }
       });
 
+    }
+    else{
+      this.toastr.error('Invalid Mobile Number', 'Error!');
+      var alert = this.alertCtrl.create({
+        title: "Error Message",
+        subTitle: 'Invalid Mobile Number',
+        buttons: ['OK']
+      });
+      alert.present();
     }
   }
 

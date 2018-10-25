@@ -55,10 +55,10 @@ export class RechargeReportPage implements OnInit {
       this.rRResponse = data;
       loading.dismiss();
     }, (error) => {
-            if (error == '401') {
+            if (error == 401) {
               this.registerService.SetRefreshTokenNeeded();
-              this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
-                  localStorage.setItem('refreshToken',data.RefreshToken);
+              this.registerService.GetToken(StorageService.GetItem('refreshToken')).subscribe((data: any) => {
+                StorageService.SetItem('refreshToken',data.RefreshToken);
                   this.registerService.SetToken(data.AccessToken);
                   this.registerService.SetRefreshTokenNeeded();
                   this.registerService.GetRechargeReport(rRRequest).subscribe((data: any) => {
@@ -98,7 +98,7 @@ export class RechargeReportPage implements OnInit {
       this.openModalWithParams();
       loading.dismiss();
     }, (error) => {
-            if (error == '401') {
+            if (error == 401) {
               this.registerService.SetRefreshTokenNeeded();
               this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
                   localStorage.setItem('refreshToken',data.RefreshToken);

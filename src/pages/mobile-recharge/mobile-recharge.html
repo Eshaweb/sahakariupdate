@@ -27,7 +27,7 @@
         <!-- <ion-input type="text" placeholder="" name="SubscriptionId" #SubscriptionId="ngModel" [(ngModel)]="rechargeitem.SubscriptionId" (input)="OnMobileNo($event.target.value)" minlength="5"></ion-input> -->       
         <ion-input formControlName="subscriptionId" type="number" placeholder="" [(ngModel)]="rechargeitem.SubscriptionId" (keyup)="OnMobileNo($event.target.value)" maxlength="10"></ion-input>
       </ion-item>
-      <p style="color:red;">{{subscriptionIdMessage}}</p>
+      <p style="color:red" id='err_subscriptionId'></p>      
       <ion-item id="mobileRecharge-select1">
         <ion-label>{{'recharge.operator' | translate}}</ion-label>
           <!-- <ion-select id="mobileRecharge-input3" interface="popover" name="OperatorId" #OperatorId="ngModel" [(ngModel)]="rechargeitem.OperatorId" (ngModelChange)="OperatorChanged($event)">
@@ -56,7 +56,7 @@
         </ion-label>
         <ion-input formControlName="subscriptionId" type="number" placeholder="" [(ngModel)]="rechargeitem.SubscriptionId" (keyup)="OnMobileNo($event.target.value)" maxlength="10"></ion-input>
       </ion-item>
-      <p style="color:red;">{{subscriptionIdMessage}}</p>
+      <p style="color:red" id='err_subscriptionId'></p>
       <ion-item id="mobileRecharge-select1">
         <ion-label>{{'recharge.operator' | translate}}</ion-label>
         <ion-select id="mobileRecharge-input3" interface="popover" formControlName="operatorId" [(ngModel)]="rechargeitem.OperatorId" (ngModelChange)="OperatorChanged($event)">
@@ -90,7 +90,8 @@
           <ion-input type="text" placeholder="" (keypress)="AvoidSpace(event)" formControlName="subscriptionId" [(ngModel)]="rechargeitem.SubscriptionId" (keyup)="OnSubscriberID($event.target.value)"></ion-input>     
         </ion-item>
           <p style="color:black;">{{subscriptionIdInfo}}</p>
-        <p style="color:red;">{{subscriptionIdMessage}}</p>
+        <!-- <p style="color:red;">{{subscriptionIdMessage}}</p> -->
+        <p style="color:red" id='err_subscriptionId'></p>
       </div>
 
 
@@ -110,7 +111,7 @@
              </ion-label>
             <ion-input type="text" placeholder="" (keypress)="AvoidSpace(event)" formControlName="subscriptionId" maxlength="10" [(ngModel)]="rechargeitem.SubscriptionId" (keyup)="OnSubscriberID($event.target.value)"></ion-input>     
           </ion-item>
-          <p style="color:red;">{{subscriptionIdMessage}}</p>
+          <p style="color:red" id='err_subscriptionId'></p>
         </div>
 
 
@@ -123,7 +124,7 @@
         <button *ngIf="prepaid" ion-button clear item-end (click)="OnViewPlans()" type="button" [disabled]="!isStateEnabled||!isOperatorEnabled">View Plans</button>
         <!-- <ion-card-content item-end>of {{operatorname}}-{{statename}}</ion-card-content> -->
     </ion-item>
-    <p style="color:red;">{{amountMessage}}</p>
+    <p style="color:red" id='err_amount'></p>
 
       <ion-item id="mobileRecharge-input7">
         <ion-label floating>
@@ -132,7 +133,7 @@
         <!-- <ion-input type="text" placeholder="" formControlName="nickname" [(ngModel)]="rechargeitem.NickName" (keyup)="onNickName($event)" minlength="2"></ion-input> -->
         <ion-input type="text" placeholder="" formControlName="nickname" [(ngModel)]="rechargeitem.NickName"></ion-input>
       </ion-item>
-      <p style="color:red;">{{nicknameMessage}}</p>
+      <p style="color:red" id='err_nickname'></p>
       
       <div class="spacer" style="width:300px;height:21px;" id="mobileRecharge-spacer5"></div>
       <div id="mobileRecharge-markdown7" class="show-list-numbers-and-dots">

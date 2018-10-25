@@ -11,6 +11,7 @@ import { UISercice } from '../services/UIService';
 import { ChangeBankPage } from '../change-bank/change-bank';
 import { BankingPage } from '../banking/banking';
 import { FundTransferConfirmPage } from '../fund-transfer-confirm/fund-transfer-confirm';
+import { ErrorHandlingService } from '../services/ErrorHandlingService';
 
 @Component({
   selector: 'page-fund-transfer',
@@ -18,8 +19,6 @@ import { FundTransferConfirmPage } from '../fund-transfer-confirm/fund-transfer-
 })
 export class FundTransferPage implements OnInit {
   @ViewChild(Navbar) navBar: Navbar;
-  amountMessage: string;
-  mobileMessage: string;
   formgroup2: FormGroup;
   formgroup1: FormGroup;
   Showthis: boolean;
@@ -31,14 +30,14 @@ export class FundTransferPage implements OnInit {
 
 
   // constructor(private regService : RegisterService, public formbuilder:FormBuilder,public constant:ConstantService,private autoLogoutService: AutoLogoutService,public navCtrl: NavController) {
-  constructor(public navParams: NavParams, private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, private toastr: ToastrService, public loadingController: LoadingController, private registerService: RegisterService, public formbuilder: FormBuilder, public navCtrl: NavController) {
+  constructor(private errorHandlingService:ErrorHandlingService, public navParams: NavParams, private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, private toastr: ToastrService, public loadingController: LoadingController, private registerService: RegisterService, public formbuilder: FormBuilder, public navCtrl: NavController) {
 
     //StorageService.SetItem('lastAction', Date.now().toString());
     this.formgroup1 = formbuilder.group({
-      mobilenum: ['', [Validators.required, Validators.minLength(10)]]
+      MobileNo: ['', [Validators.required, Validators.minLength(10)]]
     }); //builds the formgroup with the same formcontrolname.
-    const mobileControl = this.formgroup1.get('mobilenum');
-    mobileControl.valueChanges.subscribe(value => this.setErrorMessage(mobileControl));
+    const MobileNoControl = this.formgroup1.get('MobileNo');
+    MobileNoControl.valueChanges.subscribe(value => this.setErrorMessage(MobileNoControl));
 
     this.formgroup2 = formbuilder.group({
       amount: ['', [Validators.required, Validators.minLength(1)]]
@@ -48,22 +47,15 @@ export class FundTransferPage implements OnInit {
     //call the particular method if value changes in the control.
   }
   setErrorMessage(c: AbstractControl): void {
-    this.mobileMessage = '';//To not display the error message, if there is no error.
-    this.amountMessage = '';
     let control = this.uiService.getControlName(c);//gives the control name property from particular service.
+    document.getElementById('err_' + control).innerHTML='';//To not display the error message, if there is no error.
     if ((c.touched || c.dirty) && c.errors) {
-      if (control === 'mobilenum') {
-        this.mobileMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
-        //maps the error message from validationMessages array. 
-      }
-      else if (control === 'amount') {
-        this.amountMessage = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
-      }
+      document.getElementById('err_' + control).innerHTML = Object.keys(c.errors).map(key => this.validationMessages[control + '_' + key]).join(' ');
     }
   }
   private validationMessages = { //used in above method.
-    mobilenum_required: '*Enter mobile number',
-    mobilenum_minlength: '*Enter 10 Digit Mobile Number',
+    MobileNo_required: '*Enter mobile number',
+    MobileNo_minlength: '*Enter 10 Digit Mobile Number',
 
     amount_required: '*Enter Amount'
   };
@@ -135,7 +127,7 @@ export class FundTransferPage implements OnInit {
     loading.present();
     var fundTransferRequest = {
       TenantId: this.storageService.GetUser().ActiveTenantId,
-      MobileNo: this.formgroup1.get('mobilenum').value
+      MobileNo: this.formgroup1.get('MobileNo').value
     }
     this.registerService.GetFTAccount(fundTransferRequest).subscribe((data: any) => {
       this.fundTransferResponse = data;
@@ -144,10 +136,10 @@ export class FundTransferPage implements OnInit {
       this.disablenextwithoutToAccount = false;
       loading.dismiss();
     }, (error) => {
-      if (error == '401') {
+      if (error == 401) {
         this.registerService.SetRefreshTokenNeeded();
-        this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
-          localStorage.setItem('refreshToken', data.RefreshToken);
+        this.registerService.GetToken(StorageService.GetItem('refreshToken')).subscribe((data: any) => {
+          StorageService.SetItem('refreshToken',data.RefreshToken);
           this.registerService.SetToken(data.AccessToken);
           this.registerService.SetRefreshTokenNeeded();
           this.registerService.GetFTAccount(fundTransferRequest).subscribe((data: any) => {
@@ -162,32 +154,23 @@ export class FundTransferPage implements OnInit {
       }
       else {
         this.fundTransferResponse = null;
-        // for (var i = 0; i < error.error.Errors.length; i++) {
-            //   var errorMessage = error.error.Errors[i].ErrorString;
-        for (var i = 0; i < error.Errors.length; i++) {
-          var errorMessage = error.Errors[i].ErrorString;
+        if (typeof error === 'string') {
+          this.toastr.error(error, 'Error!');
+          var alert = this.alertCtrl.create({
+            title: "Error Message",
+            subTitle: error,
+            buttons: ['OK']
+          });
+          alert.present();
+          loading.dismiss();
         }
-        this.toastr.error(errorMessage, 'Error!');
-        var alert = this.alertCtrl.create({
-          title: "Error Message",
-          subTitle: errorMessage,
-          buttons: ['OK']
-        });
-        alert.present();
-        loading.dismiss();
+        else {
+          const controls = this.formgroup1.controls;
+          const ErrorProperties = error;
+          this.errorHandlingService.ErrorHandler(controls,ErrorProperties);
+          loading.dismiss();
+        }
       }
-      //   else {
-      //     this.fundTransferResponse=null;
-      //     this.toastr.error(error, 'Error!');
-      //     var alert = this.alertCtrl.create({
-      //         title: "Error Message",
-      //         subTitle: error,
-      //         buttons: ['OK']
-      //     });
-      //     alert.present();     //To show alert message  
-      //     loading.dismiss();    //To close loading panel
-      // }
-
     });
   }
   OnMobileNo(event) {

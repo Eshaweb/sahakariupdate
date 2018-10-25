@@ -15,11 +15,7 @@ export class StorageService {
     constructor() {
 
     }
-    // static SelfCareAcsBasedOnTenantID: SelfCareAc;
-    // static SelfCareACs: SelfCareAc;
-    // static digipartyname: string;
-    // //digiparty: DigiParty;
-    // static DigiParties: DigiParty;
+    
     Tenant: Tenant;
     // static Tenants: Tenant;
     static SetAuthorizationData(auth: TokenParams): void {

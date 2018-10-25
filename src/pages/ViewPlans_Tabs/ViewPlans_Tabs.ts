@@ -50,17 +50,10 @@ export class BasicPage implements OnInit {
       this.planResponse = data;
       loading.dismiss(); 
     }, (error) => {
-       // this.toastr.error(error, 'Error!');
-            // var alert = this.alertCtrl.create({
-            //     title: "Error Message",
-            //     subTitle: error,
-            //     buttons: ['OK']
-            // });
-            // alert.present();     //To show alert message
             if (error == '401') {
               this.registerService.SetRefreshTokenNeeded();
-              this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
-                  localStorage.setItem('refreshToken',data.RefreshToken);
+              this.registerService.GetToken(StorageService.GetItem('refreshToken')).subscribe((data: any) => {
+                StorageService.SetItem('refreshToken',data.RefreshToken);
                   this.registerService.SetToken(data.AccessToken);
                   this.registerService.SetRefreshTokenNeeded();
                   this.registerService.GetPlans(planRequest).subscribe((data: any) => {
@@ -122,8 +115,8 @@ export class BasicPage implements OnInit {
     }, (error) => {
             if (error == '401') {
               this.registerService.SetRefreshTokenNeeded();
-              this.registerService.GetToken(localStorage.getItem('refreshToken')).subscribe((data: any) => {
-                  localStorage.setItem('refreshToken',data.RefreshToken);
+              this.registerService.GetToken(StorageService.GetItem('refreshToken')).subscribe((data: any) => {
+                StorageService.SetItem('refreshToken',data.RefreshToken);
                   this.registerService.SetToken(data.AccessToken);
                   this.registerService.SetRefreshTokenNeeded();
                   this.registerService.GetPlans(planRequest).subscribe((data: any) => {

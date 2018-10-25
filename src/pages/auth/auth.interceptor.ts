@@ -24,54 +24,6 @@ export class AuthInterceptor implements HttpInterceptor, OnInit {
     counter = 270;
     tick = 1000;
     refreshToken: string;
-    // constructor(private registerService: RegisterService, private storageService:StorageService,private event: Events,private router: Router, private localstorageService:StorageService) { 
-    //     this.countDown = Observable.timer(0, this.tick)
-    //     .take(this.counter)
-    //     .map(() => --this.counter);  
-    //     if(this.countDown==0){
-    //     }
-    // }
-    // sendToken(token:string){
-    //     this.registerService.GetToken(token);
-    //   }
-    // intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    //     if (req.headers.get('No-Auth') == "True"){
-    //         return next.handle(req.clone());
-    //     }
-    //         if(req.url.indexOf("/token")>0){
-    //         var headersforTokenAPI= new HttpHeaders({'Content-Type': 'application/x-www-urlencoded'})
-    //         return next.handle(req);
-    //     }
-    //     if (this.registerService.userToken != null) {  
-    //     const clonedreq = req.clone({
-    //             headers: req.headers.set("Authorization", "Bearer " + this.registerService.userToken)
-    //         });
-    //         return next.handle(clonedreq)
-    //             .do(
-    //             succ => { },
-    //             err => {
-    //                 if (err.status === 401)      
-    //                 this.event.publish('UNAUTHORIZED');           
-    //                 }
-    //             );
-    //     }
-    //         else if(this.registerService.userToken== null){ 
-    //         const clonedreq = req.clone({
-    //             headers: req.headers.set("Authorization", "Bearer ")
-    //         });
-    //         return next.handle(clonedreq)
-    //             .do(
-    //             succ => { },
-    //             err => {
-    //                 if (err.status === 401)     
-    //                 this.event.publish('UNAUTHORIZED');           
-    //                 }
-    //             );
-    //     } 
-    //     else {
-
-    //     }
-    // }
 
     constructor(private registerService: RegisterService, private storageService: StorageService, private event: Events, private router: Router, private localstorageService: StorageService) {
 
@@ -89,14 +41,6 @@ export class AuthInterceptor implements HttpInterceptor, OnInit {
             var headersforTokenAPI = new HttpHeaders({ 'Content-Type': 'application/x-www-urlencoded' })
             return next.handle(req);
         }
-
-        // if(req.method=="POST"){
-
-        // }
-        // if(req.method=="GET"){
-
-        // }
-
 
         if (this.registerService.AccessToken != null) {
             if (this.registerService.refreshTokenNeeded == true) {

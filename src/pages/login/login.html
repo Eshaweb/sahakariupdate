@@ -25,10 +25,10 @@
           Password
         </ion-label>
         <!-- <ion-input formControlName="pword" type="password" #Password ngModel name="Password" placeholder=""></ion-input> -->
-        <ion-input formControlName="password" type="password" placeholder=""></ion-input>
+        <ion-input formControlName="Password" type="password" placeholder=""></ion-input>
       </ion-item>
            <!-- <p style="color:red;" *ngIf="password.hasError('required') && password.touched"> *Please Enter Password</p> -->
-      <p style="color:darkorange;">{{passwordMessage}}</p>
+           <p style="color:darkorange" id='err_Password'></p>
     </ion-list>
     <div class="spacer" style="height:40px;" id="login-spacer1"></div>
     <button [disabled]="loginForm.invalid" id="login-button1" ion-button color="assertive" block on-click="goToHome()">
