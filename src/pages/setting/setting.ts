@@ -16,9 +16,11 @@ export class SettingPage {
     if (this.storageService.GetLanguage() == 'ka') {
       this.isKannada = true;
       this.isEnglish = false;
+      //StorageService.SetItem('Language','ka');
     } else {
       this.isKannada = false;
       this.isEnglish = true;
+      //StorageService.SetItem('Language','en');
     }
 
   }
