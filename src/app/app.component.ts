@@ -53,7 +53,7 @@ export class MyApp {
         this.ActiveBankName = this.storageService.GetActiveBankName();
         this.digipartyname = this.storageService.GetDigipartyBasedOnActiveTenantId().Name;
         this.showMenuOptions = true;
-        translate.setDefaultLang('en');
+        //translate.setDefaultLang('en');
         // if(StorageService.GetItem('Language')=='ka'){
         //   translate.setDefaultLang('ka');
         // }
@@ -80,9 +80,9 @@ export class MyApp {
       }
     });
   }
-  changeLanguage(language: string) {
-    this.translate.use(language);
-  }
+  // changeLanguage(language: string) {
+  //   this.translate.use(language);
+  // }
   onLogout() {
     var alert = this.alertCtrl.create({
       title: "Alert",
