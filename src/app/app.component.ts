@@ -29,8 +29,9 @@ export class MyApp {
   rootPage: any;
   showMenuOptions: boolean;
   isLogOut: boolean;
+  alertShown: boolean=false;
   // constructor(platform: Platform, statusBar: StatusBar, private reg:RegisterPage, log:LoginPage, splashScreen: SplashScreen) {
-  constructor(private alertCtrl: AlertController, private translate: TranslateService, private storageService: StorageService, private event: Events, platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private regService: RegisterService) {
+  constructor(private alertCtrl: AlertController, private translate: TranslateService, private storageService: StorageService, private event: Events,public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private regService: RegisterService) {
     this.event.subscribe('UNAUTHORIZED', () => {
       this.navCtrl.push(LoginPage);
     });
@@ -40,6 +41,11 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
+      platform.registerBackButtonAction(() => {
+        if (this.alertShown==false) {
+          this.presentConfirm();  
+        }
+      }, 0);
       this.event.subscribe('REFRESH_isLogOutSetFalse', () => {
         this.isLogOut =false;
         this.regService.isLogOut=false;
@@ -78,6 +84,31 @@ export class MyApp {
       else {
         this.rootPage = PagePage;
       }
+    });
+  }
+
+  presentConfirm() {
+    let alert = this.alertCtrl.create({
+      title: 'Confirm Exit',
+      message: 'Do you want Exit?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            this.alertShown=false;
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.platform.exitApp();
+          }
+        }
+      ]
+    });
+     alert.present().then(()=>{
+      this.alertShown=true;
     });
   }
   // changeLanguage(language: string) {
