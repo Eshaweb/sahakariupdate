@@ -25,7 +25,7 @@ export class LoginPage implements OnInit {
   constructor(private errorHandlingService: ErrorHandlingService, private events: Events, private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, public navParams: NavParams, private toastrService: ToastrService, public loadingController: LoadingController, public formbuilder: FormBuilder, private registerService: RegisterService, public navCtrl: NavController) {
     this.formGroup = formbuilder.group({
       //username:['', [Validators.required, Validators.minLength(4)]],
-      Password: ['', [Validators.required, Validators.minLength(8)]]
+      Password: ['', [Validators.required]]
     }); //builds the formgroup with the same formcontrolname.
     // const usernameControl = this.formGroup.get('username');
     // usernameControl.valueChanges.subscribe(value => this.setErrorMessage(usernameControl));
