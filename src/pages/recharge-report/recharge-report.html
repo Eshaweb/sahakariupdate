@@ -29,7 +29,7 @@
    <p>Date: {{order.Date|date:'dd/MM/yyyy'}}</p>
    <p>Transaction Id: {{order.TranId}}</p>
     <p>Amount : {{order.Amount|currency:'INR'}}</p> 
-    <p style="margin-top:0px;color:#000000;">
+    <p style="margin-top:0px;color:#e227f3;">
       Status: {{order.Status}}
     </p>
     <a ion-button *ngIf="(order.StatusCode)==4||(order.StatusCode)==5" item-end (click)="OnShowReverse(order.Id)">Show Reversal</a>
