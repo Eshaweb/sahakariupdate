@@ -58,7 +58,7 @@ export class ChangeBankPage implements OnInit {
       this.tenants = this.storageService.GetTenant();  //To update the tenants property.
       loading.dismiss();
     }, (error) => {
-      this.toastr.error(error, 'Error!');
+      //this.toastr.error(error, 'Error!');
       var alert = this.alertCtrl.create({
         title: "Error Message",
         subTitle: error,
@@ -139,7 +139,7 @@ export class ChangeBankPage implements OnInit {
       this.events.publish('REFRESH_DIGIPARTYNAME');    //To rise the event and to show DigiPartyName.
       loading.dismiss();
     }, (error) => {
-      this.toastr.error(error, 'Error!');
+      //this.toastr.error(error, 'Error!');
       var alert = this.alertCtrl.create({
         title: "Error Message",
         subTitle: error,

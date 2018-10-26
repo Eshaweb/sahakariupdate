@@ -53,7 +53,7 @@ export class PaymentSuccessPage {
   ionViewDidLoad() {
     if(this.navParams.get('FTD')!=null){
     if (this.navParams.get('FTD').Status == "1") {
-      this.toastr.success('Fund Transferred with Success', 'Success!');
+    //  this.toastr.success('Fund Transferred with Success', 'Success!');
       var alert = this.alertCtrl.create({
         title: "Success Message",
         subTitle: "Fund Transferred",
@@ -65,7 +65,7 @@ export class PaymentSuccessPage {
     }
     else {
       // this.toastr.error(this.FTD.AISError, 'Error!');
-      this.toastr.error('Fund transfer failed', 'Error!');
+    //  this.toastr.error('Fund transfer failed', 'Error!');
       var alert = this.alertCtrl.create({
         title: "Error Message",
         subTitle: 'Fund transfer failed',

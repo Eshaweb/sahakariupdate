@@ -43,7 +43,7 @@ export class MyProfilePage implements OnInit {
       this.tenants = this.storageService.GetTenant(); //To show bank branchs
       loading.dismiss();
     }, (error) => {
-      this.toastrService.error(error, 'Error!');
+     // this.toastrService.error(error, 'Error!');
       var alert = this.alertCtrl.create({
         title: "Error Message",
         subTitle: error,
@@ -113,7 +113,7 @@ export class MyProfilePage implements OnInit {
       this.storageService.SetOS(oS);
       loading.dismiss();
     }, (error) => {
-      this.toastrService.error(error, 'Error!');
+      //this.toastrService.error(error, 'Error!');
       var alert = this.alertCtrl.create({
         title: "Error Message",
         subTitle: error,
@@ -161,7 +161,7 @@ export class MyProfilePage implements OnInit {
       this.navCtrl.setRoot(PagePage, { 'ActiveBankName': ActiveBankName });
 
     }, (error) => {
-      this.toastrService.error(error, 'Error!');
+     // this.toastrService.error(error, 'Error!');
       var alert = this.alertCtrl.create({
         title: "Error Message",
         subTitle: error,

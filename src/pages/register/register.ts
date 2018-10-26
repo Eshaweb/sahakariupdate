@@ -47,7 +47,7 @@ export class RegisterPage implements OnInit {
       }
       loading.dismiss();
     }, (error) => {
-      this.toastrService.error(error, 'Error!');
+      //this.toastrService.error(error, 'Error!');
       var alert = this.alertCtrl.create({
         title: "Error Message",
         subTitle: error,

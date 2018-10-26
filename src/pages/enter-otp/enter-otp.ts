@@ -123,7 +123,7 @@ export class EnterOTPPage implements OnInit {
       loading.dismiss();
     }, (error) => {
       if (typeof error === 'string') {
-        this.toastrService.error(error, 'Error!');
+        //this.toastrService.error(error, 'Error!');
         var alert = this.alertCtrl.create({
           title: "Error Message",
           subTitle: error,
@@ -162,7 +162,7 @@ export class EnterOTPPage implements OnInit {
       loading.dismiss();
     }, (error) => {
       if (typeof error === 'string') {
-        this.toastrService.error(error, 'Error!');
+       // this.toastrService.error(error, 'Error!');
         var alert = this.alertCtrl.create({
           title: "Error Message",
           subTitle: error,

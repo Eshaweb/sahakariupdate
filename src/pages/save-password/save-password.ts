@@ -36,7 +36,7 @@ export class SavePasswordPage implements OnInit {
   constructor(private errorHandlingService:ErrorHandlingService, private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, private toastrService: ToastrService, public navParams: NavParams, public loadingController: LoadingController, private fb: FormBuilder, public navCtrl: NavController, private registerService: RegisterService) {
     this.TenantId = this.navParams.get('TenantId');
     this.SavePasswordForm = this.fb.group({
-      Password: ['', [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]],
+      Password: ['', [Validators.required, Validators.minLength(8)]],
       confirmpwd: ['', [Validators.required]]
     }, { validator: this.matchingPasswords });//builds the formgroup with same formcontrolname.
 
@@ -49,8 +49,8 @@ export class SavePasswordPage implements OnInit {
 
     this.ChangePasswordForm = this.fb.group({
       Old: ['', [Validators.required]],
-      New: ['', [Validators.required, Validators.minLength(4)]],
-      confirmNewpwd: ['', [Validators.required, Validators.minLength(4)]]
+      New: ['', [Validators.required, Validators.minLength(8)]],
+      confirmNewpwd: ['', [Validators.required, Validators.minLength(8)]]
     }, { validator: this.matchingPasswordsForCP });//builds the formgroup with same formcontrolname.
 
     const OldControl = this.ChangePasswordForm.get('Old');
@@ -163,13 +163,14 @@ export class SavePasswordPage implements OnInit {
 
     }, (error) => {
       if (typeof error === 'string') {
-        this.toastrService.error(error, 'Error!');
-        var alert = this.alertCtrl.create({
-          title: "Error Message",
-          subTitle: error,
-          buttons: ['OK']
-        });
-        alert.present();
+        // this.toastrService.error(error, 'Error!');
+        // var alert = this.alertCtrl.create({
+        //   title: "Error Message",
+        //   subTitle: error,
+        //   buttons: ['OK']
+        // });
+        // alert.present();
+        document.getElementById('err_serverError').innerHTML = error;
         loading.dismiss();
       }
       else {
@@ -199,7 +200,7 @@ export class SavePasswordPage implements OnInit {
         this.toastrService.error('SOME ERROR', 'Error!');
       }
       else {
-        this.toastrService.success('Please login with the New Password', 'Success!');
+        //this.toastrService.success('Please login with the New Password', 'Success!');
         var alert = this.alertCtrl.create({
           title: "Message",
           subTitle: "Please login with the New Password",
@@ -222,7 +223,7 @@ export class SavePasswordPage implements OnInit {
                       this.toastrService.error('SOME ERROR', 'Error!');
                     }
                     else {
-                      this.toastrService.success('Please login with the New Password', 'Success!');
+                    //  this.toastrService.success('Please login with the New Password', 'Success!');
                       var alert = this.alertCtrl.create({
                         title: "Message",
                         subTitle: "Please login with the New Password",
@@ -236,7 +237,7 @@ export class SavePasswordPage implements OnInit {
               });
           }
           else if (typeof error === 'string') {
-            this.toastrService.error(error, 'Error!');
+           // this.toastrService.error(error, 'Error!');
             var alert = this.alertCtrl.create({
               title: "Error Message",
               subTitle: error,

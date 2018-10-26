@@ -147,7 +147,7 @@ export class GetOtpPage implements OnInit {
 
     }, (error) => {
       if (typeof error === 'string') {
-        this.toastrService.error(error, 'Error!');
+        //this.toastrService.error(error, 'Error!');
         var alert = this.alertCtrl.create({
           title: "Error Message",
           subTitle: error,

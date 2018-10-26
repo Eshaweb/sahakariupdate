@@ -80,7 +80,7 @@ export class LoginPage implements OnInit {
           this.storageService.SetOS(oS);  //To store the OS table in localstorage.
           loading.dismiss();
         }, (error) => {
-            this.toastrService.error(error, 'Error!');
+           // this.toastrService.error(error, 'Error!');
             var alert = this.alertCtrl.create({
               title: "Error Message",
               subTitle: error,
@@ -109,7 +109,7 @@ export class LoginPage implements OnInit {
       loading.dismiss();
     }, (error) => {
       if (typeof error === 'string') {
-        this.toastrService.error(error, 'Error!');
+        //this.toastrService.error(error, 'Error!');
         var alert = this.alertCtrl.create({
           title: "Error Message",
           subTitle: error,
@@ -223,7 +223,7 @@ export class LoginPage implements OnInit {
         this.navCtrl.setRoot(PagePage, { 'ActiveBankName': this.ActiveBankName });
       }
     }, (error) => {
-      this.toastrService.error(error, 'Error!');
+      //this.toastrService.error(error, 'Error!');
       var alert = this.alertCtrl.create({
         title: "Error Message",
         subTitle: error,

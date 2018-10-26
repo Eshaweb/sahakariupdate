@@ -130,7 +130,7 @@ export class CheckPasswordPage {
         });
       }
       else if (typeof error === 'string') {
-        this.toastr.error(error, 'Error!');
+        //this.toastr.error(error, 'Error!');
         var alert = this.alertCtrl.create({
           title: "Error Message",
           subTitle: error,

@@ -69,7 +69,7 @@ export class RechargeReportPage implements OnInit {
               });
           }
           else {
-              this.toastr.error(error, 'Error!');
+              //this.toastr.error(error, 'Error!');
               var alert = this.alertCtrl.create({
                   title: "Error Message",
                   subTitle: error,
@@ -113,7 +113,7 @@ export class RechargeReportPage implements OnInit {
               });
           }
           else {
-              this.toastr.error(error, 'Error!');
+             // this.toastr.error(error, 'Error!');
               var alert = this.alertCtrl.create({
                   title: "Error Message",
                   subTitle: error,
