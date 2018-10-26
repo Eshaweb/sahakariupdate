@@ -36,7 +36,7 @@ export class SavePasswordPage implements OnInit {
   constructor(private errorHandlingService:ErrorHandlingService, private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, private toastrService: ToastrService, public navParams: NavParams, public loadingController: LoadingController, private fb: FormBuilder, public navCtrl: NavController, private registerService: RegisterService) {
     this.TenantId = this.navParams.get('TenantId');
     this.SavePasswordForm = this.fb.group({
-      Password: ['', [Validators.required, Validators.minLength(8)]],
+      Password: ['', [Validators.required, Validators.minLength(6)]],
       confirmpwd: ['', [Validators.required]]
     }, { validator: this.matchingPasswords });//builds the formgroup with same formcontrolname.
 
@@ -49,8 +49,8 @@ export class SavePasswordPage implements OnInit {
 
     this.ChangePasswordForm = this.fb.group({
       Old: ['', [Validators.required]],
-      New: ['', [Validators.required, Validators.minLength(8)]],
-      confirmNewpwd: ['', [Validators.required, Validators.minLength(8)]]
+      New: ['', [Validators.required, Validators.minLength(6)]],
+      confirmNewpwd: ['', [Validators.required, Validators.minLength(6)]]
     }, { validator: this.matchingPasswordsForCP });//builds the formgroup with same formcontrolname.
 
     const OldControl = this.ChangePasswordForm.get('Old');
@@ -80,7 +80,7 @@ export class SavePasswordPage implements OnInit {
   }
   private validationMessages = { //used in above method.
     Password_required: 'Please enter password',
-    Password_minlength: 'Enter minimum 8 digits',
+    Password_minlength: 'Enter minimum 6 digits',
     Password_pattern: 'Password should contain at least 8 Characters in length, At least One Uppercase, One Number and One Special character',
 
     confirmpwd_required: 'Please Re-Enter password',
@@ -90,7 +90,7 @@ export class SavePasswordPage implements OnInit {
     Old_required: '*Please Enter Old Password',
 
     New_required: 'Please enter password',
-    New_minlength: 'Enter minimum 8 digits',
+    New_minlength: 'Enter minimum 6 digits',
     New_pattern: 'Password should contain at least 8 Characters in length, At least One Uppercase, One Number and One Special character',
 
     confirmNewpwd_required: 'Please Re-Enter password',

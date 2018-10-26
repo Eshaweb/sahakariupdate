@@ -42,7 +42,7 @@ export class LoginPage implements OnInit {
   }
   private validationMessages = { //used in above method.
     Password_required: '*Enter Password',
-    Password_minlength: 'Password cannot be less than 8 character'
+    Password_minlength: 'Password cannot be less than 6 character'
   };
   ActiveBankName: string;
   ngOnInit() {
