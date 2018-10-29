@@ -56,8 +56,6 @@ import { PaymentSuccessPage } from '../pages/payment-success/payment-success';
 import { ContactUsPage } from '../pages/contact-us/contact-us';
 import { Container } from '@angular/compiler/src/i18n/i18n_ast';
 import { ErrorHandlingService } from '../pages/services/ErrorHandlingService';
-import { AuthService } from '../pages/auth/AuthService';
-import { TokenService } from '../pages/auth/service';
 
 
 
@@ -156,8 +154,6 @@ import { TokenService } from '../pages/auth/service';
     AutoLogoutService,
     ErrorHandlingService,
     UISercice,
-    AuthService,
-    TokenService,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}

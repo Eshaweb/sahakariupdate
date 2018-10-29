@@ -3,6 +3,8 @@
 	"bank.fundtransfer": "Fund Transfer",
 	"bank.mini statement": "Mini Statement",
 	"bank.my": "My Profile",
+	"bank.branches":"Bank Branches",
+	"bankbranches.desc":"Different locations of your Active Bank",
 	"bank.stopcheque": "Stop Cheque",
 	"broadband": "Broadband",
 	"change bank": "Change Bank",

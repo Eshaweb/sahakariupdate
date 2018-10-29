@@ -8,8 +8,6 @@ import { tap } from 'rxjs/operators'
 import { NavController, Events } from "ionic-angular";
 import { RegisterService } from "../services/app-data.service";
 import { BehaviorSubject } from "rxjs";
-import { AuthService } from "./AuthService";
-import { TokenService } from "./service";
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor{
     isRefreshingToken: boolean = false;
@@ -17,19 +15,14 @@ export class AuthInterceptor implements HttpInterceptor{
     currentToken: any;
     refreshTokenNeeded: boolean;
     refreshToken: string;
-    constructor(private authService: AuthService, private tokenService:TokenService) {
-        this.authService.getAuthToken().subscribe((data:any)=>{
-            this.currentToken = data.AccessToken;
-        });
+    constructor(private registerService:RegisterService) {
+       
     }
     sendToken(token: string) {
-        this.tokenService.SetToken(token);
+        this.registerService.SetToken(token);
     }
     addToken(req: HttpRequest<any>, token: any): HttpRequest<any> {
         return req.clone({ setHeaders: { Authorization: 'Bearer ' + token }})
-    }
-    DonotaddToken(req: HttpRequest<any>, token: string): HttpRequest<any> {
-        return req.clone({ setHeaders: { Authorization: 'Bearer ' }})
     }
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
         if (req.headers.get('No-Auth') == "True") {
@@ -40,8 +33,8 @@ export class AuthInterceptor implements HttpInterceptor{
             var headersforTokenAPI = new HttpHeaders({ 'Content-Type': 'application/x-www-urlencoded' })
             return next.handle(req);
         }
-        if (this.tokenService.AccessToken != null) {
-            if (this.tokenService.refreshTokenNeeded == true) {
+                if (this.registerService.AccessToken != null) {
+                    if (this.registerService.refreshTokenNeeded == true) {
                 const clonedreq = req.clone({
                     setHeaders: { Authorization: 'Bearer ' }
                 });
@@ -58,7 +51,7 @@ export class AuthInterceptor implements HttpInterceptor{
             else {
                 this.refreshToken = localStorage.getItem('refreshToken');
                 const clonedreq = req.clone({
-                    setHeaders: { Authorization: 'Bearer ' + this.tokenService.AccessToken }
+                    setHeaders: { Authorization: 'Bearer ' + this.registerService.AccessToken }
                 });
                 return next.handle(clonedreq)
                     .do(
@@ -70,8 +63,7 @@ export class AuthInterceptor implements HttpInterceptor{
                     );
             }
         }
-        else if (this.tokenService.AccessToken == null) {
-            //this.refreshToken = StorageService.GetItem('refreshToken');
+            else if (this.registerService.AccessToken == null) {
             this.refreshToken = localStorage.getItem('refreshToken');
             if (this.refreshToken == null) {
                 const clonedreq = req.clone({
@@ -87,7 +79,7 @@ export class AuthInterceptor implements HttpInterceptor{
                         }
                     );
             }
-            else if (this.tokenService.RefreshToken != null) {
+                else if (this.registerService.RefreshToken != null) {
                 const clonedreq = req.clone({
                     setHeaders: { Authorization: 'Bearer ' }
                 });
@@ -106,8 +98,8 @@ export class AuthInterceptor implements HttpInterceptor{
                         }
                     );
             }
-            else if (this.refreshToken != null && this.tokenService.AccessToken == null) {
-                this.tokenService.GetToken(this.refreshToken).subscribe((data: any) => {
+                else if (this.refreshToken != null && this.registerService.AccessToken == null) {
+                    this.registerService.GetToken(this.refreshToken).subscribe((data: any) => {
                     this.sendToken(data.AccessToken);
                     this.refreshToken = data.RefreshToken;
                     localStorage.setItem('refreshToken', this.refreshToken);
@@ -121,8 +113,8 @@ export class AuthInterceptor implements HttpInterceptor{
                                 if (err.status === 401)
                                     //this.event.publish('UNAUTHORIZED');
                                     this.refreshToken = localStorage.getItem('refreshToken');
-                                this.tokenService.GetToken(this.refreshToken).subscribe((data: any) => {
-                                    this.sendToken(data.AccessToken);
+                                    this.registerService.GetToken(this.refreshToken).subscribe((data: any) => { 
+                                this.sendToken(data.AccessToken);
                                     this.refreshToken = data.RefreshToken;
                                     localStorage.setItem('refreshToken', this.refreshToken);
                                 });
@@ -130,9 +122,10 @@ export class AuthInterceptor implements HttpInterceptor{
                         );
                 });
             }
-            else if (this.refreshToken != null && this.tokenService.AccessToken != null) {
-                const clonedreq = req.clone({
-                    setHeaders: { Authorization: 'Bearer ' + this.tokenService.AccessToken }
+                else if (this.refreshToken != null && this.registerService.AccessToken != null) {  
+            const clonedreq = req.clone({
+                    setHeaders: { Authorization: 'Bearer ' + this.registerService.AccessToken }
+
                 });
                 return next.handle(clonedreq)
                     .do(

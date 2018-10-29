@@ -3,6 +3,8 @@
 	"bank.fundtransfer": "ಹಣ ವರ್ಗಾವಣೆ",
 	"bank.mini statement": "ವಹಿವಾಟು ವಿವರ",
 	"bank.my": "ನನ್ನ ಖಾತೆ",
+	"bank.branches":"Bank Branches",
+	"bankbranches.desc":"Different locations of your Active Bank",
 	"bank.stopcheque": "ಚೆಕ್ ನಿಲ್ಲಿಸು ",
 	"broadband": "ಬ್ರಾಡ್ಬ್ಯಾಂಡ್",
 	"change bank": "ಬ್ಯಾಂಕ್ ಬದಲಾವಣೆ",
