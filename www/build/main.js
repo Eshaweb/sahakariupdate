@@ -5730,10 +5730,10 @@ var AuthInterceptor = /** @class */ (function () {
         }
         if (this.registerService.AccessToken != null) {
             if (this.registerService.refreshTokenNeeded == true) {
-                var clonedreq = req.clone({
+                var clonedreq_1 = req.clone({
                     setHeaders: { Authorization: 'Bearer ' }
                 });
-                return next.handle(clonedreq)
+                return next.handle(clonedreq_1)
                     .do(function (succ) { }, function (err) {
                     if (err.status === 401) {
                     }
@@ -5741,10 +5741,10 @@ var AuthInterceptor = /** @class */ (function () {
             }
             else {
                 this.refreshToken = localStorage.getItem('refreshToken');
-                var clonedreq = req.clone({
+                var clonedreq_2 = req.clone({
                     setHeaders: { Authorization: 'Bearer ' + this.registerService.AccessToken }
                 });
-                return next.handle(clonedreq)
+                return next.handle(clonedreq_2)
                     .do(function (succ) { }, function (err) {
                     if (err.status === 401) {
                     }
@@ -5754,20 +5754,20 @@ var AuthInterceptor = /** @class */ (function () {
         else if (this.registerService.AccessToken == null) {
             this.refreshToken = localStorage.getItem('refreshToken');
             if (this.refreshToken == null) {
-                var clonedreq = req.clone({
+                var clonedreq_3 = req.clone({
                     setHeaders: { Authorization: 'Bearer ' }
                 });
-                return next.handle(clonedreq)
+                return next.handle(clonedreq_3)
                     .do(function (succ) { }, function (err) {
                     if (err.status === 401) {
                     }
                 });
             }
             else if (this.registerService.RefreshToken != null) {
-                var clonedreq = req.clone({
+                var clonedreq_4 = req.clone({
                     setHeaders: { Authorization: 'Bearer ' }
                 });
-                return next.handle(clonedreq)
+                return next.handle(clonedreq_4)
                     .do(function (succ) { }, function (err) {
                     if (err.status === 401) {
                     }
@@ -5795,20 +5795,20 @@ var AuthInterceptor = /** @class */ (function () {
                 });
             }
             else if (this.refreshToken != null && this.registerService.AccessToken != null) {
-                var clonedreq = req.clone({
+                var clonedreq_5 = req.clone({
                     setHeaders: { Authorization: 'Bearer ' + this.registerService.AccessToken }
                 });
-                return next.handle(clonedreq)
+                return next.handle(clonedreq_5)
                     .do(function (succ) { }, function (err) {
                     if (err.status === 401) {
                     }
                 });
             }
             else {
-                var clonedreq = req.clone({
+                var clonedreq_6 = req.clone({
                     setHeaders: { Authorization: 'Bearer ' }
                 });
-                return next.handle(clonedreq)
+                return next.handle(clonedreq_6)
                     .do(function (succ) { }, function (err) {
                     if (err.status === 401) {
                     }
@@ -5819,7 +5819,10 @@ var AuthInterceptor = /** @class */ (function () {
             //this.router.navigateByUrl('/login');
             // this.navCtrl.push(LoginPage); 
         }
-        return next.handle(this.addToken(req, this.currentToken))
+        var clonedreq = req.clone({
+            setHeaders: { Authorization: 'Bearer ' }
+        });
+        return next.handle(clonedreq)
             .catch(function (error) {
             if (error instanceof __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["d" /* HttpErrorResponse */]) {
                 // switch ((<HttpErrorResponse>error).status) {
