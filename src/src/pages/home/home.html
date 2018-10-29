@@ -1,0 +1,16 @@
+<div class="row" *ngIf="tenantlist">
+  <div class="col s12 m7">
+    <div class="card">
+        <!--interpolation-->
+      <div class="card-content">     
+           <div *ngFor="let order of tenantlist" style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;">
+      <span> Id : {{ order.Id |json }}</span> <br>
+      <span>Name : {{ order.Name | json }}</span> <br>
+      <span>Address : {{ order.Address }}</span> <br>
+
+    </div> 
+
+      </div>       
+    </div>
+  </div>
+</div>

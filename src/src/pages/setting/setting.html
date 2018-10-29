@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Settings
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding id="page2">
+<!-- 
+  <ion-item>
+    <button ion-button (click)="changeLanguage('ka')" >{{ 'demo.kannada'| translate }}</button>
+    <button ion-button (click)="changeLanguage('en')">{{ 'demo.english'| translate }}</button>
+  </ion-item> -->
+  <ion-list radio-group>
+      <ion-list-header>
+        Select Language
+      </ion-list-header>
+  
+      <ion-item>
+        <ion-label>{{ 'Kannada'| translate }}</ion-label>
+        <ion-radio (ionSelect)="changeLanguage('ka')" checked="{{isKannada}}"></ion-radio>
+      </ion-item>
+  
+      <ion-item>
+          <ion-label>{{ 'English'| translate }}</ion-label>
+          <ion-radio (ionSelect)="changeLanguage('en')" checked="{{isEnglish}}"></ion-radio>
+        </ion-item>
+      </ion-list>
+</ion-content>

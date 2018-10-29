@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar  color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Enter OTP
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding class="back-image" id="page15">
+  <form [formGroup]="formgroup" id="enterOTP-form4" #enterOTPForm="ngForm" (ngSubmit)="OnSubmit()">
+    <ion-list id="enterOTP-list18">
+      <ion-item id="enterOTP-input12">
+        <ion-label floating>
+          OTP
+        </ion-label>
+        <ion-input formControlName="OTP" type="number" placeholder=""></ion-input>
+      </ion-item>
+      <!-- <p style="color:darkorange;" *ngIf="otp.hasError('required') && otp.touched"> *OTP is required</p> -->
+      <p style="color:darkorange" id='err_OTP'></p>
+        </ion-list>
+    <div class="spacer" style="height:40px;" id="enterOTP-spacer8"></div>
+    <button [disabled]="enterOTPForm.invalid" id="enterOTP-button8" ion-button color="positive" block>
+      Submit
+    </button>
+  </form>
+  <h2>{{countDown | async | formatTime}}</h2>
+  <!-- <button (click)="stopTimer()">Stop</button> -->
+
+  <button style="color: darkorange" [disabled]="counter!= 0" ion-button clear item-centre (click)="OnResendOTP()">Click here to Resend OTP</button>       
+ 
+
+</ion-content>
