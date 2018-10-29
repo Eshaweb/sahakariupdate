@@ -114,13 +114,14 @@ export class EnterOTPPage implements OnInit {
         else {
           this.navCtrl.push(RegisterPage);
         }
+        loading.dismiss();
       } else {
         this.ShowIf = false;
         this.HideIf = true;
         this.toastrService.error("OTP is Invalid", 'Error!')
-        this.formgroup.get('otp').reset();
+        this.formgroup.get('OTP').reset();
+        loading.dismiss();
       }
-      loading.dismiss();
     }, (error) => {
       if (typeof error === 'string') {
         //this.toastrService.error(error, 'Error!');
