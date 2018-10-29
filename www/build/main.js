@@ -5840,10 +5840,9 @@ var AuthInterceptor = /** @class */ (function () {
     };
     AuthInterceptor = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_3__angular_core__["B" /* Injectable */])(),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_4__services_app_data_service__["a" /* RegisterService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_app_data_service__["a" /* RegisterService */]) === "function" && _a || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4__services_app_data_service__["a" /* RegisterService */]])
     ], AuthInterceptor);
     return AuthInterceptor;
-    var _a;
 }());
 
 //# sourceMappingURL=auth.interceptor.js.map
