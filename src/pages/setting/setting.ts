@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, Events } from 'ionic-angular';
-import { TranslateService } from '../../../node_modules/@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { PagePage } from '../page/page';
 import { StorageService } from '../services/Storage_Service';
 

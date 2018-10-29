@@ -5,9 +5,8 @@ import { Tenant } from '../LocalStorageTables/Tenant';
 import { EnterOTPPage } from '../enter-otp/enter-otp';
 import { RegisterService } from '../services/app-data.service';
 import { LoginPage } from '../login/login';
-import { ToastrService } from '../../../node_modules/ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 import { PagePage } from '../page/page';
-import { findReadVarNames } from '../../../node_modules/@angular/compiler/src/output/output_ast';
 import { SavePasswordPage } from '../save-password/save-password';
 
 /**

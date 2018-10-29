@@ -4,8 +4,8 @@ import { StorageService } from '../services/Storage_Service';
 import { RegisterService } from '../services/app-data.service';
 import { SelfCareAc } from '../LocalStorageTables/SelfCareAc';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from '../../../node_modules/rxjs';
 import { BankingPage } from '../banking/banking';
+import { Observable } from '../../../node_modules/rxjs';
 
 @Component({
     selector: 'page-balance-enquiry',

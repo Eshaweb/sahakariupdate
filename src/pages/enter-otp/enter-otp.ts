@@ -11,10 +11,10 @@ import { StorageService } from '../services/Storage_Service';
 import { ToastrService } from 'ngx-toastr';
 import { UISercice } from '../services/UIService';
 import { RegisterPage } from '../register/register';
-import { Observable } from '../../../node_modules/rxjs';
 import { Tenant } from '../LocalStorageTables/Tenant';
 import { SavePasswordPage } from '../save-password/save-password';
 import { ErrorHandlingService } from '../services/ErrorHandlingService';
+import { Observable } from '../../../node_modules/rxjs';
 @Component({
   selector: 'page-enter-otp',
   templateUrl: 'enter-otp.html'

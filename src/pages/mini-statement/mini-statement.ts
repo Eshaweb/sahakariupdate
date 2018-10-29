@@ -7,7 +7,6 @@ import { MiniStatement } from '../View Models/MiniStatement';
 import { StatementItem } from '../View Models/StatementItem';
 import { SelfCareAc } from '../LocalStorageTables/SelfCareAc';
 import { ToastrService } from 'ngx-toastr';
-import { findReadVarNames } from '../../../node_modules/@angular/compiler/src/output/output_ast';
 import { PagePage } from '../page/page';
 import { BankingPage } from '../banking/banking';
 

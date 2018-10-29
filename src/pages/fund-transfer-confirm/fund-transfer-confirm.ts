@@ -5,7 +5,6 @@ import { RegisterService } from '../services/app-data.service';
 import { StorageService } from '../services/Storage_Service';
 import { SelfCareAc } from '../LocalStorageTables/SelfCareAc';
 import { FundTransferDone } from '../View Models/FundTransferDone';
-import { findReadVarNames } from '../../../node_modules/@angular/compiler/src/output/output_ast';
 import { CheckPasswordPage } from '../check-password/check-password';
 
 /**

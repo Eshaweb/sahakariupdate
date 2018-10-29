@@ -48,7 +48,6 @@ import { MyProfilePage } from '../pages/my-profile/my-profile';
 import { BankBranchesPage } from '../pages/bank-branches/bank-branches';
 import { FundTransferConfirmPage } from '../pages/fund-transfer-confirm/fund-transfer-confirm';
 import { ModalPage } from '../pages/modal/modal';
-import { Observable } from '../../node_modules/rxjs';
 import { AuthGuard } from '../pages/auth/auth.guard';
 import { SavePasswordPage } from '../pages/save-password/save-password';
 import { GetOtpPage } from '../pages/get-otp/get-otp';
@@ -57,6 +56,8 @@ import { PaymentSuccessPage } from '../pages/payment-success/payment-success';
 import { ContactUsPage } from '../pages/contact-us/contact-us';
 import { Container } from '@angular/compiler/src/i18n/i18n_ast';
 import { ErrorHandlingService } from '../pages/services/ErrorHandlingService';
+import { AuthService } from '../pages/auth/AuthService';
+import { TokenService } from '../pages/auth/service';
 
 
 
@@ -143,7 +144,8 @@ import { ErrorHandlingService } from '../pages/services/ErrorHandlingService';
     PaymentSuccessPage,
     ContactUsPage
   ],
-  providers: [AuthGuard,Toast, {
+  providers: [AuthGuard,Toast, 
+    {
     provide : HTTP_INTERCEPTORS,
     useClass : AuthInterceptor,
     multi : true
@@ -154,6 +156,8 @@ import { ErrorHandlingService } from '../pages/services/ErrorHandlingService';
     AutoLogoutService,
     ErrorHandlingService,
     UISercice,
+    AuthService,
+    TokenService,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}

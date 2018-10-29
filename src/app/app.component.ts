@@ -60,12 +60,12 @@ export class MyApp {
         this.digipartyname = this.storageService.GetDigipartyBasedOnActiveTenantId().Name;
         this.showMenuOptions = true;
         //translate.setDefaultLang('en');
-        // if(StorageService.GetItem('Language')=='ka'){
-        //   translate.setDefaultLang('ka');
-        // }
-        // else if(StorageService.GetItem('Language')=='en'||StorageService.GetItem('Language')=='en'==undefined){
-        //   translate.setDefaultLang('en');
-        // }
+        if(StorageService.GetItem('Language')=='ka'){
+          translate.setDefaultLang('ka');
+        }
+        else if(StorageService.GetItem('Language')=='en'||StorageService.GetItem('Language')=='en'==undefined){
+          translate.setDefaultLang('en');
+        }
         if (this.storageService.GetSelfCareAc() == null || this.regService.isLogOut == false) {
           this.isLogOut = true;
         }

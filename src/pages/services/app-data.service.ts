@@ -30,7 +30,6 @@ import { AddBankResponse } from '../View Models/AddBankResponse';
 import { FundTransferResponse } from '../View Models/FundTransferResponse';
 import { BankBranch } from '../View Models/BankBranch';
 import { CheckVoucher } from '../View Models/CheckVoucher';
-import { TranslateHttpLoader } from '../../../node_modules/@ngx-translate/http-loader';
 import { Login } from '../View Models/Login';
 import { StorageService } from './Storage_Service';
 import { AlertController } from 'ionic-angular';
