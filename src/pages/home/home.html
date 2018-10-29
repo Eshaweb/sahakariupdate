@@ -1,18 +1,16 @@
-<ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Home</ion-title>
-  </ion-navbar>
-</ion-header>
+<div class="row" *ngIf="tenantlist">
+  <div class="col s12 m7">
+    <div class="card">
+        <!--interpolation-->
+      <div class="card-content">     
+           <div *ngFor="let order of tenantlist" style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;">
+      <span> Id : {{ order.Id |json }}</span> <br>
+      <span>Name : {{ order.Name | json }}</span> <br>
+      <span>Address : {{ order.Address }}</span> <br>
 
-<ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+    </div> 
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
-
-  <button ion-button secondary menuToggle>Toggle Menu</button>
-</ion-content>
+      </div>       
+    </div>
+  </div>
+</div>
