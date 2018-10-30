@@ -160,6 +160,7 @@ export class EnterOTPPage implements OnInit {
       this.toastrService.success('OTP Sent to ' + oTPRequest.MobileNo + ' with Reference No. ' + data.OTPRef, 'Success!');
       this.isResendOTP = true;
       this.OTPRef = data.OTPRef;
+      this.formgroup.get('OTP').reset();
       loading.dismiss();
     }, (error) => {
       if (typeof error === 'string') {

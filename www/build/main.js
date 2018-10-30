@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 100:
+/***/ 101:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -111,7 +111,7 @@ var FavouritesPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 101:
+/***/ 102:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -353,7 +353,7 @@ var FundTransferPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 102:
+/***/ 103:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -782,7 +782,7 @@ var StorageService = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RegisterService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__(108);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__UIHelperClasses_UIHelperService__ = __webpack_require__(379);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__);
@@ -1009,7 +1009,7 @@ var RegisterService = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RechargePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__favourites_favourites__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__favourites_favourites__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_Storage_Service__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__recharge_report_recharge_report__ = __webpack_require__(177);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__page_page__ = __webpack_require__(40);
@@ -1275,7 +1275,7 @@ var RechargeReportPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__login_login__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__page_page__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_ngx_toastr__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__fund_transfer_fund_transfer__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__fund_transfer_fund_transfer__ = __webpack_require__(102);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1714,7 +1714,7 @@ var GetOtpPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_ngx_toastr__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_UIService__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__register_register__ = __webpack_require__(181);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__save_password_save_password__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__save_password_save_password__ = __webpack_require__(103);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_ErrorHandlingService__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__node_modules_rxjs__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__node_modules_rxjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__node_modules_rxjs__);
@@ -1872,6 +1872,7 @@ var EnterOTPPage = /** @class */ (function () {
             _this.toastrService.success('OTP Sent to ' + oTPRequest.MobileNo + ' with Reference No. ' + data.OTPRef, 'Success!');
             _this.isResendOTP = true;
             _this.OTPRef = data.OTPRef;
+            _this.formgroup.get('OTP').reset();
             loading.dismiss();
         }, function (error) {
             if (typeof error === 'string') {
@@ -1920,10 +1921,9 @@ var EnterOTPPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'page-enter-otp',template:/*ion-inline-start:"D:\shailesh_bhat\Angular2Projects\ionic_sahakari\sahakariupdate\src\pages\enter-otp\enter-otp.html"*/'<ion-header>\n\n  <ion-navbar  color="primary">\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>\n\n      Enter OTP\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content padding class="back-image" id="page15">\n\n  <form [formGroup]="formgroup" id="enterOTP-form4" #enterOTPForm="ngForm" (ngSubmit)="OnSubmit()">\n\n    <ion-list id="enterOTP-list18">\n\n      <ion-item id="enterOTP-input12">\n\n        <ion-label floating>\n\n          OTP\n\n        </ion-label>\n\n        <ion-input formControlName="OTP" type="number" placeholder="" id="otp"></ion-input>\n\n      </ion-item>\n\n      <!-- <p style="color:darkorange;" *ngIf="otp.hasError(\'required\') && otp.touched"> *OTP is required</p> -->\n\n      <p style="color:darkorange" id=\'err_OTP\'></p>\n\n        </ion-list>\n\n    <div class="spacer" style="height:40px;" id="enterOTP-spacer8"></div>\n\n    <button [disabled]="enterOTPForm.invalid" id="enterOTP-button8" ion-button color="positive" block>\n\n      Submit\n\n    </button>\n\n  </form>\n\n  <h2>{{countDown | async | formatTime}}</h2>\n\n  <!-- <button (click)="stopTimer()">Stop</button> -->\n\n\n\n  <button style="color: darkorange" [disabled]="counter!= 0" ion-button clear item-centre (click)="OnResendOTP()">Click here to Resend OTP</button>       \n\n \n\n\n\n</ion-content>'/*ion-inline-end:"D:\shailesh_bhat\Angular2Projects\ionic_sahakari\sahakariupdate\src\pages\enter-otp\enter-otp.html"*/
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_12__services_ErrorHandlingService__["a" /* ErrorHandlingService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12__services_ErrorHandlingService__["a" /* ErrorHandlingService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_7__services_Storage_Service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__services_Storage_Service__["a" /* StorageService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_9__services_UIService__["a" /* UISercice */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_9__services_UIService__["a" /* UISercice */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_8_ngx_toastr__["b" /* ToastrService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8_ngx_toastr__["b" /* ToastrService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_6__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__angular_forms__["a" /* FormBuilder */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_5__services_app_data_service__["a" /* RegisterService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_app_data_service__["a" /* RegisterService */]) === "function" && _k || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_12__services_ErrorHandlingService__["a" /* ErrorHandlingService */], __WEBPACK_IMPORTED_MODULE_7__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_9__services_UIService__["a" /* UISercice */], __WEBPACK_IMPORTED_MODULE_8_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_6__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_5__services_app_data_service__["a" /* RegisterService */]])
     ], EnterOTPPage);
     return EnterOTPPage;
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
 }());
 
 var FormatTimePipe = /** @class */ (function () {
@@ -1961,7 +1961,7 @@ var FormatTimePipe = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_forms__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_UIService__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_Storage_Service__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__save_password_save_password__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__save_password_save_password__ = __webpack_require__(103);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2610,7 +2610,7 @@ webpackEmptyAsyncContext.id = 196;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Storage_Service__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fund_transfer_fund_transfer__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fund_transfer_fund_transfer__ = __webpack_require__(102);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__balance_enquiry_balance_enquiry__ = __webpack_require__(182);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mini_statement_mini_statement__ = __webpack_require__(183);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__page_page__ = __webpack_require__(40);
@@ -2751,11 +2751,12 @@ webpackEmptyAsyncContext.id = 337;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_UIService__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__get_otp_get_otp__ = __webpack_require__(179);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__fund_transfer_fund_transfer__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__fund_transfer_fund_transfer__ = __webpack_require__(102);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__balance_enquiry_balance_enquiry__ = __webpack_require__(182);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__mini_statement_mini_statement__ = __webpack_require__(183);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__favourites_favourites__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__favourites_favourites__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__services_ErrorHandlingService__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__node_modules_ngx_translate_core__ = __webpack_require__(91);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2782,9 +2783,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var LoginPage = /** @class */ (function () {
-    function LoginPage(errorHandlingService, events, storageService, alertCtrl, uiService, navParams, toastrService, loadingController, formbuilder, registerService, navCtrl) {
+    function LoginPage(translate, errorHandlingService, events, storageService, alertCtrl, uiService, navParams, toastrService, loadingController, formbuilder, registerService, navCtrl) {
         var _this = this;
+        this.translate = translate;
         this.errorHandlingService = errorHandlingService;
         this.events = events;
         this.storageService = storageService;
@@ -2904,6 +2907,7 @@ var LoginPage = /** @class */ (function () {
         // this.registerService.GetToken(token).subscribe((data:any)=>{
         // });
         this.registerService.SetToken(token);
+        //this.tokenService.SetToken(token);
     };
     LoginPage.prototype.callservices = function () {
         var _this = this;
@@ -3026,7 +3030,7 @@ var LoginPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'page-login',template:/*ion-inline-start:"D:\shailesh_bhat\Angular2Projects\ionic_sahakari\sahakariupdate\src\pages\login\login.html"*/'<ion-header>\n\n  <ion-navbar color="primary">\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>\n\n      Login\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content class="back-image" padding id="page6">\n\n  <div class="spacer" style="width:300px;height:199px;" id="enterOTP-spacer11"></div>\n\n  <!-- <form [formGroup]="formGroup" id="login-form1" #loginForm="ngForm" (ngSubmit)="OnLogin(Password.value)"> -->\n\n    <form [formGroup]="formGroup" id="login-form1" #loginForm="ngForm" (ngSubmit)="OnLogin()">\n\n    <ion-list id="login-list5">\n\n        <!-- <ion-item id="login-input2">\n\n            <ion-label floating>\n\n              UserName\n\n            </ion-label>\n\n            <ion-input formControlName="username" type="text" placeholder=""></ion-input>\n\n          </ion-item>\n\n          <p style="color:darkorange;">{{usernameMessage}}</p> -->\n\n      <ion-item id="login-input2">\n\n        <ion-label floating>\n\n          Password\n\n        </ion-label>\n\n        <!-- <ion-input formControlName="pword" type="password" #Password ngModel name="Password" placeholder=""></ion-input> -->\n\n        <ion-input formControlName="Password" type="password" placeholder=""></ion-input>\n\n      </ion-item>\n\n           <!-- <p style="color:red;" *ngIf="password.hasError(\'required\') && password.touched"> *Please Enter Password</p> -->\n\n           <p style="color:darkorange" id=\'err_Password\'></p>\n\n    </ion-list>\n\n    <div class="spacer" style="height:40px;" id="login-spacer1"></div>\n\n    <button [disabled]="loginForm.invalid" id="login-button1" ion-button color="assertive" block on-click="goToHome()">\n\n      Log in\n\n    </button>\n\n    <!-- <button id="login-button2" ion-button clear color="assertive" block href-inappbrowser="/signup">\n\n      Reset Password\n\n    </button> -->\n\n  </form>\n\n  <!-- <button class="button button-small" ion-button color="assertive" (click)="OnForgot()">Forgot password?</button> -->\n\n  <button style="color: white" ion-button clear item-centre (click)="OnForgot()">Forgot password?</button>       \n\n\n\n</ion-content>'/*ion-inline-end:"D:\shailesh_bhat\Angular2Projects\ionic_sahakari\sahakariupdate\src\pages\login\login.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_16__services_ErrorHandlingService__["a" /* ErrorHandlingService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["c" /* Events */], __WEBPACK_IMPORTED_MODULE_8__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_10__services_UIService__["a" /* UISercice */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */], __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_5__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_6__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_17__node_modules_ngx_translate_core__["c" /* TranslateService */], __WEBPACK_IMPORTED_MODULE_16__services_ErrorHandlingService__["a" /* ErrorHandlingService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["c" /* Events */], __WEBPACK_IMPORTED_MODULE_8__services_Storage_Service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_10__services_UIService__["a" /* UISercice */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */], __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_5__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_6__services_app_data_service__["a" /* RegisterService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]])
     ], LoginPage);
     return LoginPage;
     var LoginPage_1;
@@ -3666,7 +3670,7 @@ var PrepaidConfirmPage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SettingPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ngx_translate_core__ = __webpack_require__(132);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ngx_translate_core__ = __webpack_require__(91);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__page_page__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_Storage_Service__ = __webpack_require__(11);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -3731,7 +3735,7 @@ var SettingPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__login_login__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ngx_toastr__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__page_page__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__save_password_save_password__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__save_password_save_password__ = __webpack_require__(103);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4017,7 +4021,7 @@ var AuthGuard = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ngx_toastr__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ViewPlans_Tabs_ViewPlans_Tabs__ = __webpack_require__(380);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__favourites_favourites__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__favourites_favourites__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__prepaid_confirm_prepaid_confirm__ = __webpack_require__(385);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__page_page__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_UIService__ = __webpack_require__(41);
@@ -4939,12 +4943,12 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* unused harmony export HttpLoaderFactory */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(108);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(396);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_toastr__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_platform_browser_animations__ = __webpack_require__(671);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_toast__ = __webpack_require__(673);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ngx_translate_core__ = __webpack_require__(132);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ngx_translate_core__ = __webpack_require__(91);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ngx_translate_http_loader__ = __webpack_require__(677);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_ionic_angular__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__app_component__ = __webpack_require__(712);
@@ -4955,7 +4959,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_page_page__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_login_login__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_recharge_recharge__ = __webpack_require__(176);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__pages_favourites_favourites__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__pages_favourites_favourites__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__pages_mini_statement_mini_statement__ = __webpack_require__(183);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pages_mobile_recharge_mobile_recharge__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_register_register__ = __webpack_require__(181);
@@ -4970,7 +4974,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__routes__ = __webpack_require__(719);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__pages_services_Storage_Service__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__pages_services_AutoLogOutService__ = __webpack_require__(720);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__pages_fund_transfer_fund_transfer__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__pages_fund_transfer_fund_transfer__ = __webpack_require__(102);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__pages_balance_enquiry_balance_enquiry__ = __webpack_require__(182);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__pages_ViewPlans_Tabs_ViewPlans_Tabs__ = __webpack_require__(380);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__pages_recharge_report_recharge_report__ = __webpack_require__(177);
@@ -4981,7 +4985,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__pages_fund_transfer_confirm_fund_transfer_confirm__ = __webpack_require__(383);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__pages_modal_modal__ = __webpack_require__(381);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__pages_auth_auth_guard__ = __webpack_require__(389);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__pages_save_password_save_password__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__pages_save_password_save_password__ = __webpack_require__(103);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__pages_get_otp_get_otp__ = __webpack_require__(179);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_46__pages_check_password_check_password__ = __webpack_require__(184);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_47__pages_payment_success_payment_success__ = __webpack_require__(384);
@@ -5045,6 +5049,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+//import { TokenService } from '../pages/auth/TokenService';
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -5144,6 +5149,7 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_32__pages_services_AutoLogOutService__["a" /* AutoLogoutService */],
                 __WEBPACK_IMPORTED_MODULE_49__pages_services_ErrorHandlingService__["a" /* ErrorHandlingService */],
                 __WEBPACK_IMPORTED_MODULE_38__pages_services_UIService__["a" /* UISercice */],
+                //TokenService,
                 __WEBPACK_IMPORTED_MODULE_24__ionic_native_status_bar__["a" /* StatusBar */],
                 __WEBPACK_IMPORTED_MODULE_25__ionic_native_splash_screen__["a" /* SplashScreen */],
                 { provide: __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_9_ionic_angular__["e" /* IonicErrorHandler */] }
@@ -5459,7 +5465,7 @@ var HomePage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_page_page__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_my_profile_my_profile__ = __webpack_require__(387);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_bank_branches_bank_branches__ = __webpack_require__(185);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__ngx_translate_core__ = __webpack_require__(132);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__ngx_translate_core__ = __webpack_require__(91);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_get_otp_get_otp__ = __webpack_require__(179);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_contact_us_contact_us__ = __webpack_require__(388);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -5529,7 +5535,7 @@ var MyApp = /** @class */ (function () {
                 if (__WEBPACK_IMPORTED_MODULE_9__pages_services_Storage_Service__["a" /* StorageService */].GetItem('Language') == 'ka') {
                     translate.setDefaultLang('ka');
                 }
-                else if (__WEBPACK_IMPORTED_MODULE_9__pages_services_Storage_Service__["a" /* StorageService */].GetItem('Language') == 'en' || __WEBPACK_IMPORTED_MODULE_9__pages_services_Storage_Service__["a" /* StorageService */].GetItem('Language') == 'en' == undefined) {
+                else if (__WEBPACK_IMPORTED_MODULE_9__pages_services_Storage_Service__["a" /* StorageService */].GetItem('Language') == 'en' || __WEBPACK_IMPORTED_MODULE_9__pages_services_Storage_Service__["a" /* StorageService */].GetItem('Language') == undefined) {
                     translate.setDefaultLang('en');
                 }
                 if (_this.storageService.GetSelfCareAc() == null || _this.regService.isLogOut == false) {
@@ -5685,7 +5691,7 @@ var ErrorFromServer = /** @class */ (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthInterceptor; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(108);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_do__ = __webpack_require__(224);
@@ -5709,14 +5715,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+//import { TokenService } from "./TokenService";
 var AuthInterceptor = /** @class */ (function () {
     function AuthInterceptor(registerService) {
+        // constructor(private tokenService: TokenService) {
         this.registerService = registerService;
         this.isRefreshingToken = false;
         this.tokenSubject = new __WEBPACK_IMPORTED_MODULE_5_rxjs__["BehaviorSubject"](null);
     }
     AuthInterceptor.prototype.sendToken = function (token) {
         this.registerService.SetToken(token);
+        //this.tokenService.SetToken(token);
     };
     AuthInterceptor.prototype.addToken = function (req, token) {
         return req.clone({ setHeaders: { Authorization: 'Bearer ' + token } });
@@ -5732,6 +5741,8 @@ var AuthInterceptor = /** @class */ (function () {
         }
         if (this.registerService.AccessToken != null) {
             if (this.registerService.refreshTokenNeeded == true) {
+                // if (this.tokenService.AccessToken != null) {
+                //     if (this.tokenService.refreshTokenNeeded == true) {
                 var clonedreq_1 = req.clone({
                     setHeaders: { Authorization: 'Bearer ' }
                 });
@@ -5745,6 +5756,7 @@ var AuthInterceptor = /** @class */ (function () {
                 this.refreshToken = localStorage.getItem('refreshToken');
                 var clonedreq_2 = req.clone({
                     setHeaders: { Authorization: 'Bearer ' + this.registerService.AccessToken }
+                    //setHeaders: { Authorization: 'Bearer ' + this.tokenService.AccessToken }
                 });
                 return next.handle(clonedreq_2)
                     .do(function (succ) { }, function (err) {
@@ -5754,6 +5766,7 @@ var AuthInterceptor = /** @class */ (function () {
             }
         }
         else if (this.registerService.AccessToken == null) {
+            //else if (this.tokenService.AccessToken == null) {
             this.refreshToken = localStorage.getItem('refreshToken');
             if (this.refreshToken == null) {
                 var clonedreq_3 = req.clone({
@@ -5766,6 +5779,7 @@ var AuthInterceptor = /** @class */ (function () {
                 });
             }
             else if (this.registerService.RefreshToken != null) {
+                //else if (this.tokenService.RefreshToken != null) {
                 var clonedreq_4 = req.clone({
                     setHeaders: { Authorization: 'Bearer ' }
                 });
@@ -5777,6 +5791,8 @@ var AuthInterceptor = /** @class */ (function () {
             }
             else if (this.refreshToken != null && this.registerService.AccessToken == null) {
                 this.registerService.GetToken(this.refreshToken).subscribe(function (data) {
+                    // else if (this.refreshToken != null && this.tokenService.AccessToken == null) {
+                    //     this.tokenService.GetToken(this.refreshToken).subscribe((data: any) => {
                     _this.sendToken(data.AccessToken);
                     _this.refreshToken = data.RefreshToken;
                     localStorage.setItem('refreshToken', _this.refreshToken);
@@ -5789,6 +5805,7 @@ var AuthInterceptor = /** @class */ (function () {
                             //this.event.publish('UNAUTHORIZED');
                             _this.refreshToken = localStorage.getItem('refreshToken');
                         _this.registerService.GetToken(_this.refreshToken).subscribe(function (data) {
+                            //this.tokenService.GetToken(this.refreshToken).subscribe((data: any) => {
                             _this.sendToken(data.AccessToken);
                             _this.refreshToken = data.RefreshToken;
                             localStorage.setItem('refreshToken', _this.refreshToken);
@@ -5797,8 +5814,10 @@ var AuthInterceptor = /** @class */ (function () {
                 });
             }
             else if (this.refreshToken != null && this.registerService.AccessToken != null) {
+                //else if (this.refreshToken != null && this.tokenService.AccessToken != null) {
                 var clonedreq_5 = req.clone({
                     setHeaders: { Authorization: 'Bearer ' + this.registerService.AccessToken }
+                    //setHeaders: { Authorization: 'Bearer ' + this.tokenService.AccessToken }
                 });
                 return next.handle(clonedreq_5)
                     .do(function (succ) { }, function (err) {

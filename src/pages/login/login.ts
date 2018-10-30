@@ -16,13 +16,14 @@ import { BalanceEnquiryPage } from '../balance-enquiry/balance-enquiry';
 import { MiniStatementPage } from '../mini-statement/mini-statement';
 import { FavouritesPage } from '../favourites/favourites';
 import { ErrorHandlingService } from '../services/ErrorHandlingService';
+import { TranslateService } from '../../../node_modules/@ngx-translate/core';
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
 export class LoginPage implements OnInit {
   formGroup: FormGroup;
-  constructor(private errorHandlingService: ErrorHandlingService, private events: Events, private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, public navParams: NavParams, private toastrService: ToastrService, public loadingController: LoadingController, public formbuilder: FormBuilder, private registerService: RegisterService, public navCtrl: NavController) {
+  constructor(private translate: TranslateService, private errorHandlingService: ErrorHandlingService, private events: Events, private storageService: StorageService, private alertCtrl: AlertController, private uiService: UISercice, public navParams: NavParams, private toastrService: ToastrService, public loadingController: LoadingController, public formbuilder: FormBuilder, private registerService: RegisterService, public navCtrl: NavController) {
     this.formGroup = formbuilder.group({
       //username:['', [Validators.required, Validators.minLength(4)]],
       Password: ['', [Validators.required]]
@@ -133,6 +134,7 @@ export class LoginPage implements OnInit {
 
     // });
     this.registerService.SetToken(token);
+    //this.tokenService.SetToken(token);
   }
   callservices() {
     var addBankRequest = {

@@ -63,7 +63,7 @@ export class MyApp {
         if(StorageService.GetItem('Language')=='ka'){
           translate.setDefaultLang('ka');
         }
-        else if(StorageService.GetItem('Language')=='en'||StorageService.GetItem('Language')=='en'==undefined){
+        else if(StorageService.GetItem('Language')=='en'||StorageService.GetItem('Language')==undefined){
           translate.setDefaultLang('en');
         }
         if (this.storageService.GetSelfCareAc() == null || this.regService.isLogOut == false) {
